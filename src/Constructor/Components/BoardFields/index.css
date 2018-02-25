@@ -1,9 +1,0 @@
-.BoardFields__buttons {
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 10px;
-}
-
-.BoardFields__buttons > * {
-    margin: 8px 4px;
-}

@@ -1,6 +1,6 @@
 import { PointCoordinates } from '../../BlockPosition/BlockPosition';
-import { Unit } from '../../UnitName/Unit';
-import { UnitTypes } from '../../UnitName/UnitTypes';
+import { Unit } from '../../Unit/Unit';
+import { UnitTypes } from '../../Unit/UnitTypes';
 import { radiansToDegres } from './radiansToDegrees';
 
 export function getAngleRelativeToOrigin({ x, y }: PointCoordinates): UnitTypes[Unit.degree] {

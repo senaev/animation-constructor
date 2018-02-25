@@ -1,6 +1,6 @@
 import { BlockSize, PointCoordinates } from '../../BlockPosition/BlockPosition';
-import { Unit } from '../../UnitName/Unit';
-import { UnitTypes } from '../../UnitName/UnitTypes';
+import { Unit } from '../../Unit/Unit';
+import { UnitTypes } from '../../Unit/UnitTypes';
 import { getDistanceBetweenTwoPoints } from './getDistanceBetweenTwoPoints';
 import { getDistanceFromOrigin } from './getDistanceFromOrigin';
 import { getIntersectionOfLineFromOriginAndItsPerpendicularByPoint } from './getPerpendicularLinesIntersection';

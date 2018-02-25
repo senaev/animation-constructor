@@ -1,11 +1,9 @@
 import NumberInput from 'material-ui-number-input';
 import * as React from 'react';
-import { Unit } from '../../UnitName/Unit';
-import { UnitShortTitles } from '../../UnitName/UnitShortTitles';
-import { addStylesToPage } from '../../utils/addStylesToPage';
+import { Unit } from '../../Unit/Unit';
+import { UnitShortTitles } from '../../Unit/UnitShortTitles';
 import { Field, FieldPreviewProps } from '../Field';
-
-addStylesToPage(document, require('./index.css'));
+import * as c from './index.pcss';
 
 const UNIT = Unit.degree;
 type UNIT = typeof UNIT;
@@ -14,7 +12,7 @@ export class Degree extends Field<UNIT> {
     public static isSupportsEasing = true;
     public static unit = UNIT;
     public static Preview = ({ value }: FieldPreviewProps<UNIT>) => {
-        return <div className={ 'DegreePreview' }>
+        return <div className={ c.DegreePreview }>
             { `${value.toFixed(2)}${UnitShortTitles[UNIT]}` }
         </div>;
     }

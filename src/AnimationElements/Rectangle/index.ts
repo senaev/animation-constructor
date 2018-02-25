@@ -1,14 +1,13 @@
-import { addStylesToPage } from '../../utils/addStylesToPage';
 import { createDivWithClass } from '../../utils/createDivWithClass';
 import { AnimationElement } from '../AnimationElement';
 import { AnimationElements } from '../AnimationElements';
+import * as c from './index.pcss';
 
 export class Rectangle extends AnimationElement<AnimationElements.Rectangle> {
     private rectangleDiv: HTMLElement;
 
     protected drawLayout(container: HTMLDivElement) {
-        addStylesToPage(container.ownerDocument, require('./index.css'));
-        this.rectangleDiv = createDivWithClass(container, 'Rectangle');
+        this.rectangleDiv = createDivWithClass(container, c.Rectangle);
     }
 
     protected setValues() {

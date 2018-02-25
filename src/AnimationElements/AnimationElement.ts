@@ -1,17 +1,24 @@
-import { Unit } from '../UnitName/Unit';
-import { UnitTypes } from '../UnitName/UnitTypes';
-import { AnimationElementFieldsTypes } from './AnimationElementFields';
+import { Unit } from '../Unit/Unit';
+import { UnitTypes } from '../Unit/UnitTypes';
+import { noop } from '../utils/noop';
+import { AnimationElementsFieldsValues } from './AnimationElementFields';
 import { AnimationElementName } from './AnimationElementName';
 
 export abstract class AnimationElement<T extends AnimationElementName> {
+    // TODO: remove
+    private readonly lalala?: T;
+
     constructor(protected readonly container: HTMLDivElement,
                 protected size: UnitTypes[Unit.pixel],
-                public values: AnimationElementFieldsTypes<T>) {
+                public values: AnimationElementsFieldsValues) {
         this.drawLayout(container);
         this.setValuesAbstract(values);
+
+        // TODO: remove
+        noop(this.lalala);
     }
 
-    public setValuesAbstract(values: AnimationElementFieldsTypes<T>): void {
+    public setValuesAbstract(values: AnimationElementsFieldsValues): void {
         this.values = values;
 
         this.setValues();
@@ -33,5 +40,5 @@ export abstract class AnimationElement<T extends AnimationElementName> {
 export interface AnimationElementClass<T extends AnimationElementName = AnimationElementName> {
     new(container: HTMLDivElement,
         size: UnitTypes[Unit.pixel],
-        values: AnimationElementFieldsTypes<T>): AnimationElement<T>;
+        values: AnimationElementsFieldsValues): AnimationElement<T>;
 }

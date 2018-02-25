@@ -7,31 +7,25 @@ import * as Redux from 'redux';
 import { Action } from 'redux-act';
 import { AllAnimationElementsDescriptions } from '../../../AnimationElements/AllAnimationElementsDescriptions';
 import {
-    AnimationElementFieldName,
-    AnimationElementFieldsTypes,
+    AnimationElementFieldsTypes, AnimationElementsFieldsValues,
 } from '../../../AnimationElements/AnimationElementFields';
-import { AnimationElementName } from '../../../AnimationElements/AnimationElementName';
 import { ALL_BLOCK_POSITION_FIELD_NAMES } from '../../../BlockPosition/ALL_BLOCK_POSITION_FIELD_NAMES';
 import { BlockPosition } from '../../../BlockPosition/BlockPosition';
 import { BlockPositionFieldName } from '../../../BlockPosition/BlockPositionFieldName';
 import { BlockPositionFieldTitles } from '../../../BlockPosition/BlockPositionFieldTitles';
 import { BlockPositionFieldUnits } from '../../../BlockPosition/BlockPositionFieldUnits';
-import { BlockPositionFielsTypes } from '../../../BlockPosition/BlockPositionFielsTypes';
 import { BlockPositionMinValues } from '../../../BlockPosition/BlockPositionMinValues';
 import { ALL_FIELDS } from '../../../Fields/ALL_FIELDS';
-import { FieldType } from '../../../Fields/FieldType';
-import { FieldTypes } from '../../../Fields/FieldTypes';
-import { UnitTitles } from '../../../UnitName/UnitTitles';
-import { addStylesToPage } from '../../../utils/addStylesToPage';
+import { UnitName } from '../../../Unit/UNIT_NAMES';
+import { UnitTitles } from '../../../Unit/UnitTitles';
+import { UnitTypes } from '../../../Unit/UnitTypes';
 import { getObjectKeys } from '../../../utils/getObjectKeys';
 import {
     discardChangesAction, saveElementAction, setEditedElementFieldsAction,
     setEditedElementPositionAction,
 } from '../../Store/actions';
 import { ConstructorState, EditedElement } from '../../Store/State';
-
-// TODO
-addStylesToPage(document, require('./index.css'));
+import * as c from './index.pcss';
 
 export type BoardFieldsStateProps = {};
 export type BoardFieldsOwnProps = {
@@ -42,7 +36,7 @@ export type BoardFieldsDispatchProps = {
     saveElement: (editedElement: EditedElement) => void;
     discardChanges: () => void;
     setEditedElementPosition: (position: BlockPosition) => void;
-    setEditedElementFields: (elementFields: AnimationElementFieldsTypes) => void;
+    setEditedElementFields: (elementFields: AnimationElementsFieldsValues) => void;
 };
 
 export type BoardFieldsProps =
@@ -60,9 +54,9 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
 
         const blockPositionSubmenuTitle = ALL_BLOCK_POSITION_FIELD_NAMES.map((blockPositionFieldName, key, arr) => {
             const fieldTitle = BlockPositionFieldTitles[blockPositionFieldName];
-            const fieldType = BlockPositionFielsTypes[blockPositionFieldName];
+            const fieldName = BlockPositionFieldUnits[blockPositionFieldName];
 
-            const FieldClass = ALL_FIELDS[fieldType];
+            const FieldClass = ALL_FIELDS[fieldName];
 
             return <span key={ key }>
                 {
@@ -76,16 +70,15 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
         });
 
         const fieldsDescriptions = AllAnimationElementsDescriptions[elementName];
-        const allElementFieldNames: AnimationElementFieldName<AnimationElementName>[] =
-            getObjectKeys(fieldsDescriptions);
+        const allElementFieldNames = getObjectKeys(fieldsDescriptions);
 
         const customFieldsSubmenuTitle = allElementFieldNames.map((fieldName, key, arr) => {
             const {
                 fieldTitle,
-                fieldType,
+                unit,
             } = fieldsDescriptions[fieldName];
 
-            const FieldClass = ALL_FIELDS[fieldType as FieldType];
+            const FieldClass = ALL_FIELDS[unit];
 
             return <span key={ key }>
                 {
@@ -98,7 +91,7 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
             </span>;
         });
 
-        return <div>
+        return <div className={c.BoardFields}>
             <GridList cols={ 2 } cellHeight={ 'auto' }>
                 <List>
                     <Subheader inset={ true }>Расположение блока</Subheader>
@@ -110,14 +103,13 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
                         nestedItems={
                             ALL_BLOCK_POSITION_FIELD_NAMES.map((blockPositionFieldName, key) => {
                                 const fieldTitle = BlockPositionFieldTitles[blockPositionFieldName];
-                                const unitName = BlockPositionFieldUnits[blockPositionFieldName];
-                                const fieldType = BlockPositionFielsTypes[blockPositionFieldName];
+                                const unit = BlockPositionFieldUnits[blockPositionFieldName];
 
-                                const FieldClass = ALL_FIELDS[fieldType];
+                                const FieldClass = ALL_FIELDS[unit];
 
                                 return <ListItem key={ key }
                                                  secondaryText={
-                                                     `${fieldTitle} (${UnitTitles[unitName]})`
+                                                     `${fieldTitle} (${UnitTitles[unit]})`
                                                  }>
                                     <FieldClass
                                         value={ position[blockPositionFieldName] }
@@ -135,8 +127,8 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
                         primaryTogglesNestedList={ true }
                         nestedItems={
                             allElementFieldNames.map((fieldName, key) => {
-                                const { fieldType, fieldTitle } = fieldsDescriptions[fieldName];
-                                const FieldClass = ALL_FIELDS[fieldType as FieldType];
+                                const { unit, fieldTitle } = fieldsDescriptions[fieldName];
+                                const FieldClass = ALL_FIELDS[unit];
                                 const unitName = FieldClass.unit;
 
                                 return <ListItem key={ key }
@@ -148,7 +140,7 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
                         }/>
                 </List>
             </GridList>
-            <div className={ 'BoardFields__buttons' }>
+            <div className={ c.BoardFields__buttons }>
                 <RaisedButton
                     secondary={ true }
                     icon={ <ContentClear color={ lightBlack }/> }
@@ -186,8 +178,7 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
         };
     }
 
-    // tslint:disable-next-line:max-line-length
-    private changeElementField = (fieldName: AnimationElementFieldName<AnimationElementName>): (value: FieldTypes[FieldType]) => void => {
+    private changeElementField = (fieldName: string): (value: UnitTypes[UnitName]) => void => {
         return (value) => {
             const {
                 fieldsValues,

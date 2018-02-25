@@ -1,6 +1,6 @@
 import { PointCoordinates } from '../../BlockPosition/BlockPosition';
-import { Unit } from '../../UnitName/Unit';
-import { UnitTypes } from '../../UnitName/UnitTypes';
+import { Unit } from '../../Unit/Unit';
+import { UnitTypes } from '../../Unit/UnitTypes';
 import { getAngleRelativeToOrigin } from './getAngleRelativeToOrigin';
 import { getDifferenceBetweenAngles } from './getDifferenceBetweenAngles';
 

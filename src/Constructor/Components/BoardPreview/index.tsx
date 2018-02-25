@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
 import { BlockLocation } from '../../../BlockLocation/BlockLocation';
-import { addStylesToPage } from '../../../utils/addStylesToPage';
 import { selectBlockAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
 import { AnimationPreview } from '../AnimationPreview';
 import { Drawing } from '../Drawing';
 import { FillSizeBlock } from '../FillSizeBlock';
+import * as c from './index.pcss';
 
 export type BoardPreviewStateProps = Pick<ConstructorState,
     | 'editedElement'
@@ -24,9 +24,6 @@ export type BoardPreviewProps =
     & BoardPreviewStateProps
     & BoardPreviewDispatchProps;
 
-// TODO
-addStylesToPage(document, require('./index.css'));
-
 class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
     public render() {
         const {
@@ -36,8 +33,8 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
             animationPosition,
         } = this.props;
 
-        return <div className={ 'BoardPreview' }>
-            <div className={ 'BoardPreview__fillSizeContainer' }>
+        return <div className={ c.BoardPreview }>
+            <div className={ c.BoardPreview__fillSizeContainer }>
                 <FillSizeBlock
                     relationX={ relation[0] }
                     relationY={ relation[1] }
@@ -47,7 +44,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
                         alignItems: 'center',
                     } }
                 >
-                    <div className={ 'BoardPreview__editContainer' }>
+                    <div className={ c.BoardPreview__editContainer }>
                         <FillSizeBlock
                             relationX={ 1 }
                             relationY={ 1 }

@@ -2,12 +2,12 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import { addStylesToPage } from '../../../utils/addStylesToPage';
 import { clamp } from '../../../utils/clamp';
 import { ResizeSensor } from '../../../utils/ResizeSensor';
 import { setAnimationPositionAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
 import { Timeline } from '../Timeline';
+import * as c from './index.pcss';
 
 export type AnimationControlsOwnProps = {};
 export type AnimationControlsStateProps = Pick<ConstructorState,
@@ -21,9 +21,6 @@ export type AnimationControlsProps =
     & AnimationControlsStateProps
     & AnimationControlsDispatchProps;
 
-// TODO
-addStylesToPage(document, require('./index.css'));
-
 class AnimationControlsComponent extends React.Component<AnimationControlsProps, {}> {
     private resizeSensor: ResizeSensor;
 
@@ -36,7 +33,7 @@ class AnimationControlsComponent extends React.Component<AnimationControlsProps,
         const { animationPosition } = this.props;
 
         return <div
-            className={ 'AnimationControls' }
+            className={ c.AnimationControls }
             ref={ (element) => {
                 this.containerElement = element!;
             } }
@@ -46,7 +43,7 @@ class AnimationControlsComponent extends React.Component<AnimationControlsProps,
                 onPositionChangeStart: this.onPositionChangeStart,
                 onPositionChange: this.onPositionChange,
             }] }>
-                <div className={ 'AnimationControls__positionTimeline' }/>
+                <div className={ c.AnimationControls__positionTimeline }/>
             </Timeline>
         </div>;
     }

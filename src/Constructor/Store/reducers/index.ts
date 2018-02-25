@@ -4,12 +4,9 @@ import { getElementDefaultFieldsValues } from '../../../AnimationElements/utils/
 import { ALL_BLOCK_POSITION_FIELD_NAMES } from '../../../BlockPosition/ALL_BLOCK_POSITION_FIELD_NAMES';
 import { BlockPositionFieldName } from '../../../BlockPosition/BlockPositionFieldName';
 import { BlockPositionFieldUnits } from '../../../BlockPosition/BlockPositionFieldUnits';
-import { BlockPositionFielsTypes } from '../../../BlockPosition/BlockPositionFielsTypes';
 import { DEFAULT_BLOCK_POSITION } from '../../../BlockPosition/DEFAULT_BLOCK_POSITION';
 import { Easing } from '../../../Easing/Easing';
 import { ALL_FIELDS } from '../../../Fields/ALL_FIELDS';
-import { FieldType } from '../../../Fields/FieldType';
-import { Unit } from '../../../UnitName/Unit';
 import { mapArrayValuesToObject } from '../../../utils/mapArrayValuesToObject';
 import { mapObjectValues } from '../../../utils/mapObjectValues';
 import {
@@ -65,7 +62,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             ALL_BLOCK_POSITION_FIELD_NAMES,
             (blockPositionFieldName) => {
 
-                const fieldType = BlockPositionFielsTypes[blockPositionFieldName];
+                const fieldType = BlockPositionFieldUnits[blockPositionFieldName];
                 const { unit } = ALL_FIELDS[fieldType];
 
                 return {
@@ -97,15 +94,11 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
 
         const elementFieldsDescription = AllAnimationElementsDescriptions[elementName];
         const fieldsScript = mapObjectValues(fieldsValues, (fieldValue, fieldName) => {
-            const { fieldType } = elementFieldsDescription[fieldName];
-            const {
-                unit,
-                isSupportsEasing,
-            } = ALL_FIELDS[fieldType as FieldType];
+            const { unit } = elementFieldsDescription[fieldName];
+            const { isSupportsEasing } = ALL_FIELDS[unit];
 
             return {
-                // TODO: remove as
-                unit: unit as Unit,
+                unit,
                 actions: [{
                     duration: 1,
                     value: fieldValue,

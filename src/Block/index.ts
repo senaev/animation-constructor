@@ -1,8 +1,8 @@
 import { BlockPosition } from '../BlockPosition/BlockPosition';
 import { applyBlockPositionToElement } from '../BlockPosition/utils/applyBlockPositionToElement';
-import { addStylesToPage } from '../utils/addStylesToPage';
 import { createDivWithClass } from '../utils/createDivWithClass';
 import { removeNodeFromParent } from '../utils/removeNodeFromParent';
+import * as c from './index.pcss';
 
 export class Block {
     public readonly element: HTMLDivElement;
@@ -13,9 +13,7 @@ export class Block {
                 initialPosition: BlockPosition,
                 // TODO: add flexible option
                 flexibility: boolean) {
-        addStylesToPage(container.ownerDocument, require('./index.css'));
-
-        this.element = createDivWithClass(container, 'Block');
+        this.element = createDivWithClass(container, c.Block);
         this.setPosition(initialPosition);
     }
 

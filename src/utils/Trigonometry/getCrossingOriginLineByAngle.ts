@@ -1,5 +1,5 @@
-import { Unit } from '../../UnitName/Unit';
-import { UnitTypes } from '../../UnitName/UnitTypes';
+import { Unit } from '../../Unit/Unit';
+import { UnitTypes } from '../../Unit/UnitTypes';
 import { degreesToRadians } from './degreesToRadians';
 import { Line } from './Line';
 

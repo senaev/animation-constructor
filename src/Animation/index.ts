@@ -2,13 +2,10 @@ import { ALL_STANDARD_ELEMENTS } from '../AnimationElements/ALL_STANDARD_ELEMENT
 import { AnimationScript } from '../AnimationScript';
 import { BlockPosition } from '../BlockPosition/BlockPosition';
 import { applyBlockPositionToElement } from '../BlockPosition/utils/applyBlockPositionToElement';
-import { addStylesToPage } from '../utils/addStylesToPage';
 import { removeNodeFromParent } from '../utils/removeNodeFromParent';
 import { ElementsAnimations } from './ElementsAnimations';
+import * as c from './index.pcss';
 import { createFieldsFunctionByUnitScripts } from './util/createFieldsFunctionByUnitScripts';
-
-// TODO
-addStylesToPage(document, require('./index.css'));
 
 export class Animation {
     // use just in constructor
@@ -26,7 +23,7 @@ export class Animation {
                                               }) => {
             const { ownerDocument } = animationContainer;
             const container = ownerDocument.createElement('div');
-            container.className = 'AnimationBlock';
+            container.className = c.AnimationBlock;
 
             const getBlockPositionByAnimationPosition = createFieldsFunctionByUnitScripts<any>(blockPositionScript);
             const getFieldValuesByAnimationPosition = createFieldsFunctionByUnitScripts<any>(fieldsScript);

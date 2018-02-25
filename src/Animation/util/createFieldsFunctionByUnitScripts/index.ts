@@ -1,7 +1,7 @@
 import { ScriptAction, UnitScripts } from '../../../AnimationScript';
 import { AllEasings } from '../../../Easing/AllEasings';
-import { UnitName } from '../../../UnitName/UNIT_NAMES';
-import { UnitTypes } from '../../../UnitName/UnitTypes';
+import { UnitName } from '../../../Unit/UNIT_NAMES';
+import { UnitTypes } from '../../../Unit/UnitTypes';
 import { AllUnitTransitionFunctions } from '../../../UnitTransition/AllUnitTransitionFunctions';
 import { getObjectKeys } from '../../../utils/getObjectKeys';
 import { mapArrayValuesToObject } from '../../../utils/mapArrayValuesToObject';
@@ -46,8 +46,8 @@ function getValueByPosition<T extends UnitName>(position: number,
     throw new Error(`Wrong actions or position value [${position}][${JSON.stringify(actions)}]`);
 }
 
-// tslint:disable-next-line:max-line-length
-export function createFieldsFunctionByUnitScripts<T extends Record<string, UnitName>>(unitScripts: UnitScripts<T>): (position: number) => T {
+export function createFieldsFunctionByUnitScripts<T extends Record<string,
+    UnitName>>(unitScripts: UnitScripts<T>): (position: number) => T {
     const allFieldNames = getObjectKeys(unitScripts);
 
     return (newPosition: number) => {

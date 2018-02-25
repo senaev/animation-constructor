@@ -2,15 +2,12 @@ import * as cx from 'classnames';
 import * as React from 'react';
 import { BlockPosition, BlockSize, PointCoordinates } from '../../../BlockPosition/BlockPosition';
 import { blockPositionToStyles } from '../../../BlockPosition/utils/blockPositionToStyles';
-import { Unit } from '../../../UnitName/Unit';
-import { UnitTypes } from '../../../UnitName/UnitTypes';
-import { addStylesToPage } from '../../../utils/addStylesToPage';
+import { Unit } from '../../../Unit/Unit';
+import { UnitTypes } from '../../../Unit/UnitTypes';
 import { DragListener } from '../../../utils/DragListener';
 import { getAngleRelativeToOrigin } from '../../../utils/Trigonometry/getAngleRelativeToOrigin';
 import { getRectangleSizeByPointAndAngle } from '../../../utils/Trigonometry/getRectangleSizeByPointAndAngle';
-
-// TODO
-addStylesToPage(document, require('./index.css'));
+import * as c from './index.pcss';
 
 type ResizerProps = BlockPosition & {
     onResize: (newSize: BlockSize) => void;
@@ -62,26 +59,26 @@ export class Resizer extends React.Component<ResizerProps, ResizerState> {
         });
 
         return <div
-            className={ cx('Resizer', {
-                Resizer_grabbing: isMoving,
+            className={ cx(c.Resizer, {
+                [c.Resizer_grabbing]: isMoving,
             }) }
             ref={ (element) => {
                 this.element = element!;
             } }
             style={ resizerStyles }>
-            <div className={ 'ResizerContainer__dottedLine' }/>
+            <div className={ c.Resizer__dottedLine }/>
             <div
-                className={ 'Resizer__mover' }
+                className={ c.Resizer__mover }
                 ref={ (element) => {
                     this.moveElement = element!;
                 } }/>
             <div
-                className={ 'ResizerContainer__resizeSlider' }
+                className={ c.Resizer__resizeSlider }
                 ref={ (element) => {
                     this.resizeElement = element!;
                 } }/>
             <div
-                className={ 'ResizerContainer__rotationSlider' }
+                className={ c.Resizer__rotationSlider }
                 ref={ (element) => {
                     this.rotationElement = element!;
                 } }/>

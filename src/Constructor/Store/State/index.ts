@@ -1,4 +1,4 @@
-import { AnimationElementFieldsTypes } from '../../../AnimationElements/AnimationElementFields';
+import { AnimationElementsFieldsValues } from '../../../AnimationElements/AnimationElementFields';
 import { AnimationElementName } from '../../../AnimationElements/AnimationElementName';
 import { AnimationScript } from '../../../AnimationScript';
 import { BlockLocation } from '../../../BlockLocation/BlockLocation';
@@ -10,7 +10,7 @@ export type EditedElement<T extends AnimationElementName = AnimationElementName>
     blockLocation: BlockLocation | undefined;
     elementName: T;
     position: BlockPosition;
-    fieldsValues: AnimationElementFieldsTypes<T>;
+    fieldsValues: AnimationElementsFieldsValues;
     // animationElementScript: AnimationElementScript<T>;
 };
 

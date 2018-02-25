@@ -1,33 +1,26 @@
-import { Fields } from '../Fields';
-import { FieldDescription } from '../Fields/FieldDescription';
-import { AnimationElementFieldName } from './AnimationElementFields';
+import { Unit } from '../Unit/Unit';
+import { UnitName } from '../Unit/UNIT_NAMES';
+import { UnitTypes } from '../Unit/UnitTypes';
 import { AnimationElementName } from './AnimationElementName';
 
-type FieldDescriptionWrapper<T extends AnimationElementName = AnimationElementName> =
-    Record<AnimationElementFieldName<T>, FieldDescription>;
-
-export type AnimationElementDescription<T extends AnimationElementName> = {
-    fieldsDescriptions: FieldDescriptionWrapper<T>;
+type FieldDescription<T extends UnitName> = {
+    fieldTitle: string;
+    unit: T;
+    value: UnitTypes[T];
 };
 
-export type AllAnimationElementsDescriptions<T extends AnimationElementName> = Record<T,
-    AnimationElementDescription<T>>;
+type FieldsDescription = Record<string, FieldDescription<UnitName>>;
 
-export const AllAnimationElementsFlexibilities: Record<AnimationElementName, boolean> = {
-    Rectangle: true,
-};
-
-export const AllAnimationElementsDescriptions: Record<AnimationElementName,
-    FieldDescriptionWrapper<AnimationElementName>> = {
+export const AllAnimationElementsDescriptions: Record<AnimationElementName, FieldsDescription> = {
     Rectangle: {
         color: {
             fieldTitle: 'Цвет заливки',
-            fieldType: Fields.Color,
+            unit: Unit.color,
             value: '#0088ec',
         },
         borderRadius: {
             fieldTitle: 'Радиус скругления',
-            fieldType: Fields.Percent,
+            unit: Unit.percent,
             value: 0,
         },
     },

@@ -1,12 +1,9 @@
 import * as React from 'react';
-import { addStylesToPage } from '../../../utils/addStylesToPage';
 import { DragListener } from '../../../utils/DragListener';
 import { noop } from '../../../utils/noop';
 import { subscribeHoverChange } from '../../../utils/subscribeHoverChange';
 import { ConstructorState } from '../../Store/State';
-
-// TODO
-addStylesToPage(document, require('./index.css'));
+import * as c from './index.pcss';
 
 export type TimelinePointProps = {
     position: ConstructorState['animationPosition'];
@@ -69,16 +66,16 @@ export class TimelinePoint extends React.Component<TimelinePointProps, TimelineP
             ref={ (element) => {
                 this.containerElement = element!;
             } }
-            className={ 'TimelinePoint' }
+            className={ c.TimelinePoint }
             style={ {
                 left: `${position * 100}%`,
                 cursor: isDraggedCursor ? '-webkit-grabbing' : '-webkit-grab',
             } }
         >
-            <div className={ 'TimelinePoint__pointer' }/>
-            <div className={ 'TimelinePoint__hoverZone' }/>
+            <div className={ c.TimelinePoint__pointer }/>
+            <div className={ c.TimelinePoint__hoverZone }/>
             <div
-                className={ 'TimelinePoint__cursor' }
+                className={ c.TimelinePoint__cursor }
                 style={ {
                     display: isHovered || isDraggedCursor ? 'block' : 'none',
                 } }

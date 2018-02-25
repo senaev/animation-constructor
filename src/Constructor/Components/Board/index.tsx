@@ -2,15 +2,12 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import { addStylesToPage } from '../../../utils/addStylesToPage';
 import { ConstructorState } from '../../Store/State';
 import { AnimationControls } from '../AnimationControls';
 import { BoardFields } from '../BoardFields';
 import { BoardPalette } from '../BoardPalette';
 import { BoardPreview } from '../BoardPreview';
-
-// TODO
-addStylesToPage(document, require('./index.css'));
+import * as c from './index.pcss';
 
 export type BoardStateProps = Pick<ConstructorState,
     | 'editedElement'>;
@@ -32,8 +29,8 @@ class BoardComponent extends React.Component<BoardProps, {}> {
                     : <BoardFields editedElement={ editedElement }/>
             }
             <BoardPreview/>
-            <div className={ 'Board__animationControlsContainer' }>
-                <div className={ 'Board__animationControlsContainerPadding' }>
+            <div className={ c.Board__animationControlsContainer }>
+                <div className={ c.Board__animationControlsContainerPadding }>
                     <AnimationControls/>
                 </div>
             </div>

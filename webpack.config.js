@@ -16,20 +16,36 @@ module.exports = {
             '.tsx',
             '.ts',
             '.js',
-            '.css',
         ],
     },
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.pcss$/,
                 use: [
-                    'raw-loader',
+                    {
+                        loader: 'style-loader',
+                        options: {
+                            singleton: true,
+                        },
+                    },
+                    {
+                        loader: 'typings-for-css-modules-loader',
+                        options: {
+                            namedExport: true,
+                            modules: true,
+                            importLoaders: 1,
+                            localIdentName: '[path]-[name]--[local]',
+                            minimize: true,
+                        },
+                    },
                     {
                         loader: 'postcss-loader',
                         options: {
                             ident: 'postcss',
                             plugins: () => [
+                                require('postcss-nested'),
+                                require('postcss-cssnext'),
                                 require('postcss-inline-svg')(),
                                 require('autoprefixer')(),
                                 require('cssnano')(),

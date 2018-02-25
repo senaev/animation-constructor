@@ -1,5 +1,5 @@
-import { Unit } from '../../UnitName/Unit';
-import { UnitTypes } from '../../UnitName/UnitTypes';
+import { Unit } from '../../Unit/Unit';
+import { UnitTypes } from '../../Unit/UnitTypes';
 
 export function getDifferenceBetweenAngles(firstAngle: UnitTypes[Unit.degree],
                                            secondAngle: UnitTypes[Unit.degree]): UnitTypes[Unit.degree] {

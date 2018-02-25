@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { UnitName } from '../UnitName/UNIT_NAMES';
-import { UnitTypes } from '../UnitName/UnitTypes';
+import { UnitName } from '../Unit/UNIT_NAMES';
+import { UnitTypes } from '../Unit/UnitTypes';
 
 export type FieldPreviewProps<T extends UnitName> = Pick<FieldProps<T>, 'value'>;
 

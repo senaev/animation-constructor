@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { addStylesToPage } from '../../../utils/addStylesToPage';
 import { ResizeSensor } from '../../../utils/ResizeSensor';
+import * as c from './index.pcss';
 
 export type FillSizeBlockProps = {
     relationX: number;
@@ -16,8 +16,6 @@ export type FillSizeBlockState = {
 };
 
 const defaultSize = '100%';
-
-addStylesToPage(document, require('./index.css'));
 
 export class FillSizeBlock extends React.Component<FillSizeBlockProps, FillSizeBlockState> {
     private container: HTMLElement | null;
@@ -40,7 +38,7 @@ export class FillSizeBlock extends React.Component<FillSizeBlockProps, FillSizeB
         const { additionalContainerStyles } = this.props;
 
         return <div
-            className={ 'FillSizeBlock' }
+            className={ c.FillSizeBlock }
             ref={ (element) => {
                 this.container = element;
             } }

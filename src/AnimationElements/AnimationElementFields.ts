@@ -1,6 +1,6 @@
-import { Unit } from '../UnitName/Unit';
-import { UnitName } from '../UnitName/UNIT_NAMES';
-import { UnitTypes } from '../UnitName/UnitTypes';
+import { Unit } from '../Unit/Unit';
+import { UnitName } from '../Unit/UNIT_NAMES';
+import { UnitTypes } from '../Unit/UnitTypes';
 import { AnimationElementName } from './AnimationElementName';
 
 export const AnimationElementsFieldsUnits = {
@@ -18,3 +18,5 @@ export type AnimationElementFieldsTypes<T extends AnimationElementName = Animati
 
 export type AnimationElementsFieldsTypes = Record<AnimationElementName,
     AnimationElementFieldsTypes<AnimationElementName>>;
+
+export type AnimationElementsFieldsValues = Record<string, UnitTypes[UnitName]>;

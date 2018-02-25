@@ -17,7 +17,7 @@ module.exports = {
         'import-spacing': true,
         'indent': [true, 'spaces', 4],
         'label-position': true,
-        'max-line-length': [true, 120],
+        'max-line-length': [true, 140],
         'member-access': true,
         'member-ordering': [
             true,

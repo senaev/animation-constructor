@@ -1,5 +1,5 @@
-import { Unit } from '../UnitName/Unit';
-import { UnitTypes } from '../UnitName/UnitTypes';
+import { Unit } from '../Unit/Unit';
+import { UnitTypes } from '../Unit/UnitTypes';
 
 export type PointCoordinates = {
     x: UnitTypes[Unit.percent],

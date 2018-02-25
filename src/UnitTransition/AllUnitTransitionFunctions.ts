@@ -1,4 +1,4 @@
-import { UnitName } from '../UnitName/UNIT_NAMES';
+import { UnitName } from '../Unit/UNIT_NAMES';
 import { UnitTransitionFunction } from './UnitTransitionFunction';
 
 const proceedNumber = (position: number,

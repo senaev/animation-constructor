@@ -7,11 +7,11 @@ import { AnimationElement } from '../../../AnimationElements/AnimationElement';
 import { getElementDefaultFieldsValues } from '../../../AnimationElements/utils/getElementDefaultFieldsValues';
 import { BlockPosition, BlockSize, PointCoordinates } from '../../../BlockPosition/BlockPosition';
 import { blockPositionToStyles } from '../../../BlockPosition/utils/blockPositionToStyles';
-import { addStylesToPage } from '../../../utils/addStylesToPage';
 import { ResizeSensor } from '../../../utils/ResizeSensor';
 import { setEditedElementPositionAction } from '../../Store/actions';
 import { ConstructorState, EditedElement } from '../../Store/State';
 import { Resizer } from '../Resizer';
+import * as c from './index.pcss';
 
 export type DrawingStateProps = {};
 export type DrawingOwnProps = {
@@ -26,9 +26,6 @@ export type DrawingProps =
     & DrawingOwnProps
     & DrawingStateProps
     & DrawingDispatchProps;
-
-// TODO
-addStylesToPage(document, require('./index.css'));
 
 class DrawingComponent extends React.Component<DrawingProps, {}> {
     private elementContainer: HTMLDivElement;
@@ -51,9 +48,9 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
 
         const elementContainerStyle = blockPositionToStyles(position);
 
-        return <div className={ 'Drawing' }>
+        return <div className={ c.Drawing }>
             <div
-                className={ 'Drawing_elementContainer' }
+                className={ c.Drawing__elementContainer }
                 ref={ (element) => {
                     this.elementContainer = element!;
                 } }
