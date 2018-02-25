@@ -47,7 +47,6 @@ module.exports = {
                                 require('postcss-nested'),
                                 require('postcss-cssnext'),
                                 require('postcss-inline-svg')(),
-                                require('autoprefixer')(),
                                 require('cssnano')(),
                             ],
                         },

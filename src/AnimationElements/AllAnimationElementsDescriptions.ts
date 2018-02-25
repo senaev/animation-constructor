@@ -13,7 +13,7 @@ type FieldsDescription = Record<string, FieldDescription<UnitName>>;
 
 export const AllAnimationElementsDescriptions: Record<AnimationElementName, FieldsDescription> = {
     Rectangle: {
-        color: {
+        backgroundColor: {
             fieldTitle: 'Цвет заливки',
             unit: Unit.color,
             value: '#0088ec',

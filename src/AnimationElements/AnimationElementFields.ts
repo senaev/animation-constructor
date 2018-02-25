@@ -5,7 +5,7 @@ import { AnimationElementName } from './AnimationElementName';
 
 export const AnimationElementsFieldsUnits = {
     Rectangle: {
-        color: Unit.color,
+        backgroundColor: Unit.color,
         borderRadius: Unit.percent,
     },
 };

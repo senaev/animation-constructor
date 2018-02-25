@@ -1,9 +1,15 @@
+import { Unit } from '../../Unit/Unit';
+import { UnitTypes } from '../../Unit/UnitTypes';
 import { createDivWithClass } from '../../utils/createDivWithClass';
 import { AnimationElement } from '../AnimationElement';
-import { AnimationElements } from '../AnimationElements';
 import * as c from './index.pcss';
 
-export class Rectangle extends AnimationElement<AnimationElements.Rectangle> {
+export type RectangleFields = {
+    backgroundColor: UnitTypes[Unit.color];
+    borderRadius: UnitTypes[Unit.percent];
+};
+
+export class Rectangle extends AnimationElement<RectangleFields> {
     private rectangleDiv: HTMLElement;
 
     protected drawLayout(container: HTMLDivElement) {
@@ -12,11 +18,9 @@ export class Rectangle extends AnimationElement<AnimationElements.Rectangle> {
 
     protected setValues() {
         const { size } = this;
-        const { color, borderRadius } = this.values;
+        const { backgroundColor, borderRadius } = this.values;
 
-        // TODO: normal type definition
-        this.rectangleDiv.style.backgroundColor = color as string;
-        // TODO: normal type definition
-        this.rectangleDiv.style.borderRadius = `${size * (borderRadius as number / 100)}px`;
+        this.rectangleDiv.style.backgroundColor = backgroundColor;
+        this.rectangleDiv.style.borderRadius = `${size * (borderRadius / 100)}px`;
     }
 }
