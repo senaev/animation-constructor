@@ -1,0 +1,6 @@
+{
+  "extends": "./tslint-config.js",
+  "rules": {
+    "prefer-template": false
+  }
+}

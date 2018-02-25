@@ -1,0 +1,38 @@
+.TimelinePoint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+}
+
+.TimelinePoint__pointer {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    left: -1px;
+    background-color: rgba(0,0,0,0.5);
+    pointer-events: none;
+}
+
+.TimelinePoint__hoverZone {
+    position: absolute;
+    top: 0;
+    left: -4px;
+    width: 8px;
+    height: 100%;
+    cursor: -webkit-grab;
+}
+
+.TimelinePoint__cursor {
+    position: absolute;
+    background-image: svg-load('./cursor.svg');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    bottom: calc(100% - 4px);
+    height: 30px;
+    width: 16px;
+    background-position: left;
+    transform: translate(-50%);
+}

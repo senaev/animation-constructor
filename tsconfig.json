@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "pretty": true,
+    "removeComments": true,
+    "strictNullChecks": true,
+    "module": "amd",
+    "target": "es3",
+    "lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost"],
+    "moduleResolution": "node",
+    "jsx": "react",
+    "noErrorTruncation": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

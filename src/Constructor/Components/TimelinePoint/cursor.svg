@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1.15"
+   height="2"
+   viewBox="0 0 1.15 2"
+   version="1.1"
+   id="svg3690"
+   sodipodi:docname="cursor.svg"
+   inkscape:version="0.92.1 r15371">
+  <metadata
+     id="metadata3696">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3694" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview3692"
+     showgrid="false"
+     inkscape:zoom="236"
+     inkscape:cx="1.3674896"
+     inkscape:cy="1.1845055"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3690" />
+  <path
+     style="fill:none;fill-rule:evenodd"
+     inkscape:connector-curvature="0"
+     id="path3682"
+     d="M -10,-62 H 0 V 2 h -10 z" />
+  <path
+     style="fill:#4d4d4d;fill-rule:evenodd;stroke-width:0.02292768"
+     inkscape:connector-curvature="0"
+     id="path3684"
+     d="M 1.15,0.379527 V 1.21447 c 0,0.253057 -0.07766,0.375285 -0.2331086,0.506055 L 0.575,2 0.23310859,1.720496 C 0.07778673,1.58993 0,1.46738 0,1.214499 V 0.379527 C 0,0.126499 0.07769686,0 0.23310859,0 H 0.9168914 C 1.0723031,0 1.15,0.126499 1.15,0.379527 Z" />
+</svg>

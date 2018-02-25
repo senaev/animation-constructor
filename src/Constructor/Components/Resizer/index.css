@@ -1,0 +1,56 @@
+.Resizer {
+    position: absolute;
+    cursor: -webkit-grab;
+}
+
+.Resizer_grabbing {
+    cursor: -webkit-grabbing;
+}
+
+.Resizer__mover {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.ResizerContainer__dottedLine {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    bottom: -2px;
+    left: -2px;
+
+    border: 1px dashed #3e3e3e;
+
+    pointer-events: none;
+}
+
+.ResizerContainer__resizeSlider {
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    right: -9px;
+    bottom: -9px;
+    background-color: #636fff;
+    border-radius: 8px;
+    border: 1px solid #292f6b;
+    opacity: 0.8;
+
+    cursor: all-scroll;
+}
+
+.ResizerContainer__rotationSlider {
+    position: absolute;
+    height: 14px;
+    width: 14px;
+    right: -22px;
+    bottom: -22px;
+    background-color: #9dff8b;
+    border-radius: 8px;
+    border: 1px solid #292f6b;
+    opacity: 0.8;
+
+    cursor: all-scroll;
+}

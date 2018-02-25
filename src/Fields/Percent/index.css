@@ -1,0 +1,9 @@
+.PercentPreview {
+    display: inline-block;
+    background-color: #bbbbbb;
+    padding: 2px 6px;
+    margin: 1px 0;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #555;
+}

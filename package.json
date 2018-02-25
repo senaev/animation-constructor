@@ -1,0 +1,54 @@
+{
+  "name": "animation-constructor",
+  "version": "1.0.0",
+  "description": "Web-animations constructor",
+  "scripts": {
+    "build": "webpack",
+    "lint": "tslint -e \"node_modules/**/*.ts?(x)\" \"**/*.ts?(x)\" --project tsconfig.json",
+    "lint:fix": "tslint -e \"node_modules/**/*.ts?(x)\" \"**/*.ts?(x)\" --project tsconfig.json --fix",
+    "prepush": "yarn check --integrity && yarn lint",
+    "watch": "webpack --mode development --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "TODO"
+  },
+  "maintainers": [
+    "Andrey Senaev <gsacryfice@gmail.com>"
+  ],
+  "dependencies": {
+    "@types/classnames": "2.2.3",
+    "@types/deep-equal": "1.0.1",
+    "@types/material-ui": "0.21.0",
+    "@types/react-dom": "16.0.4",
+    "@types/react-redux": "5.0.15",
+    "autoprefixer": "8.0.0",
+    "awesome-typescript-loader": "3.5.0",
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.2",
+    "babel-plugin-es6-promise": "1.1.1",
+    "babel-plugin-transform-object-assign": "6.22.0",
+    "babel-plugin-transform-undefined-to-void": "6.9.0",
+    "classnames": "2.2.5",
+    "cssnano": "3.10.0",
+    "deep-equal": "1.0.1",
+    "es6-promise": "4.2.4",
+    "material-ui": "0.20.0",
+    "material-ui-color-picker": "1.0.1",
+    "material-ui-number-input": "5.0.24",
+    "postcss-inline-svg": "3.0.0",
+    "postcss-loader": "2.1.0",
+    "raw-loader": "0.5.1",
+    "react": "16.2.0",
+    "react-dom": "16.2.0",
+    "react-redux": "5.0.7",
+    "redux": "3.7.2",
+    "redux-act": "1.7.3",
+    "resize-observer-polyfill": "1.5.0",
+    "tslint": "5.9.1",
+    "tslint-eslint-rules": "5.1.0",
+    "typescript": "2.7.2",
+    "webpack": "4.0.0",
+    "webpack-cli": "2.0.9"
+  }
+}
