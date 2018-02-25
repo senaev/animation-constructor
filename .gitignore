@@ -1,10 +1,7 @@
 .idea
-docs
 node_modules
 dist
-README
 npm-debug.log*
-
-src/out/
 animation-constructor.iml
 package-lock.json
+yarn-error.log
