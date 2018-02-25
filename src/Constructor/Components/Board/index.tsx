@@ -32,8 +32,10 @@ class BoardComponent extends React.Component<BoardProps, {}> {
                     : <BoardFields editedElement={ editedElement }/>
             }
             <BoardPreview/>
-            <div className={'Board__animationControlsContainer'}>
-                <AnimationControls/>
+            <div className={ 'Board__animationControlsContainer' }>
+                <div className={ 'Board__animationControlsContainerPadding' }>
+                    <AnimationControls/>
+                </div>
             </div>
         </div>;
     }

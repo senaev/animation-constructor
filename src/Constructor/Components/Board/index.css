@@ -1,3 +1,9 @@
 .Board__animationControlsContainer {
+    position: relative;
+    overflow: hidden;
+}
+
+.Board__animationControlsContainerPadding {
+    position: relative;
     padding: 16px;
 }
