@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as Redux from 'redux';
-import { Action } from 'redux-act';
 import { ConstructorState } from '../../Store/State';
 import { AnimationControls } from '../AnimationControls';
 import { BoardFields } from '../BoardFields';
@@ -9,24 +7,18 @@ import { BoardPalette } from '../BoardPalette';
 import { BoardPreview } from '../BoardPreview';
 import * as c from './index.pcss';
 
-export type BoardStateProps = Pick<ConstructorState,
-    | 'editedElement'>;
-
-export type BoardDispatchProps = {};
-
-export type BoardProps =
-    & BoardStateProps
-    & BoardDispatchProps;
+export type BoardProps = Pick<ConstructorState,
+    | 'editParams'>;
 
 class BoardComponent extends React.Component<BoardProps, {}> {
     public render() {
-        const { editedElement } = this.props;
+        const { editParams } = this.props;
 
         return <div>
             {
-                editedElement === undefined
+                editParams === undefined
                     ? <BoardPalette/>
-                    : <BoardFields editedElement={ editedElement }/>
+                    : <BoardFields/>
             }
             <BoardPreview/>
             <div className={ c.Board__animationControlsContainer }>
@@ -39,13 +31,12 @@ class BoardComponent extends React.Component<BoardProps, {}> {
 }
 
 const mapStateToProps = ({
-                             editedElement,
-                         }: ConstructorState): BoardStateProps => ({
-    editedElement,
-});
+                             editParams,
+    animationScript,
+                         }: ConstructorState): BoardProps => {
+    return {
+        editParams,
+    };
+};
 
-const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): BoardDispatchProps => ({
-    //
-});
-
-export const Board = connect(mapStateToProps, mapDispatchToProps)(BoardComponent);
+export const Board = connect(mapStateToProps)(BoardComponent);

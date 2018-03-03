@@ -66,6 +66,7 @@ export class Resizer extends React.Component<ResizerProps, ResizerState> {
                 this.element = element!;
             } }
             style={ resizerStyles }>
+            <div className={ cx(c.Resizer__dottedLine, c.Resizer__dottedLine_white) }/>
             <div className={ c.Resizer__dottedLine }/>
             <div
                 className={ c.Resizer__mover }

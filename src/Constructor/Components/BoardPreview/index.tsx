@@ -11,7 +11,7 @@ import { FillSizeBlock } from '../FillSizeBlock';
 import * as c from './index.pcss';
 
 export type BoardPreviewStateProps = Pick<ConstructorState,
-    | 'editedElement'
+    | 'editParams'
     | 'relation'
     | 'animationScript'
     | 'animationPosition'>;
@@ -27,7 +27,7 @@ export type BoardPreviewProps =
 class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
     public render() {
         const {
-            editedElement,
+            editParams,
             relation,
             animationScript,
             animationPosition,
@@ -58,9 +58,9 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
                                 animationPosition={ animationPosition }
                                 onSelectBlock={ this.onSelectBlock }/>
                             {
-                                editedElement === undefined
+                                editParams === undefined
                                     ? null
-                                    : <Drawing editedElement={ editedElement }/>
+                                    : <Drawing/>
                             }
                         </FillSizeBlock>
                     </div>
@@ -75,12 +75,12 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
 }
 
 const mapStateToProps = ({
-                             editedElement,
+                             editParams,
                              relation,
                              animationScript,
                              animationPosition,
                          }: ConstructorState): BoardPreviewStateProps => ({
-    editedElement,
+    editParams,
     relation,
     animationScript,
     animationPosition,

@@ -1,169 +1,148 @@
 import { createReducer } from 'redux-act';
-import { AllAnimationElementsDescriptions } from '../../../AnimationElements/AllAnimationElementsDescriptions';
-import { getElementDefaultFieldsValues } from '../../../AnimationElements/utils/getElementDefaultFieldsValues';
-import { ALL_BLOCK_POSITION_FIELD_NAMES } from '../../../BlockPosition/ALL_BLOCK_POSITION_FIELD_NAMES';
-import { BlockPositionFieldName } from '../../../BlockPosition/BlockPositionFieldName';
-import { BlockPositionFieldUnits } from '../../../BlockPosition/BlockPositionFieldUnits';
-import { DEFAULT_BLOCK_POSITION } from '../../../BlockPosition/DEFAULT_BLOCK_POSITION';
-import { Easing } from '../../../Easing/Easing';
-import { ALL_FIELDS } from '../../../Fields/ALL_FIELDS';
-import { mapArrayValuesToObject } from '../../../utils/mapArrayValuesToObject';
-import { mapObjectValues } from '../../../utils/mapObjectValues';
+import { AnimationElementScript } from '../../../AnimationScript';
+import { getDefaultFieldsScriptForAnimationElement } from '../../../AnimationScript/getDefaultFieldsScriptForAnimationElement';
+import { DEFAULT_BLOCK_POSITION_SCRIPT } from '../../../BlockPosition/DEFAULT_BLOCK_POSITION_SCRIPT';
+import { getAnimationElementScript } from '../../utils/getAnimationElementScript';
+import { removeElement } from '../../utils/removeElement';
+import { setAnimationElementFields } from '../../utils/setAnimationElementFields';
+import { setAnimationElementScript } from '../../utils/setAnimationElementScript';
+import { setBlockPositionFields } from '../../utils/setBlockPositionFields';
 import {
     addStandardElementAction, discardChangesAction, saveElementAction, selectBlockAction,
-    setAnimationPositionAction, setEditedElementFieldsAction, setEditedElementPositionAction, setRelationAction,
+    setEditedBlockCoordinatesAction,
+    setEditedBlockPositionAction, setEditedBlockRotationAction, setEditedBlockSizeAction, setEditedElementFieldsAction,
+    setRelationAction,
 } from '../actions';
 import { ConstructorState } from '../State';
 
 export const createConstructorReducer = (appState: ConstructorState) => createReducer<ConstructorState>({}, appState)
-    .on(addStandardElementAction, (state, elementName) => {
-        return {
-            ...state,
-            editedElement: {
-                blockLocation: undefined,
+        .on(addStandardElementAction, (state, elementName): ConstructorState => {
+            const {
+                animationScript,
+            } = state;
+
+            const { length } = animationScript;
+
+            const initialAnimationElementScript: AnimationElementScript = {
                 elementName,
-                position: DEFAULT_BLOCK_POSITION,
-                fieldsValues: getElementDefaultFieldsValues(elementName),
-                // animationElementScript: {
-                //     elementName,
-                //     blockPositionScript: DEFAULT_BLOCK_POSITION_SCRIPT,
-                //     fieldsScript: getElementDefaultFieldsValues(elementName),
-                // },
-            },
-        };
-    })
-    .on(selectBlockAction, (state, blockLocation) => {
-        // const { animationScript } = state;
-        //
-        // // TODO: support recursive blocks
-        // const [blockPosition] = blockLocation;
-
-        // const [
-        //     [blockToEdit],
-        //     newAnimationScript,
-        // ] = separate(animationScript, (animationElementScript, i) => i === blockPosition);
-
-        return {
-            ...state,
-            // animationScript: newAnimationScript,
-            // editedElement: null as any, // TODO,
-        };
-    })
-    .on(saveElementAction, (state, {
-        elementName,
-        position,
-        fieldsValues,
-    }) => {
-        const {
-            animationScript,
-        } = state;
-
-        const blockPositionScript = mapArrayValuesToObject(
-            ALL_BLOCK_POSITION_FIELD_NAMES,
-            (blockPositionFieldName) => {
-
-                const fieldType = BlockPositionFieldUnits[blockPositionFieldName];
-                const { unit } = ALL_FIELDS[fieldType];
-
-                return {
-                    unit: unit as BlockPositionFieldUnits[BlockPositionFieldName],
-                    actions: [{
-                        duration: 0.3,
-                        value: position[blockPositionFieldName],
-                        // TODO
-                        easingName: Easing.easeInOut,
-                    }, {
-                        duration: 0.3,
-                        value: 100,
-                        // TODO
-                        easingName: Easing.easeInOut,
-                    }, {
-                        duration: 0.3,
-                        value: 2,
-                        // TODO
-                        easingName: Easing.easeInOut,
-                    }, {
-                        duration: 0.1,
-                        value: 70,
-                        // TODO
-                        easingName: Easing.easeInOut,
-                    }],
-                };
-            },
-        );
-
-        const elementFieldsDescription = AllAnimationElementsDescriptions[elementName];
-        const fieldsScript = mapObjectValues(fieldsValues, (fieldValue, fieldName) => {
-            const { unit } = elementFieldsDescription[fieldName];
-            const { isSupportsEasing } = ALL_FIELDS[unit];
+                blockPositionScript: DEFAULT_BLOCK_POSITION_SCRIPT,
+                fieldsScript: getDefaultFieldsScriptForAnimationElement(elementName),
+            };
 
             return {
-                unit,
-                actions: [{
-                    duration: 1,
-                    value: fieldValue,
-                    // TODO
-                    easingName: isSupportsEasing
-                        ? Easing.easeInOut
-                        : undefined,
-                }],
-            };
-        });
-
-        return {
-            ...state,
-            editedElement: undefined,
-            animationScript: [
-                ...animationScript,
-                {
-                    elementName,
-                    blockPositionScript,
-                    fieldsScript,
+                ...state,
+                editParams: {
+                    isNewElement: true,
+                    blockLocation: [length],
+                    initialAnimationElementScript,
                 },
-            ],
-        };
-    })
-    .on(discardChangesAction, (state) => {
-        return {
-            ...state,
-            editedElement: undefined,
-        };
-    })
-    .on(setRelationAction, (state, relation) => {
-        return {
-            ...state,
-            relation,
-        };
-    })
-    .on(setEditedElementFieldsAction, (state, fieldsValues) => {
-        const { editedElement } = state;
+                animationScript: [
+                    ...animationScript,
+                    {
+                        elementName,
+                        blockPositionScript: DEFAULT_BLOCK_POSITION_SCRIPT,
+                        fieldsScript: getDefaultFieldsScriptForAnimationElement(elementName),
+                    },
+                ],
+            };
+        })
+        .on(selectBlockAction, (state, blockLocation): ConstructorState => {
+            return {
+                ...state,
+                editParams: {
+                    isNewElement: false,
+                    blockLocation,
+                    initialAnimationElementScript: getAnimationElementScript(state, blockLocation),
+                },
+            };
+        })
+        .on(saveElementAction, (state): ConstructorState => {
+            return {
+                ...state,
+                editParams: undefined,
+            };
+        })
+        .on(discardChangesAction, (state): ConstructorState => {
+            const {
+                editParams,
+            } = state;
 
-        return {
-            ...state,
-            editedElement: editedElement
-                ? {
-                    ...editedElement,
-                    fieldsValues,
-                }
-                : undefined,
-        };
-    })
-    .on(setEditedElementPositionAction, (state, position) => {
-        const { editedElement } = state;
+            if (editParams === undefined) {
+                throw new Error('editParams should not be undefined no discardChangesAction');
+            }
 
-        return {
-            ...state,
-            editedElement: editedElement
-                ? {
-                    ...editedElement,
-                    position,
-                }
-                : undefined,
-        };
-    })
-    .on(setAnimationPositionAction, (state, animationPosition) => {
+            const {
+                isNewElement,
+                blockLocation,
+                initialAnimationElementScript,
+            } = editParams;
+
+            if (isNewElement) {
+                return {
+                    ...removeElement(state, blockLocation),
+                    editParams: undefined,
+                };
+            } else {
+                return {
+                    ...setAnimationElementScript(state, blockLocation, initialAnimationElementScript),
+                    editParams: undefined,
+                };
+            }
+        })
+        .on(setRelationAction, (state, relation): ConstructorState => {
+            return {
+                ...state,
+                relation,
+            };
+        })
+        .on(setEditedElementFieldsAction, (state, fieldsValues): ConstructorState => {
+            const { editParams } = state;
+
+            if (editParams === undefined) {
+                throw new Error('setEditedElementFieldsAction should not be called without editParams');
+            }
+
+            return setAnimationElementFields(state, editParams.blockLocation, fieldsValues);
+        })
+        .on(setEditedBlockCoordinatesAction, (state, pointCoordinates): ConstructorState => {
+            const { editParams } = state;
+
+            if (editParams === undefined) {
+                throw new Error('setEditedBlockCoordinatesAction should not be called without editParams');
+            }
+
+            return setBlockPositionFields(state, editParams.blockLocation, pointCoordinates);
+        })
+        .on(setEditedBlockSizeAction, (state, blockSize): ConstructorState => {
+            const { editParams } = state;
+
+            if (editParams === undefined) {
+                throw new Error('setEditedBlockSizeAction should not be called without editParams');
+            }
+
+            return setBlockPositionFields(state, editParams.blockLocation, blockSize);
+        })
+        .on(setEditedBlockRotationAction, (state, blockRotation): ConstructorState => {
+            const { editParams } = state;
+
+            if (editParams === undefined) {
+                throw new Error('setEditedBlockRotationAction should not be called without editParams');
+            }
+
+            return setBlockPositionFields(state, editParams.blockLocation, { rotation: blockRotation });
+        })
+        .on(setEditedBlockPositionAction, (state, blockPositionFields): ConstructorState => {
+            const { editParams } = state;
+
+            if (editParams === undefined) {
+                throw new Error('setEditedBlockPositionAction should not be called without editParams');
+            }
+
+            return setBlockPositionFields(state, editParams.blockLocation, blockPositionFields);
+        })
+    /*.on(setAnimationPositionAction, (state, animationPosition): ConstructorState => {
         return {
             ...state,
             animationPosition,
         };
-    });
+    })*/;

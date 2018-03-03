@@ -2,41 +2,51 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import { ALL_STANDARD_ELEMENTS } from '../../../AnimationElements/ALL_STANDARD_ELEMENTS';
-import { AnimationElement } from '../../../AnimationElements/AnimationElement';
-import { getElementDefaultFieldsValues } from '../../../AnimationElements/utils/getElementDefaultFieldsValues';
 import { BlockPosition, BlockSize, PointCoordinates } from '../../../BlockPosition/BlockPosition';
 import { blockPositionToStyles } from '../../../BlockPosition/utils/blockPositionToStyles';
-import { ResizeSensor } from '../../../utils/ResizeSensor';
-import { setEditedElementPositionAction } from '../../Store/actions';
-import { ConstructorState, EditedElement } from '../../Store/State';
+import { Unit } from '../../../Unit/Unit';
+import { UnitTypes } from '../../../Unit/UnitTypes';
+import { mapObjectValues } from '../../../utils/mapObjectValues';
+import {
+    setEditedBlockCoordinatesAction, setEditedBlockRotationAction,
+    setEditedBlockSizeAction,
+} from '../../Store/actions';
+import { ConstructorState } from '../../Store/State';
 import { Resizer } from '../Resizer';
 import * as c from './index.pcss';
 
-export type DrawingStateProps = {};
-export type DrawingOwnProps = {
-    editedElement: EditedElement;
-};
+export type DrawingStateProps = Pick<ConstructorState,
+    | 'editParams'
+    | 'animationScript'>;
 
 export type DrawingDispatchProps = {
-    setEditedElementPosition: (position: BlockPosition) => void;
+    setEditedBlockCoordinates: (pointCoordinates: PointCoordinates) => void;
+    setEditedBlockSize: (blockSize: BlockSize) => void;
+    setEditedBlockRotation: (blockRotation: UnitTypes[Unit.degree]) => void;
 };
 
 export type DrawingProps =
-    & DrawingOwnProps
     & DrawingStateProps
     & DrawingDispatchProps;
 
 class DrawingComponent extends React.Component<DrawingProps, {}> {
-    private elementContainer: HTMLDivElement;
-    private elementContainerResizeSensor: ResizeSensor;
-
-    private animationElement: AnimationElement<any>;
-
     public render() {
         const {
-            position,
-        } = this.props.editedElement;
+            editParams,
+            animationScript,
+        } = this.props;
+
+        if (editParams === undefined) {
+            throw new Error('DrawingComponent should not be rendered without editParams');
+        }
+
+        const {
+            blockPositionScript,
+        } = animationScript[editParams.blockLocation[0]];
+
+        const position: BlockPosition = mapObjectValues(blockPositionScript, (blockPositionFieldScript) => {
+            return blockPositionFieldScript.actions[0].value as number;
+        });
 
         const {
             y,
@@ -52,7 +62,7 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
             <div
                 className={ c.Drawing__elementContainer }
                 ref={ (element) => {
-                    this.elementContainer = element!;
+                    // this.elementContainer = element!;
                 } }
                 style={ elementContainerStyle }
             />
@@ -69,62 +79,38 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
         </div>;
     }
 
-    public componentDidMount() {
-        const { elementName } = this.props.editedElement;
-
-        const AnimationElementClass = ALL_STANDARD_ELEMENTS[elementName];
-
-        this.elementContainerResizeSensor = new ResizeSensor(this.elementContainer, ({ width, height }) => {
-            this.animationElement.setSize(Math.min(width, height));
-        });
-        const initialSize = this.elementContainerResizeSensor.getSize();
-        const size = Math.min(initialSize.width, initialSize.height);
-
-        this.animationElement = new AnimationElementClass(
-            this.elementContainer,
-            size,
-            getElementDefaultFieldsValues(elementName),
-        );
+    private onResize = (blockSize: BlockSize) => {
+        this.props.setEditedBlockSize(blockSize);
     }
 
-    public componentWillReceiveProps({ editedElement: { fieldsValues } }: DrawingProps) {
-        this.animationElement.setValuesAbstract(fieldsValues);
+    private onRotate = (rotation: UnitTypes[Unit.degree]) => {
+        this.props.setEditedBlockRotation(rotation);
     }
 
-    private onResize = (newSize: BlockSize) => {
-        this.props.setEditedElementPosition({
-            ...this.props.editedElement.position,
-            ...newSize,
-        });
-    }
-
-    private onRotate = (rotation: number) => {
-        this.props.setEditedElementPosition({
-            ...this.props.editedElement.position,
-            rotation,
-        });
-    }
-
-    private onMove = (newCoordinates: PointCoordinates) => {
-        this.props.setEditedElementPosition({
-            ...this.props.editedElement.position,
-            ...newCoordinates,
-        });
+    private onMove = (pointCoordinates: PointCoordinates) => {
+        this.props.setEditedBlockCoordinates(pointCoordinates);
     }
 }
 
-const mapStateToProps = (state: ConstructorState,
-                         {
-                             editedElement,
-                         }: DrawingOwnProps): DrawingStateProps => {
+const mapStateToProps = ({
+                             editParams,
+                             animationScript,
+                         }: ConstructorState): DrawingStateProps => {
     return {
-        editedElement,
+        editParams,
+        animationScript,
     };
 };
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): DrawingDispatchProps => ({
-    setEditedElementPosition: (position) => {
-        dispatch(setEditedElementPositionAction(position));
+    setEditedBlockCoordinates: (position) => {
+        dispatch(setEditedBlockCoordinatesAction(position));
+    },
+    setEditedBlockSize: (blockSize) => {
+        dispatch(setEditedBlockSizeAction(blockSize));
+    },
+    setEditedBlockRotation: (blockRotation) => {
+        dispatch(setEditedBlockRotationAction(blockRotation));
     },
 });
 
