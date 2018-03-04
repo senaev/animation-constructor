@@ -71,9 +71,6 @@ export class ColorTimeLinePreview extends React.Component<TimelitePreviewProps<U
             const position = i / width;
             const value = getValueByPosition(position, unit, actions);
             context.fillStyle = colorToRGBAString(value);
-
-            console.log(colorToRGBAString(value));
-
             context.fillRect(i, 0, 1, height);
         }
     }
