@@ -1,1 +1,1 @@
-export const NUMBER_TIMELINE_HEIGHT = 54;
+export const NUMBER_TIMELINE_HEIGHT = 25;

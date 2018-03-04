@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { UnitScript } from '../../AnimationScript';
-import { TimeLine } from '../../Constructor/Components/Timeline';
-import { UnitTimelinePreviews } from '../../TimelinePreviews/UnitTimelinePreviews';
-import { UnitName } from '../UNIT_NAMES';
+import { UnitScript } from '../../../AnimationScript/index';
+import { UnitTimelinePreviews } from '../../../TimelinePreviews/UnitTimelinePreviews';
+import { UnitName } from '../../../Unit/UNIT_NAMES';
+import { TimeLine } from './index';
 
 export function createTimeLineForUnitScript<T extends UnitName>(unitScript: UnitScript<T>): React.ReactNode {
     const {
@@ -11,7 +11,7 @@ export function createTimeLineForUnitScript<T extends UnitName>(unitScript: Unit
     } = unitScript;
 
     let durationSum = 0;
-    const pointPositoins = actions.map(({ duration }) => {
+    const pointPositions = actions.map(({ duration }) => {
         const position = durationSum;
         durationSum += duration;
 
@@ -20,7 +20,7 @@ export function createTimeLineForUnitScript<T extends UnitName>(unitScript: Unit
 
     const TimelinePreviewClass = UnitTimelinePreviews[unit];
 
-    return <TimeLine pointPositoins={ pointPositoins }>
+    return <TimeLine pointPositoins={ pointPositions }>
         <TimelinePreviewClass unitScript={ unitScript }/>
     </TimeLine>;
 }
