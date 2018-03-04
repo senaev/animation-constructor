@@ -7,10 +7,10 @@ export function setAnimationElementScript(state: ConstructorState,
                                           animationElementScript: AnimationElementScript): ConstructorState {
     const { animationScript } = state;
 
-    const blockNumber = blockLocation[0];
+    const blockIndex = blockLocation[0];
 
     const nextAnimationScript = [...animationScript];
-    nextAnimationScript[blockNumber] = animationElementScript;
+    nextAnimationScript[blockIndex] = animationElementScript;
 
     return {
         ...state,

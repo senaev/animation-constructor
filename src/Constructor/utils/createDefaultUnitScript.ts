@@ -10,22 +10,22 @@ export function createDefaultUnitScript<T extends UnitName>(unit: T, value: Unit
             {
                 duration: 0.3,
                 value,
-                easingName: Easing.easeInOut,
+                easing: Easing.easeInOut,
             },
             {
                 duration: 0.3,
                 value: typeof value === 'number' ? 10 : value,
-                easingName: Easing.easeInOut,
+                easing: Easing.easeInOut,
             },
             {
                 duration: 0.3,
                 value: typeof value === 'number' ? 30 : value,
-                easingName: Easing.easeInOut,
+                easing: Easing.easeInOut,
             },
             {
                 duration: 0.1,
                 value: typeof value === 'number' ? 10 : value,
-                easingName: Easing.easeInOut,
+                easing: Easing.easeInOut,
             },
         ],
     };

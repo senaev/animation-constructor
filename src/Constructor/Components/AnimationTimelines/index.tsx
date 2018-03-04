@@ -14,33 +14,33 @@ import { TimeLine } from '../Timeline';
 import { createTimeLineForUnitScript } from '../Timeline/createTimeLineForUnitScript';
 import * as c from './index.pcss';
 
-export type AnimationControlsOwnProps = {};
-export type AnimationControlsStateProps = {
+export type AnimationTimelinesOwnProps = {};
+export type AnimationTimelinesStateProps = {
     animationPosition: ConstructorState['animationPosition'];
     animationElementScript: AnimationElementScript | undefined;
 };
-export type AnimationControlsDispatchProps = {
+export type AnimationTimelinesDispatchProps = {
     setAnimationPosition: (animationPosition: ConstructorState['animationPosition']) => void;
 };
 
-export type AnimationControlsProps =
-    & AnimationControlsOwnProps
-    & AnimationControlsStateProps
-    & AnimationControlsDispatchProps;
+export type AnimationTimelinesProps =
+    & AnimationTimelinesOwnProps
+    & AnimationTimelinesStateProps
+    & AnimationTimelinesDispatchProps;
 
-class AnimationControlsComponent extends React.Component<AnimationControlsProps, {}> {
+class AnimationTimelinesComponent extends React.Component<AnimationTimelinesProps, {}> {
     public render() {
         const {
             animationPosition,
             animationElementScript,
         } = this.props;
 
-        return <div className={ c.AnimationControls }>
+        return <div className={ c.AnimationTimelines }>
             <TimeLine
                 pointPositoins={ [animationPosition] }
                 onMovePoint={ this.onPositionChange }
             >
-                <div className={ c.AnimationControls__positionTimeLine }/>
+                <div className={ c.AnimationTimelines__positionTimeLine }/>
             </TimeLine>
             {
                 animationElementScript === undefined
@@ -66,9 +66,9 @@ class AnimationControlsComponent extends React.Component<AnimationControlsProps,
 
                 return <div
                     key={ i }
-                    className={ c.AnimationControls__TimeLine__padding }
+                    className={ c.AnimationTimelines__TimeLine__padding }
                 >
-                    <div className={ c.AnimationControls__TimeLine__title }>{ title }</div>
+                    <div className={ c.AnimationTimelines__TimeLine__title }>{ title }</div>
                     { createTimeLineForUnitScript(blockPositionScript[blockPositionFieldName]) }
                 </div>;
             }) }
@@ -77,9 +77,9 @@ class AnimationControlsComponent extends React.Component<AnimationControlsProps,
 
                 return <div
                     key={ i }
-                    className={ c.AnimationControls__TimeLine__padding }
+                    className={ c.AnimationTimelines__TimeLine__padding }
                 >
-                    <div className={ c.AnimationControls__TimeLine__title }>
+                    <div className={ c.AnimationTimelines__TimeLine__title }>
                         { title }
                     </div>
                     { createTimeLineForUnitScript(fieldsScript[fieldName]) }
@@ -89,7 +89,7 @@ class AnimationControlsComponent extends React.Component<AnimationControlsProps,
     }
 }
 
-const mapStateToProps = (state: ConstructorState): AnimationControlsStateProps => {
+const mapStateToProps = (state: ConstructorState): AnimationTimelinesStateProps => {
     const {
         animationPosition,
         editParams,
@@ -105,10 +105,10 @@ const mapStateToProps = (state: ConstructorState): AnimationControlsStateProps =
     };
 };
 
-const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): AnimationControlsDispatchProps => ({
+const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): AnimationTimelinesDispatchProps => ({
     setAnimationPosition: (animationPosition) => {
         dispatch(setAnimationPositionAction(animationPosition));
     },
 });
 
-export const AnimationControls = connect(mapStateToProps, mapDispatchToProps)(AnimationControlsComponent);
+export const AnimationTimelines = connect(mapStateToProps, mapDispatchToProps)(AnimationTimelinesComponent);

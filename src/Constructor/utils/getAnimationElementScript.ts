@@ -4,6 +4,6 @@ import { ConstructorState } from '../Store/State';
 
 export function getAnimationElementScript(state: ConstructorState,
                                           blockLocation: BlockLocation): AnimationElementScript {
-    const blockNumber = blockLocation[0];
-    return state.animationScript[blockNumber];
+    const blockIndex = blockLocation[0];
+    return state.animationScript[blockIndex];
 }

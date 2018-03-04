@@ -19,7 +19,7 @@ export function getValueByPosition<T extends UnitName>(position: number,
         const {
             duration,
             value,
-            easingName,
+            easing,
         } = actions[i];
         const nextDurationSum = durationSum + duration;
 
@@ -27,13 +27,13 @@ export function getValueByPosition<T extends UnitName>(position: number,
             return value;
         } else {
             if (durationSum <= position && position <= nextDurationSum) {
-                if (easingName === undefined) {
+                if (easing === undefined) {
                     return value;
                 }
 
                 const { value: nextActionValue } = actions[i + 1];
 
-                const transitionFunction = AllEasings[easingName];
+                const transitionFunction = AllEasings[easing];
                 const positionInsideOfAction = (position - durationSum) / duration;
 
                 const positionConsideringTransitionFunction = transitionFunction(positionInsideOfAction);

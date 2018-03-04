@@ -7,7 +7,7 @@ import { UnitTypes } from '../Unit/UnitTypes';
 export type ScriptAction<T extends UnitName> = {
     duration: number;
     value: UnitTypes[T];
-    easingName: EasingName | undefined;
+    easing: EasingName | undefined;
 };
 
 export type UnitScript<T extends UnitName> = {

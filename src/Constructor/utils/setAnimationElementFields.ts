@@ -16,8 +16,8 @@ export function setAnimationElementFields(state: ConstructorState,
         animationScript,
     } = state;
 
-    const editedAnimationElementNumber = blockLocation[0];
-    const editedAnimationElement = animationScript[editedAnimationElementNumber];
+    const editedAnimationElementIndex = blockLocation[0];
+    const editedAnimationElement = animationScript[editedAnimationElementIndex];
 
     const {
         elementName,
@@ -43,7 +43,7 @@ export function setAnimationElementFields(state: ConstructorState,
     return {
         ...state,
         animationScript: animationScript.map((animationElementScript, i) => {
-            if (i === editedAnimationElementNumber) {
+            if (i === editedAnimationElementIndex) {
                 return {
                     elementName,
                     blockPositionScript,
