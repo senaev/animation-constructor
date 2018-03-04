@@ -1,4 +1,4 @@
-import { Color } from '../types/Color';
+import { Color } from '../Color/Color';
 import { Unit } from './Unit';
 
 export type UnitTypes = {

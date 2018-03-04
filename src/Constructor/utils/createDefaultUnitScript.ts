@@ -14,17 +14,32 @@ export function createDefaultUnitScript<T extends UnitName>(unit: T, value: Unit
             },
             {
                 duration: 0.3,
-                value: typeof value === 'number' ? 10 : value,
+                value: typeof value === 'number' ? 10 : {
+                    r: 255,
+                    g: 0,
+                    b: 0,
+                    a: 1,
+                },
                 easing: Easing.easeInOut,
             },
             {
                 duration: 0.3,
-                value: typeof value === 'number' ? 30 : value,
+                value: typeof value === 'number' ? 30 : {
+                    r: 0,
+                    g: 255,
+                    b: 0,
+                    a: 0.2,
+                },
                 easing: Easing.easeInOut,
             },
             {
                 duration: 0.1,
-                value: typeof value === 'number' ? 10 : value,
+                value: typeof value === 'number' ? 10 : {
+                    r: 0,
+                    g: 0,
+                    b: 255,
+                    a: 1,
+                },
                 easing: Easing.easeInOut,
             },
         ],

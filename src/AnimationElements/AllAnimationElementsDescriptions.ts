@@ -1,3 +1,4 @@
+import { DefaultColor } from '../Color/DefaultColor';
 import { Unit } from '../Unit/Unit';
 import { UnitName } from '../Unit/UNIT_NAMES';
 import { UnitTypes } from '../Unit/UnitTypes';
@@ -16,12 +17,7 @@ export const AllAnimationElementsDescriptions: Record<AnimationElementName, Fiel
         backgroundColor: {
             fieldTitle: 'Цвет заливки',
             unit: Unit.color,
-            value: {
-                r: 0,
-                g: 136,
-                b: 236,
-                a: 1,
-            },
+            value: DefaultColor,
         },
         borderRadius: {
             fieldTitle: 'Радиус скругления',

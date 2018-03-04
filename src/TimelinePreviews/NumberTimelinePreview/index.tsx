@@ -18,13 +18,13 @@ export class NumberTimelinePreview extends React.Component<TimelitePreviewProps<
     public render() {
         return <div
             className={ c.NumberTimelinePreview }
+            style={ { height: `${NUMBER_TIMELINE_HEIGHT}px` } }
             ref={ (element) => {
                 this.containerElement = element!;
             } }
         >
             <canvas
                 className={ c.NumberTimelinePreview__canvas }
-                style={ { height: `${NUMBER_TIMELINE_HEIGHT}px` } }
                 ref={ (element) => {
                     this.canvas = element!;
                 } }
@@ -97,7 +97,6 @@ export class NumberTimelinePreview extends React.Component<TimelitePreviewProps<
         for (let i = 0; i < width; i++) {
             const position = i / width;
             const value = getValueByPosition(position, unit, canvasValues);
-            // console.log(i, value);
             context.lineTo(i, value);
         }
         context.strokeStyle = '#2f4e5f';

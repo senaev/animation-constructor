@@ -1,4 +1,4 @@
-import { Color } from '../../types/Color';
+import { Color } from '../../Color/Color';
 
 const parseColor: (colorString: string) => {
     rgba: [number, number, number, number];

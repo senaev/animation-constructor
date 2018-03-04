@@ -1,0 +1,1 @@
+export const COLOR_TIMELINE_HEIGHT = 10;

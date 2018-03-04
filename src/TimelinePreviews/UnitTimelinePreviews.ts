@@ -2,7 +2,7 @@ import * as React from 'react';
 import { UnitScript } from '../AnimationScript';
 import { Unit } from '../Unit/Unit';
 import { UnitName } from '../Unit/UNIT_NAMES';
-import { ColorTimelinePreview } from './ColorTimelinePreview';
+import { ColorTimeLinePreview } from './ColorTimelinePreview';
 import { NumberTimelinePreview } from './NumberTimelinePreview';
 
 export type TimelitePreviewProps<T extends UnitName> = {
@@ -13,5 +13,5 @@ export const UnitTimelinePreviews: Record<UnitName, React.ComponentClass<Timelit
     [Unit.degree]: NumberTimelinePreview,
     [Unit.percent]: NumberTimelinePreview,
     [Unit.pixel]: NumberTimelinePreview,
-    [Unit.color]: ColorTimelinePreview,
+    [Unit.color]: ColorTimeLinePreview,
 };
