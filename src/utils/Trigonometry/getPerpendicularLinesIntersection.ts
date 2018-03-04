@@ -1,4 +1,4 @@
-import { PointCoordinates } from '../../BlockPosition/BlockPosition';
+import { PointCoordinates } from '../../types/PointCoordinates';
 import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 import { getCrossingOriginLineByAngle } from './getCrossingOriginLineByAngle';

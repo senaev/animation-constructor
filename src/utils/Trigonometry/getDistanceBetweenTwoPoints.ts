@@ -1,4 +1,4 @@
-import { PointCoordinates } from '../../BlockPosition/BlockPosition';
+import { PointCoordinates } from '../../types/PointCoordinates';
 import { getRectangleDiagonal } from './getRectangleDiagonal';
 
 export function getDistanceBetweenTwoPoints(firstPoint: PointCoordinates, secondPoint: PointCoordinates): number {

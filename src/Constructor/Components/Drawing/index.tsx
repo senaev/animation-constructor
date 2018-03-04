@@ -2,8 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import { BlockPosition, BlockSize, PointCoordinates } from '../../../BlockPosition/BlockPosition';
+import { BlockPosition } from '../../../BlockPosition/BlockPosition';
 import { blockPositionToStyles } from '../../../BlockPosition/utils/blockPositionToStyles';
+import { PointCoordinates } from '../../../types/PointCoordinates';
+import { Size } from '../../../types/Size';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { mapObjectValues } from '../../../utils/mapObjectValues';
@@ -21,7 +23,7 @@ export type DrawingStateProps = Pick<ConstructorState,
 
 export type DrawingDispatchProps = {
     setEditedBlockCoordinates: (pointCoordinates: PointCoordinates) => void;
-    setEditedBlockSize: (blockSize: BlockSize) => void;
+    setEditedBlockSize: (blockSize: Size) => void;
     setEditedBlockRotation: (blockRotation: UnitTypes[Unit.degree]) => void;
 };
 
@@ -79,7 +81,7 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
         </div>;
     }
 
-    private onResize = (blockSize: BlockSize) => {
+    private onResize = (blockSize: Size) => {
         this.props.setEditedBlockSize(blockSize);
     }
 

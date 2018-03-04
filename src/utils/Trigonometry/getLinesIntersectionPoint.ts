@@ -1,4 +1,4 @@
-import { PointCoordinates } from '../../BlockPosition/BlockPosition';
+import { PointCoordinates } from '../../types/PointCoordinates';
 import { Line } from './Line';
 
 export function getLinesIntersectionPoint(firstLine: Line, secondLine: Line): PointCoordinates | undefined {

@@ -1,4 +1,4 @@
-import { PointCoordinates } from '../../BlockPosition/BlockPosition';
+import { PointCoordinates } from '../../types/PointCoordinates';
 import { Line } from './Line';
 
 export function getPerpendicularLineByPoint(baseLine: Line, { x, y }: PointCoordinates): Line {

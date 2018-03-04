@@ -1,7 +1,9 @@
 import * as cx from 'classnames';
 import * as React from 'react';
-import { BlockPosition, BlockSize, PointCoordinates } from '../../../BlockPosition/BlockPosition';
+import { BlockPosition } from '../../../BlockPosition/BlockPosition';
 import { blockPositionToStyles } from '../../../BlockPosition/utils/blockPositionToStyles';
+import { PointCoordinates } from '../../../types/PointCoordinates';
+import { Size } from '../../../types/Size';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { DragListener } from '../../../utils/DragListener';
@@ -10,7 +12,7 @@ import { getRectangleSizeByPointAndAngle } from '../../../utils/Trigonometry/get
 import * as c from './index.pcss';
 
 type ResizerProps = BlockPosition & {
-    onResize: (newSize: BlockSize) => void;
+    onResize: (newSize: Size) => void;
     onRotate: (rotation: number) => void;
     onMove: (newSize: PointCoordinates) => void;
 };

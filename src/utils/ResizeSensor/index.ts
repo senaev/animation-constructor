@@ -1,10 +1,6 @@
 import { default as ResizeObserver } from 'resize-observer-polyfill';
+import { Size } from '../../types/Size';
 import { noop } from '../noop';
-
-export type Size = Readonly<{
-    width: number;
-    height: number;
-}>;
 
 export class ResizeSensor {
     private readonly observer: ResizeObserver;
