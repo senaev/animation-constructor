@@ -76,6 +76,7 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
 
     public componentWillUnmount() {
         this.removeElementClickListener();
+        this.resizeSensor.destroy();
     }
 
     private recreateAnimation(animationScript: AnimationScript, animationPosition: number) {
