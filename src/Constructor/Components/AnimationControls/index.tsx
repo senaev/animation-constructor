@@ -4,6 +4,7 @@ import * as Redux from 'redux';
 import { Action } from 'redux-act';
 import { AnimationElementScript } from '../../../AnimationScript';
 import { ALL_BLOCK_POSITION_FIELD_NAMES } from '../../../BlockPosition/ALL_BLOCK_POSITION_FIELD_NAMES';
+import { BlockPositionFieldTitles } from '../../../BlockPosition/BlockPositionFieldTitles';
 import { createTimeLineForUnitScript } from '../../../Unit/utils/createTimeLineForUnitScript';
 import { setAnimationPositionAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
@@ -63,6 +64,9 @@ class AnimationControlsComponent extends React.Component<AnimationControlsProps,
                     key={ i }
                     className={ c.AnimationControls__timeLinePadding }
                 >
+                    <div className={c.AnimationControls__timeLineTitle}>{
+                        BlockPositionFieldTitles[blockPositionFieldName]
+                    }</div>
                     { createTimeLineForUnitScript(blockPositionScript[blockPositionFieldName]) }
                 </div>;
             }) }

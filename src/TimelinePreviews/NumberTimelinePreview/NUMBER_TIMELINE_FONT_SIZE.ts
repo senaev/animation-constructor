@@ -1,0 +1,1 @@
+export const NUMBER_TIMELINE_FONT_SIZE = 10;

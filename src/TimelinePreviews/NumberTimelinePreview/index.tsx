@@ -5,7 +5,9 @@ import { UnitShortTitles } from '../../Unit/UnitShortTitles';
 import { ResizeSensor } from '../../utils/ResizeSensor';
 import { TimelitePreviewProps } from '../UnitTimelinePreviews';
 import * as c from './index.pcss';
+import { NUMBER_TIMELINE_FONT_SIZE } from './NUMBER_TIMELINE_FONT_SIZE';
 import { NUMBER_TIMELINE_HEIGHT } from './NUMBER_TIMELINE_HEIGHT';
+import { NUMBER_TIMELINE_PADDING } from './NUMBER_TIMELINE_PADDING';
 
 const unit = Unit.percent;
 
@@ -77,9 +79,11 @@ export class NumberTimelinePreview extends React.Component<TimelitePreviewProps<
             : maxValue - minValue;
 
         const canvasValues = actions.map((action) => {
+            const relativeValue = (1 - ((action.value - minValue) / dif));
+
             return {
                 ...action,
-                value: (1 - ((action.value - minValue) / dif)) * NUMBER_TIMELINE_HEIGHT,
+                value: relativeValue * (NUMBER_TIMELINE_HEIGHT - NUMBER_TIMELINE_PADDING * 2) + NUMBER_TIMELINE_PADDING,
             };
         });
 
@@ -98,12 +102,11 @@ export class NumberTimelinePreview extends React.Component<TimelitePreviewProps<
         context.strokeStyle = '#2f4e5f';
         context.stroke();
 
-
-        context.font = '10px';
+        context.font = `${NUMBER_TIMELINE_FONT_SIZE}px`;
         context.fillStyle = 'rgba(255, 0, 0, 0.7)';
-        context.fillText(`${maxValue}${UnitShortTitles[unit]}`, 1, 10);
+        context.fillText(`${maxValue}${UnitShortTitles[unit]}`, 1, NUMBER_TIMELINE_FONT_SIZE);
         if (!hasNoAnimations) {
-            context.fillText(`${minValue}${UnitShortTitles[unit]}`, 1, 50);
+            context.fillText(`${minValue}${UnitShortTitles[unit]}`, 1, NUMBER_TIMELINE_HEIGHT);
         }
     }
 }
