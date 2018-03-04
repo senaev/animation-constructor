@@ -1,11 +1,11 @@
 import { UnitScripts } from '../../../AnimationScript';
 import { UnitName } from '../../../Unit/UNIT_NAMES';
+import { UnitTypes } from '../../../Unit/UnitTypes';
 import { getObjectKeys } from '../../../utils/getObjectKeys';
 import { mapArrayValuesToObject } from '../../../utils/mapArrayValuesToObject';
 import { getValueByPosition } from '../getValueByPosition';
 
-export function createFieldsFunctionByUnitScripts<T extends Record<string,
-    UnitName>>(unitScripts: UnitScripts<T>): (position: number) => T {
+export function createFieldsFunctionByUnitScripts(unitScripts: UnitScripts): (position: number) => Record<string, UnitTypes[UnitName]> {
     const allFieldNames = getObjectKeys(unitScripts);
 
     return (newPosition: number) => {
@@ -22,6 +22,6 @@ export function createFieldsFunctionByUnitScripts<T extends Record<string,
             } else {
                 return getValueByPosition(newPosition, unit, actions);
             }
-        }) as T;
+        });
     };
 }

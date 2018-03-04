@@ -8,11 +8,11 @@ import * as c from './index.pcss';
 const UNIT = Unit.degree;
 type UNIT = typeof UNIT;
 
-export class Degree extends Field<UNIT> {
+export class PixelField extends Field<UNIT> {
     public static isSupportsEasing = true;
     public static unit = UNIT;
     public static Preview = ({ value }: FieldPreviewProps<UNIT>) => {
-        return <div className={ c.DegreePreview }>
+        return <div className={ c.PixelField__preview }>
             { `${value.toFixed(2)}${UnitShortTitles[UNIT]}` }
         </div>;
     }

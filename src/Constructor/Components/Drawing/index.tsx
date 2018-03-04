@@ -46,9 +46,9 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
             blockPositionScript,
         } = animationScript[editParams.blockLocation[0]];
 
-        const position: BlockPosition = mapObjectValues(blockPositionScript, (blockPositionFieldScript) => {
-            return blockPositionFieldScript.actions[0].value as number;
-        });
+        const position = mapObjectValues(blockPositionScript, (blockPositionFieldScript) => {
+            return blockPositionFieldScript.actions[0].value;
+        }) as BlockPosition;
 
         const {
             y,

@@ -1,6 +1,6 @@
 import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementFields';
 import { AnimationElementFieldsValues } from '../../AnimationElements/AnimationElementsFieldsValues';
-import { AnimationElementFieldsScript } from '../../AnimationScript';
+import { UnitScripts } from '../../AnimationScript';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { UnitName } from '../../Unit/UNIT_NAMES';
 import { UnitTypes } from '../../Unit/UnitTypes';
@@ -25,7 +25,7 @@ export function setAnimationElementFields(state: ConstructorState,
         fieldsScript,
     } = editedAnimationElement;
 
-    const nextAnimationElementFields: AnimationElementFieldsScript = mapObjectValues(
+    const nextAnimationElementFields: UnitScripts = mapObjectValues(
         animationElementFields,
         (value, animationElementFieldName) => {
             return createDefaultUnitScript(
@@ -35,7 +35,7 @@ export function setAnimationElementFields(state: ConstructorState,
         },
     );
 
-    const nextAnimationElementFieldsScript: AnimationElementFieldsScript = {
+    const nextAnimationElementFieldsScript: UnitScripts = {
         ...fieldsScript,
         ...nextAnimationElementFields,
     };

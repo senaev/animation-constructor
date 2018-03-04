@@ -16,7 +16,12 @@ export const AllAnimationElementsDescriptions: Record<AnimationElementName, Fiel
         backgroundColor: {
             fieldTitle: 'Цвет заливки',
             unit: Unit.color,
-            value: '#0088ec',
+            value: {
+                r: 0,
+                g: 136,
+                b: 236,
+                a: 1,
+            },
         },
         borderRadius: {
             fieldTitle: 'Радиус скругления',

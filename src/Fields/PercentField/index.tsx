@@ -8,11 +8,11 @@ import * as c from './index.pcss';
 const UNIT = Unit.percent;
 type UNIT = typeof UNIT;
 
-export class Percent extends Field<UNIT> {
+export class PercentField extends Field<UNIT> {
     public static isSupportsEasing = true;
     public static unit = UNIT;
     public static Preview = ({ value }: FieldPreviewProps<UNIT>) => {
-        return <div className={ c.PercentPreview }>
+        return <div className={ c.PercentField__preview }>
             { `${value.toFixed(2)}${UnitShortTitles[UNIT]}` }
         </div>;
     }

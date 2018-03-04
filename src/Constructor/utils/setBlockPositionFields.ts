@@ -1,4 +1,3 @@
-import { BlockPositionScript } from '../../AnimationScript';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { BlockPosition } from '../../BlockPosition/BlockPosition';
 import { BlockPositionFieldsTypes } from '../../BlockPosition/BlockPositionFieldsTypes';
@@ -24,7 +23,7 @@ export function setBlockPositionFields(state: ConstructorState,
         fieldsScript,
     } = editedAnimationElement;
 
-    const nextBlockPositionFieldsScripts: Partial<BlockPositionScript> = mapObjectValues(
+    const nextBlockPositionFieldsScripts = mapObjectValues(
         blockPositionFields,
         (value, blockPositionFieldName) => {
             return createDefaultUnitScript(
@@ -34,7 +33,7 @@ export function setBlockPositionFields(state: ConstructorState,
         },
     );
 
-    const nextBlockPositionScript: BlockPositionScript = {
+    const nextBlockPositionScript = {
         ...blockPositionScript,
         ...nextBlockPositionFieldsScripts,
     };

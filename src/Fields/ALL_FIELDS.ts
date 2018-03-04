@@ -1,14 +1,14 @@
 import { Unit } from '../Unit/Unit';
 import { UnitName } from '../Unit/UNIT_NAMES';
-import { Color } from './Color';
-import { Degree } from './Degree';
+import { ColorField } from './ColorField';
+import { DegreeField } from './DegreeField';
 import { FieldClass } from './Field';
-import { Percent } from './Percent';
-import { Pixel } from './Pixel';
+import { PercentField } from './PercentField';
+import { PixelField } from './PixelField';
 
 export const ALL_FIELDS: Record<UnitName, FieldClass> = {
-    [Unit.color]: Color,
-    [Unit.percent]: Percent,
-    [Unit.degree]: Degree,
-    [Unit.pixel]: Pixel,
+    [Unit.color]: ColorField,
+    [Unit.percent]: PercentField,
+    [Unit.degree]: DegreeField,
+    [Unit.pixel]: PixelField,
 };

@@ -17,16 +17,17 @@ export class Animation {
                 private size: number) {
 
         this.elementsAnimations = animationScript.map(({
-                                                  elementName,
-                                                  blockPositionScript,
-                                                  fieldsScript,
-                                              }) => {
+                                                           elementName,
+                                                           blockPositionScript,
+                                                           fieldsScript,
+                                                       }) => {
             const { ownerDocument } = animationContainer;
             const container = ownerDocument.createElement('div');
             container.className = c.AnimationBlock;
 
-            const getBlockPositionByAnimationPosition = createFieldsFunctionByUnitScripts<any>(blockPositionScript);
-            const getFieldValuesByAnimationPosition = createFieldsFunctionByUnitScripts<any>(fieldsScript);
+            const getBlockPositionByAnimationPosition =
+                createFieldsFunctionByUnitScripts(blockPositionScript) as (animationPosition: number) => BlockPosition;
+            const getFieldValuesByAnimationPosition = createFieldsFunctionByUnitScripts(fieldsScript);
 
             const initialBlockPosition = getBlockPositionByAnimationPosition(animationPosition);
             applyBlockPositionToElement(container, initialBlockPosition);
