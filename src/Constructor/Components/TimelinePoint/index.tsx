@@ -5,54 +5,36 @@ import { subscribeHoverChange } from '../../../utils/subscribeHoverChange';
 import { ConstructorState } from '../../Store/State';
 import * as c from './index.pcss';
 
-export type TimelinePointProps = {
-    position: ConstructorState['animationPosition'];
-
-    onPositionChangeStart?: () => void;
-    onPositionChange?: (pixelOffset: number) => void;
-    onPositionChangeEnd?: () => void;
+type TimeLinePointCallbacks = {
+    onPositionChangeStart: () => void;
+    onPositionChange: (pixelOffset: number) => void;
+    onPositionChangeEnd: () => void;
 };
 
-export type TimelinePointState = {
+export type TimeLinePointProps =
+    & {
+        position: ConstructorState['animationPosition'];
+    }
+    & Partial<TimeLinePointCallbacks>;
+
+export type TimeLinePointState = {
     isHovered: boolean;
     isDraggedCursor: boolean;
 };
 
-export class TimelinePoint extends React.Component<TimelinePointProps, TimelinePointState> {
+export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLinePointState> {
     private containerElement: HTMLDivElement;
 
     private unsubscribeHoverChange = noop;
     private cursorDragListener: DragListener;
 
-    private readonly onPositionChangeStart = noop;
-    private readonly onPositionChange = noop;
-    private readonly onPositionChangeEnd = noop;
-
-    constructor(props: TimelinePointProps) {
+    constructor(props: TimeLinePointProps) {
         super(props);
 
         this.state = {
             isHovered: false,
             isDraggedCursor: false,
         };
-
-        const {
-            onPositionChangeStart,
-            onPositionChange,
-            onPositionChangeEnd,
-        } = this.props;
-
-        if (typeof onPositionChangeStart === 'function') {
-            this.onPositionChangeStart = onPositionChangeStart;
-        }
-
-        if (typeof onPositionChange === 'function') {
-            this.onPositionChange = onPositionChange;
-        }
-
-        if (typeof onPositionChangeEnd === 'function') {
-            this.onPositionChangeEnd = onPositionChangeEnd;
-        }
     }
 
     public render() {
@@ -66,16 +48,16 @@ export class TimelinePoint extends React.Component<TimelinePointProps, TimelineP
             ref={ (element) => {
                 this.containerElement = element!;
             } }
-            className={ c.TimelinePoint }
+            className={ c.TimeLinePoint }
             style={ {
                 left: `${position * 100}%`,
                 cursor: isDraggedCursor ? '-webkit-grabbing' : '-webkit-grab',
             } }
         >
-            <div className={ c.TimelinePoint__pointer }/>
-            <div className={ c.TimelinePoint__hoverZone }/>
+            <div className={ c.TimeLinePoint__pointer }/>
+            <div className={ c.TimeLinePoint__hoverZone }/>
             <div
-                className={ c.TimelinePoint__cursor }
+                className={ c.TimeLinePoint__cursor }
                 style={ {
                     display: isHovered || isDraggedCursor ? 'block' : 'none',
                 } }
@@ -88,17 +70,23 @@ export class TimelinePoint extends React.Component<TimelinePointProps, TimelineP
             this.setState({ isHovered });
         });
 
+        const {
+            onPositionChangeStart = noop,
+            onPositionChange = noop,
+            onPositionChangeEnd = noop,
+        } = this.props;
+
         this.cursorDragListener = new DragListener(this.containerElement, {
             onStart: () => {
                 this.setState({ isDraggedCursor: true });
-                this.onPositionChangeStart();
+                onPositionChangeStart();
             },
             onMove: ({ relativeX }) => {
-                this.onPositionChange(relativeX);
+                onPositionChange(relativeX);
             },
             onEnd: () => {
                 this.setState({ isDraggedCursor: false });
-                this.onPositionChangeEnd();
+                onPositionChangeEnd();
             },
         });
     }

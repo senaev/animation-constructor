@@ -2,16 +2,20 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import { clamp } from '../../../utils/clamp';
-import { ResizeSensor } from '../../../utils/ResizeSensor';
+import { AnimationElementScript } from '../../../AnimationScript';
+import { ALL_BLOCK_POSITION_FIELD_NAMES } from '../../../BlockPosition/ALL_BLOCK_POSITION_FIELD_NAMES';
+import { createTimeLineForUnitScript } from '../../../Unit/utils/createTimeLineForUnitScript';
 import { setAnimationPositionAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
-import { Timeline } from '../Timeline';
+import { getAnimationElementScript } from '../../utils/getAnimationElementScript';
+import { TimeLine } from '../Timeline';
 import * as c from './index.pcss';
 
 export type AnimationControlsOwnProps = {};
-export type AnimationControlsStateProps = Pick<ConstructorState,
-    | 'animationPosition'>;
+export type AnimationControlsStateProps = {
+    animationPosition: ConstructorState['animationPosition'];
+    animationElementScript: AnimationElementScript | undefined;
+};
 export type AnimationControlsDispatchProps = {
     setAnimationPosition: (animationPosition: ConstructorState['animationPosition']) => void;
 };
@@ -22,61 +26,63 @@ export type AnimationControlsProps =
     & AnimationControlsDispatchProps;
 
 class AnimationControlsComponent extends React.Component<AnimationControlsProps, {}> {
-    private resizeSensor: ResizeSensor;
-
-    private containerElement: HTMLDivElement;
-    private containerWidth: number;
-
-    private startAnimationPosition = 0;
-
     public render() {
-        const { animationPosition } = this.props;
+        const {
+            animationPosition,
+            animationElementScript,
+        } = this.props;
 
-        return <div
-            className={ c.AnimationControls }
-            ref={ (element) => {
-                this.containerElement = element!;
-            } }
-        >
-            <Timeline timelinePoints={ [{
-                position: animationPosition,
-                onPositionChangeStart: this.onPositionChangeStart,
-                onPositionChange: this.onPositionChange,
-            }] }>
-                <div className={ c.AnimationControls__positionTimeline }/>
-            </Timeline>
-        </div>;
+        return <div className={ c.AnimationControls }>
+            <div className={ c.AnimationControls__timeLinePadding }>
+                <TimeLine
+                    pointPositoins={ [animationPosition] }
+                    onMovePoint={ this.onPositionChange }
+                >
+                    <div className={ c.AnimationControls__positionTimeLine }/>
+                </TimeLine>
+            </div>
+            {
+                animationElementScript === undefined
+                    ? null
+                    : this.createAnimationElementFieldsTimeLines(animationElementScript)
+            }
+        </div>
+            ;
     }
 
-    public componentDidMount() {
-        this.resizeSensor = new ResizeSensor(this.containerElement, ({ width }) => {
-            this.containerWidth = width;
-        });
-
-        this.containerWidth = this.resizeSensor.getSize().width;
+    private onPositionChange = (nextAnimationPosition: number) => {
+        this.props.setAnimationPosition(nextAnimationPosition);
     }
 
-    public componentWillUnmount() {
-        this.resizeSensor.destroy();
-    }
-
-    private onPositionChangeStart = () => {
-        this.startAnimationPosition = this.props.animationPosition;
-    }
-
-    private onPositionChange = (pixelOffset: number) => {
-        const rawAnimationPosition = this.startAnimationPosition + pixelOffset / this.containerWidth;
-        const newAnimationPosition = clamp(rawAnimationPosition, 0, 1);
-
-        this.props.setAnimationPosition(newAnimationPosition);
+    private createAnimationElementFieldsTimeLines = ({
+                                                         blockPositionScript,
+                                                     }: AnimationElementScript) => {
+        return <React.Fragment>
+            { ALL_BLOCK_POSITION_FIELD_NAMES.map((blockPositionFieldName, i) => {
+                return <div
+                    key={ i }
+                    className={ c.AnimationControls__timeLinePadding }
+                >
+                    { createTimeLineForUnitScript(blockPositionScript[blockPositionFieldName]) }
+                </div>;
+            }) }
+        </React.Fragment>;
     }
 }
 
-const mapStateToProps = ({
-                             animationPosition,
-                         }: ConstructorState): AnimationControlsStateProps => {
+const mapStateToProps = (state: ConstructorState): AnimationControlsStateProps => {
+    const {
+        animationPosition,
+        editParams,
+    } = state;
+
+    const animationElementScript = editParams === undefined
+        ? undefined
+        : getAnimationElementScript(state, editParams.blockLocation);
+
     return {
         animationPosition,
+        animationElementScript,
     };
 };
 

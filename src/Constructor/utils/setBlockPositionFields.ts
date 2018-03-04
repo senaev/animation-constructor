@@ -1,11 +1,11 @@
 import { BlockPositionScript } from '../../AnimationScript';
-import { createDefaultUnitScript } from '../../AnimationScript/getDefaultFieldsScriptForAnimationElement';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { BlockPosition } from '../../BlockPosition/BlockPosition';
 import { BlockPositionFieldsTypes } from '../../BlockPosition/BlockPositionFieldsTypes';
 import { BlockPositionFieldUnits } from '../../BlockPosition/BlockPositionFieldUnits';
 import { mapObjectValues } from '../../utils/mapObjectValues';
 import { ConstructorState } from '../Store/State';
+import { createDefaultUnitScript } from './createDefaultUnitScript';
 
 export function setBlockPositionFields(state: ConstructorState,
                                        blockLocation: BlockLocation,

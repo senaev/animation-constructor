@@ -1,12 +1,12 @@
 import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementFields';
 import { AnimationElementFieldsValues } from '../../AnimationElements/AnimationElementsFieldsValues';
 import { AnimationElementFieldsScript } from '../../AnimationScript';
-import { createDefaultUnitScript } from '../../AnimationScript/getDefaultFieldsScriptForAnimationElement';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { UnitName } from '../../Unit/UNIT_NAMES';
 import { UnitTypes } from '../../Unit/UnitTypes';
 import { mapObjectValues } from '../../utils/mapObjectValues';
 import { ConstructorState } from '../Store/State';
+import { createDefaultUnitScript } from './createDefaultUnitScript';
 
 export function setAnimationElementFields(state: ConstructorState,
                                           blockLocation: BlockLocation,

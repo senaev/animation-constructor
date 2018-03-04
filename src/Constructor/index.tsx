@@ -3,11 +3,11 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Store } from 'redux';
 import { App } from './Components/App';
-import { createConstructorStore } from './Store';
+import { createAnimationConstructorStore } from './Store/createAnimationConstructorStore';
 import { ConstructorState, defaultConstructorState } from './Store/State';
 
 function drawAnimationConstructor(container: HTMLElement): void {
-    const store: Store<ConstructorState> = createConstructorStore(defaultConstructorState);
+    const store: Store<ConstructorState> = createAnimationConstructorStore(defaultConstructorState);
 
     ReactDOM.render(
         <Provider store={ store }>
