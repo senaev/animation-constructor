@@ -9,8 +9,6 @@ import { NUMBER_TIMELINE_FONT_SIZE } from './NUMBER_TIMELINE_FONT_SIZE';
 import { NUMBER_TIMELINE_HEIGHT } from './NUMBER_TIMELINE_HEIGHT';
 import { NUMBER_TIMELINE_PADDING } from './NUMBER_TIMELINE_PADDING';
 
-const unit = Unit.percent;
-
 export class NumberTimelinePreview extends React.Component<TimelitePreviewProps<Unit.percent>> {
     private resizeSensor: ResizeSensor;
     private containerElement: HTMLDivElement;
@@ -52,7 +50,10 @@ export class NumberTimelinePreview extends React.Component<TimelitePreviewProps<
 
     private redrawCanvas() {
         const { canvas } = this;
-        const { actions } = this.props;
+        const {
+            actions,
+            unit,
+        } = this.props.unitScript;
 
         if (actions.length === 0) {
             throw new Error('actions array cannot be zero-length');
