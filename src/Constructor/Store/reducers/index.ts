@@ -1,16 +1,23 @@
 import { createReducer } from 'redux-act';
 import { AnimationElementScript } from '../../../AnimationScript';
-import { getDefaultFieldsScriptForAnimationElement } from '../../utils/getDefaultFieldsScriptForAnimationElement';
 import { DEFAULT_BLOCK_POSITION_SCRIPT } from '../../../BlockPosition/DEFAULT_BLOCK_POSITION_SCRIPT';
 import { getAnimationElementScript } from '../../utils/getAnimationElementScript';
+import { getDefaultFieldsScriptForAnimationElement } from '../../utils/getDefaultFieldsScriptForAnimationElement';
 import { removeElement } from '../../utils/removeElement';
 import { setAnimationElementFields } from '../../utils/setAnimationElementFields';
 import { setAnimationElementScript } from '../../utils/setAnimationElementScript';
 import { setBlockPositionFields } from '../../utils/setBlockPositionFields';
 import {
-    addStandardElementAction, discardChangesAction, saveElementAction, selectBlockAction, setAnimationPositionAction,
+    addStandardElementAction,
+    discardChangesAction,
+    saveElementAction,
+    selectBlockAction,
+    setAnimationPositionAction,
     setEditedBlockCoordinatesAction,
-    setEditedBlockPositionAction, setEditedBlockRotationAction, setEditedBlockSizeAction, setEditedElementFieldsAction,
+    setEditedBlockPositionAction,
+    setEditedBlockRotationAction,
+    setEditedBlockSizeAction,
+    setEditedElementFieldsAction,
     setRelationAction,
 } from '../actions';
 import { ConstructorState } from '../State';
