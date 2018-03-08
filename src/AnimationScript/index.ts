@@ -1,4 +1,3 @@
-import { AnimationElementFieldsNames } from '../AnimationElements/AnimationElementFieldsNames';
 import { AnimationElementName } from '../AnimationElements/AnimationElementName';
 import { AnimationElementsFieldsUnits } from '../AnimationElements/AnimationElementsFieldsUnits';
 import { BlockPositionFieldUnits } from '../BlockPosition/BlockPositionFieldUnits';

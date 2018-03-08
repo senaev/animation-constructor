@@ -1,5 +1,3 @@
-import { Unit } from '../../Unit/Unit';
-import { UnitTypes } from '../../Unit/UnitTypes';
 import { colorToRGBAString } from '../../utils/colorToRGBAString';
 import { createDivWithClass } from '../../utils/createDivWithClass';
 import { AnimationElement } from '../AnimationElement';
