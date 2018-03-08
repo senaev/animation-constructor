@@ -1,3 +1,5 @@
+import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
+import { AnimationElementScript } from '../../AnimationScript';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { BlockPosition } from '../../BlockPosition/BlockPosition';
 import { BlockPositionFieldsTypes } from '../../BlockPosition/BlockPositionFieldsTypes';
@@ -46,7 +48,7 @@ export function setBlockPositionFields(state: ConstructorState,
                     elementName,
                     blockPositionScript: nextBlockPositionScript,
                     fieldsScript,
-                };
+                } as AnimationElementScript<AnimationElementName>;
             } else {
                 return animationElementScript;
             }

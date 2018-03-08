@@ -1,5 +1,5 @@
-function getObjectKeysPolyfill<K extends string>(object: Record<K, any>): K[] {
-    const keys: K[] = [];
+function getObjectKeysPolyfill<T extends Record<string, any>>(object: T): (keyof T)[] {
+    const keys = [];
 
     for (const key in object) {
         if (object.hasOwnProperty(key)) {
@@ -10,10 +10,11 @@ function getObjectKeysPolyfill<K extends string>(object: Record<K, any>): K[] {
     return keys;
 }
 
-function getObjectKeysNative<K extends string>(object: Record<K, any>): K[] {
-    return Object.keys(object) as K[];
+function getObjectKeysNative<T extends Record<string, any>>(object: T): (keyof T)[] {
+    return Object.keys(object);
 }
 
-export const getObjectKeys: <K extends string>(object: Record<K, any>) => K[] = typeof Object.keys === 'function'
+export const getObjectKeys: <T extends Record<string, any>>(object: T) => (keyof T)[]
+    = typeof Object.keys === 'function'
     ? getObjectKeysNative
     : getObjectKeysPolyfill;

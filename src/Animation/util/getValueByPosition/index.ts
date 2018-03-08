@@ -1,12 +1,12 @@
 import { ScriptAction } from '../../../AnimationScript';
 import { AllEasings } from '../../../Easing/AllEasings';
-import { UnitName } from '../../../Unit/UNIT_NAMES';
+import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { AllUnitTransitionFunctions } from '../../../UnitTransition/AllUnitTransitionFunctions';
 
-export function getValueByPosition<T extends UnitName>(position: number,
-                                                       unit: T,
-                                                       actions: ScriptAction<T>[]): UnitTypes[T] {
+export function getValueByPosition<T extends Unit>(position: number,
+                                                   unit: T,
+                                                   actions: ScriptAction<T>[]): UnitTypes[T] {
     const { length } = actions;
 
     if (length === 1) {

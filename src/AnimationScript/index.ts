@@ -1,25 +1,35 @@
+import { AnimationElementFieldsNames } from '../AnimationElements/AnimationElementFieldsNames';
 import { AnimationElementName } from '../AnimationElements/AnimationElementName';
+import { AnimationElementsFieldsUnits } from '../AnimationElements/AnimationElementsFieldsUnits';
+import { BlockPositionFieldUnits } from '../BlockPosition/BlockPositionFieldUnits';
 import { EasingName } from '../Easing/EasingName';
-import { UnitName } from '../Unit/UNIT_NAMES';
+import { Unit } from '../Unit/Unit';
 import { UnitTypes } from '../Unit/UnitTypes';
 
-export type ScriptAction<T extends UnitName> = {
+export type ScriptAction<T extends Unit> = {
     duration: number;
     value: UnitTypes[T];
     easing: EasingName | undefined;
 };
 
-export type UnitScript<T extends UnitName> = {
+export type UnitScript<T extends Unit> = {
     unit: T;
     actions: ScriptAction<T>[];
 };
 
-export type UnitScripts = Record<string, UnitScript<UnitName>>;
+export type UnitScripts<T extends Record<string, Unit>> = {
+    [key in keyof T]: UnitScript<T[key]>;
+    };
 
-export type AnimationElementScript<T extends AnimationElementName = AnimationElementName> = {
+export type BlockPositionFieldsScript = UnitScripts<BlockPositionFieldUnits>;
+
+export type AnimationElementFieldsScript<T extends AnimationElementName>
+    = UnitScripts<AnimationElementsFieldsUnits[T]>;
+
+export type AnimationElementScript<T extends AnimationElementName> = {
     elementName: T;
-    blockPositionScript: UnitScripts;
-    fieldsScript: UnitScripts;
+    blockPositionScript: BlockPositionFieldsScript;
+    fieldsScript: AnimationElementFieldsScript<T>;
 };
 
-export type AnimationScript = AnimationElementScript[];
+export type AnimationScript = AnimationElementScript<AnimationElementName>[];

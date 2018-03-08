@@ -1,7 +1,6 @@
 import { Unit } from './Unit';
-import { UnitName } from './UNIT_NAMES';
 
-export const UnitShortTitles: Record<UnitName, string> = {
+export const UnitShortTitles: Record<Unit, string> = {
     [Unit.degree]:  '°',
     [Unit.percent]: '%',
     [Unit.pixel]: 'px',

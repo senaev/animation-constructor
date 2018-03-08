@@ -1,14 +1,13 @@
 import { AnimationElement } from '../AnimationElements/AnimationElement';
-import { AnimationElementFieldsValues } from '../AnimationElements/AnimationElementsFieldsValues';
+import { AnimationElementFieldsTypes } from '../AnimationElements/AnimationElementFieldsTypes';
+import { AnimationElementName } from '../AnimationElements/AnimationElementName';
 import { BlockPosition } from '../BlockPosition/BlockPosition';
-import { UnitName } from '../Unit/UNIT_NAMES';
-import { UnitTypes } from '../Unit/UnitTypes';
 
-export type ElementAnimation = {
-    animationElement: AnimationElement<Record<string, UnitTypes[UnitName]>>;
+export type ElementAnimation<T extends AnimationElementName> = {
+    animationElement: AnimationElement<T>;
     container: HTMLDivElement;
     getBlockPositionByAnimationPosition: (position: number) => BlockPosition;
-    getFieldValuesByAnimationPosition: (position: number) => AnimationElementFieldsValues;
+    getFieldValuesByAnimationPosition: (position: number) => AnimationElementFieldsTypes<T>;
 };
 
-export type ElementsAnimations = ElementAnimation[];
+export type ElementsAnimations = ElementAnimation<AnimationElementName>[];

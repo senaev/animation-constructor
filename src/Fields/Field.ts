@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { UnitName } from '../Unit/UNIT_NAMES';
+import { Unit } from '../Unit/Unit';
 import { UnitTypes } from '../Unit/UnitTypes';
 
-export type FieldPreviewProps<T extends UnitName> = Pick<FieldProps<T>, 'value'>;
+export type FieldPreviewProps<T extends Unit> = Pick<FieldProps<T>, 'value'>;
 
-export type FieldProps<T extends UnitName> = {
+export type FieldProps<T extends Unit> = {
     value: UnitTypes[T];
     onChange: (value: UnitTypes[T]) => void;
 };
 
-export abstract class Field<T extends UnitName> extends React.Component<FieldProps<T>> {
+export abstract class Field<T extends Unit> extends React.Component<FieldProps<T>> {
 }
 
-export interface FieldClass<T extends UnitName = UnitName> {
+export interface FieldClass<T extends Unit = Unit> {
     isSupportsEasing: boolean;
     unit: T;
     Preview: React.SFC<FieldPreviewProps<T>>;

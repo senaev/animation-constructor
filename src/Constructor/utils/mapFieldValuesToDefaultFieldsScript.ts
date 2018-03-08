@@ -1,19 +1,20 @@
-import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementFields';
+import { AnimationElementFieldsTypes } from '../../AnimationElements/AnimationElementFieldsTypes';
 import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
-import { AnimationElementFieldsValues } from '../../AnimationElements/AnimationElementsFieldsValues';
-import { UnitScripts } from '../../AnimationScript';
+import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementsFieldsUnits';
+import { AnimationElementFieldsScript } from '../../AnimationScript';
+import { Unit } from '../../Unit/Unit';
 import { mapObjectValues } from '../../utils/mapObjectValues';
 import { createDefaultUnitScript } from './createDefaultUnitScript';
 
 export function mapFieldValuesToDefaultFieldsScript<T extends AnimationElementName>
-(elementName: T, fieldValues: AnimationElementFieldsValues): UnitScripts {
+(elementName: T, fieldValues: AnimationElementFieldsTypes<T>): AnimationElementFieldsScript<T> {
     return mapObjectValues(
         fieldValues,
         (value, fieldName) => {
             const animationElementFieldsUnits = AnimationElementsFieldsUnits[elementName];
-            const unitName = animationElementFieldsUnits[fieldName];
+            const unit = animationElementFieldsUnits[fieldName];
 
-            return createDefaultUnitScript(unitName, value);
+            return createDefaultUnitScript(unit as any as Unit, value) as any;
         }
     );
 }

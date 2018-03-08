@@ -1,6 +1,6 @@
 import { ALL_COLOR_PROPERTIES } from '../Color/ALL_COLOR_PROPERTIES';
 import { Color } from '../Color/Color';
-import { UnitName } from '../Unit/UNIT_NAMES';
+import { Unit } from '../Unit/Unit';
 import { mapArrayValuesToObject } from '../utils/mapArrayValuesToObject';
 import { UnitTransitionFunction } from './UnitTransitionFunction';
 
@@ -11,7 +11,7 @@ const proceedNumber = (position: number,
     return startValue + diff;
 };
 
-export const AllUnitTransitionFunctions: Record<UnitName, UnitTransitionFunction<UnitName>> = {
+export const AllUnitTransitionFunctions: Record<Unit, UnitTransitionFunction<Unit>> = {
     degree: proceedNumber,
     percent: proceedNumber,
     pixel: proceedNumber,

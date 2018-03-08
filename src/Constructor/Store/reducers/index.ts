@@ -1,4 +1,5 @@
 import { createReducer } from 'redux-act';
+import { AnimationElementName } from '../../../AnimationElements/AnimationElementName';
 import { AnimationElementScript } from '../../../AnimationScript';
 import { DEFAULT_BLOCK_POSITION_SCRIPT } from '../../../BlockPosition/DEFAULT_BLOCK_POSITION_SCRIPT';
 import { getAnimationElementScript } from '../../utils/getAnimationElementScript';
@@ -30,7 +31,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
 
         const { length } = animationScript;
 
-        const initialAnimationElementScript: AnimationElementScript = {
+        const initialAnimationElementScript: AnimationElementScript<AnimationElementName> = {
             elementName,
             blockPositionScript: DEFAULT_BLOCK_POSITION_SCRIPT,
             fieldsScript: getDefaultFieldsScriptForAnimationElement(elementName),

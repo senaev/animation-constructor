@@ -1,3 +1,4 @@
+import { AnimationElementName } from '../../../AnimationElements/AnimationElementName';
 import { AnimationElementScript, AnimationScript } from '../../../AnimationScript';
 import { BlockLocation } from '../../../BlockLocation/BlockLocation';
 import { AVAILABLE_RELATIONS } from '../../../Relation/AVAILABLE_RELATIONS';
@@ -7,7 +8,7 @@ export type ConstructorState = {
     editParams: {
         isNewElement: boolean;
         blockLocation: BlockLocation;
-        initialAnimationElementScript: AnimationElementScript;
+        initialAnimationElementScript: AnimationElementScript<AnimationElementName>;
     } | undefined,
     relation: Relation;
     animationScript: AnimationScript;

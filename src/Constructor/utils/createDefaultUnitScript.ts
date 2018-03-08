@@ -1,9 +1,9 @@
 import { UnitScript } from '../../AnimationScript';
 import { Easing } from '../../Easing/Easing';
-import { UnitName } from '../../Unit/UNIT_NAMES';
+import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 
-export function createDefaultUnitScript<T extends UnitName>(unit: T, value: UnitTypes[T]): UnitScript<T> {
+export function createDefaultUnitScript<T extends Unit>(unit: T, value: UnitTypes[T]): UnitScript<T> {
     return {
         unit,
         actions: [

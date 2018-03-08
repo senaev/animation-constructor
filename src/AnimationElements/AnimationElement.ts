@@ -1,17 +1,18 @@
 import { Unit } from '../Unit/Unit';
-import { UnitName } from '../Unit/UNIT_NAMES';
 import { UnitTypes } from '../Unit/UnitTypes';
+import { AnimationElementFieldsTypes } from './AnimationElementFieldsTypes';
+import { AnimationElementName } from './AnimationElementName';
 
-export abstract class AnimationElement<T extends Record<string, UnitTypes[UnitName]>> {
+export abstract class AnimationElement<T extends AnimationElementName> {
 
     constructor(protected readonly container: HTMLDivElement,
                 protected size: UnitTypes[Unit.pixel],
-                public values: T) {
+                public values: AnimationElementFieldsTypes<T>) {
         this.drawLayout(container);
         this.setValuesAbstract(values);
     }
 
-    public setValuesAbstract(values: T): void {
+    public setValuesAbstract(values: AnimationElementFieldsTypes<T>): void {
         this.values = values;
 
         this.setValues();
@@ -30,8 +31,8 @@ export abstract class AnimationElement<T extends Record<string, UnitTypes[UnitNa
     protected abstract drawLayout(container: HTMLDivElement): void;
 }
 
-export interface AnimationElementClass<T extends Record<string, UnitTypes[UnitName]>> {
+export interface AnimationElementClass<T extends AnimationElementName> {
     new(container: HTMLDivElement,
         size: UnitTypes[Unit.pixel],
-        values: T): AnimationElement<T>;
+        values: AnimationElementFieldsTypes<T>): AnimationElement<T>;
 }

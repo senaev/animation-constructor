@@ -26,7 +26,7 @@ export class Animation {
             container.className = c.AnimationBlock;
 
             const getBlockPositionByAnimationPosition =
-                createFieldsFunctionByUnitScripts(blockPositionScript) as (animationPosition: number) => BlockPosition;
+                createFieldsFunctionByUnitScripts(blockPositionScript);
             const getFieldValuesByAnimationPosition = createFieldsFunctionByUnitScripts(fieldsScript);
 
             const initialBlockPosition = getBlockPositionByAnimationPosition(animationPosition);

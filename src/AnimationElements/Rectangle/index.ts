@@ -3,14 +3,10 @@ import { UnitTypes } from '../../Unit/UnitTypes';
 import { colorToRGBAString } from '../../utils/colorToRGBAString';
 import { createDivWithClass } from '../../utils/createDivWithClass';
 import { AnimationElement } from '../AnimationElement';
+import { AnimationElements } from '../AnimationElements';
 import * as c from './index.pcss';
 
-export type RectangleFields = {
-    backgroundColor: UnitTypes[Unit.color];
-    borderRadius: UnitTypes[Unit.percent];
-};
-
-export class Rectangle extends AnimationElement<RectangleFields> {
+export class Rectangle extends AnimationElement<AnimationElements.Rectangle> {
     private rectangleDiv: HTMLElement;
 
     protected drawLayout(container: HTMLDivElement) {

@@ -15,6 +15,9 @@
     "moduleResolution": "node",
     "jsx": "react",
     "noErrorTruncation": true
+//    "strictPropertyInitialization": true,
+//    "strictFunctionTypes": true,
+//    "downlevelIteration": true
   },
   "exclude": [
     "node_modules"

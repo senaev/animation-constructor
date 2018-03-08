@@ -1,6 +1,6 @@
-import { UnitName } from '../Unit/UNIT_NAMES';
+import { Unit } from '../Unit/Unit';
 import { UnitTypes } from '../Unit/UnitTypes';
 
-export type UnitTransitionFunction<T extends UnitName> = (position: number,
-                                                          startValue: UnitTypes[T],
-                                                          endValue: UnitTypes[T]) => UnitTypes[T];
+export type UnitTransitionFunction<T extends Unit> = (position: number,
+                                                      startValue: UnitTypes[T],
+                                                      endValue: UnitTypes[T]) => UnitTypes[T];

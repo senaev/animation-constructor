@@ -1,19 +1,22 @@
 import { UnitScripts } from '../../../AnimationScript';
-import { UnitName } from '../../../Unit/UNIT_NAMES';
-import { UnitTypes } from '../../../Unit/UnitTypes';
+import { Unit } from '../../../Unit/Unit';
+import { UnitsToTypes } from '../../../Unit/UnitsToTypes';
 import { getObjectKeys } from '../../../utils/getObjectKeys';
 import { mapArrayValuesToObject } from '../../../utils/mapArrayValuesToObject';
 import { getValueByPosition } from '../getValueByPosition';
 
-export function createFieldsFunctionByUnitScripts(unitScripts: UnitScripts): (position: number) => Record<string, UnitTypes[UnitName]> {
+export function createFieldsFunctionByUnitScripts<T extends Record<string, Unit>>
+(unitScripts: UnitScripts<T>): (position: number) => UnitsToTypes<T> {
     const allFieldNames = getObjectKeys(unitScripts);
 
     return (newPosition: number) => {
         return mapArrayValuesToObject(allFieldNames, (fieldName) => {
+            const unitScript = unitScripts[fieldName];
+
             const {
-                actions,
                 unit,
-            } = unitScripts[fieldName];
+                actions,
+            } = unitScript;
 
             const { length } = actions;
 

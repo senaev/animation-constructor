@@ -2,7 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import { AllAnimationElementsDescriptions } from '../../../AnimationElements/AllAnimationElementsDescriptions';
+import { AnimationElementFieldTitles } from '../../../AnimationElements/AnimationElementFieldTitles';
+import { AnimationElementName } from '../../../AnimationElements/AnimationElementName';
 import { AnimationElementScript } from '../../../AnimationScript';
 import { ALL_BLOCK_POSITION_FIELD_NAMES } from '../../../BlockPosition/ALL_BLOCK_POSITION_FIELD_NAMES';
 import { BlockPositionFieldTitles } from '../../../BlockPosition/BlockPositionFieldTitles';
@@ -17,7 +18,7 @@ import * as c from './index.pcss';
 export type AnimationTimelinesOwnProps = {};
 export type AnimationTimelinesStateProps = {
     animationPosition: ConstructorState['animationPosition'];
-    animationElementScript: AnimationElementScript | undefined;
+    animationElementScript: AnimationElementScript<AnimationElementName> | undefined;
 };
 export type AnimationTimelinesDispatchProps = {
     setAnimationPosition: (animationPosition: ConstructorState['animationPosition']) => void;
@@ -59,7 +60,7 @@ class AnimationTimelinesComponent extends React.Component<AnimationTimelinesProp
                                                          elementName,
                                                          blockPositionScript,
                                                          fieldsScript,
-                                                     }: AnimationElementScript) => {
+                                                     }: AnimationElementScript<AnimationElementName>) => {
         return <React.Fragment>
             { ALL_BLOCK_POSITION_FIELD_NAMES.map((blockPositionFieldName, i) => {
                 const title = BlockPositionFieldTitles[blockPositionFieldName];
@@ -73,7 +74,7 @@ class AnimationTimelinesComponent extends React.Component<AnimationTimelinesProp
                 </div>;
             }) }
             { getObjectKeys(fieldsScript).map((fieldName, i) => {
-                const title = AllAnimationElementsDescriptions[elementName][fieldName].fieldTitle;
+                const title = AnimationElementFieldTitles[elementName][fieldName];
 
                 return <div
                     key={ i }

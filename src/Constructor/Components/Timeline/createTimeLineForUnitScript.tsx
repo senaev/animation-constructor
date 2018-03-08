@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { UnitScript } from '../../../AnimationScript/index';
+import { UnitScript } from '../../../AnimationScript';
 import { UnitTimelinePreviews } from '../../../TimelinePreviews/UnitTimelinePreviews';
-import { UnitName } from '../../../Unit/UNIT_NAMES';
+import { Unit } from '../../../Unit/Unit';
 import { TimeLine } from './index';
 
-export function createTimeLineForUnitScript<T extends UnitName>(unitScript: UnitScript<T>): React.ReactNode {
+export function createTimeLineForUnitScript<T extends Unit>(unitScript: UnitScript<T>): React.ReactNode {
     const {
         unit,
         actions,
