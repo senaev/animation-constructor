@@ -64,7 +64,7 @@ export class Animation {
         } of this.elementsAnimations) {
             // TODO: set just changed values
             applyBlockPositionToElement(container, getBlockPositionByAnimationPosition(animationPosition));
-            animationElement.setValuesAbstract(getFieldValuesByAnimationPosition(animationPosition));
+            animationElement.setValues(getFieldValuesByAnimationPosition(animationPosition));
         }
     }
 

@@ -12,12 +12,12 @@ const proceedNumber = (position: number,
 };
 
 export const AllUnitTransitionFunctions: Record<Unit, UnitTransitionFunction<Unit>> = {
-    degree: proceedNumber,
-    percent: proceedNumber,
-    pixel: proceedNumber,
-    color (position, startValue: Color, endValue: Color) {
+    [Unit.degree]: proceedNumber as UnitTransitionFunction<Unit>,
+    [Unit.percent]: proceedNumber as UnitTransitionFunction<Unit>,
+    [Unit.pixel]: proceedNumber as UnitTransitionFunction<Unit>,
+    [Unit.color]: ((position, startValue: Color, endValue: Color) => {
         return mapArrayValuesToObject(ALL_COLOR_PROPERTIES, (colorPropertyName) => {
             return proceedNumber(position, startValue[colorPropertyName], endValue[colorPropertyName]);
         });
-    },
+    }) as UnitTransitionFunction<Unit>,
 };

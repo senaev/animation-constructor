@@ -88,11 +88,13 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
 
             const FieldClass = ALL_FIELDS[unit];
 
+            const value: any = fieldsScript[fieldName].actions[0].value;
+
             return <span key={ key }>
                 {
                     `${fieldTitle} `
                 }
-                <FieldClass.Preview value={ fieldsScript[fieldName].actions[0].value }/>
+                <FieldClass.Preview value={ value }/>
                 {
                     arr.length === key + 1 ? '' : ', '
                 }
@@ -139,10 +141,11 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
                                 const unit = AnimationElementsFieldsUnits[elementName][fieldName];
                                 const FieldClass = ALL_FIELDS[unit];
                                 const unitName = FieldClass.unit;
+                                const value: any = fieldsScript[fieldName].actions[0].value;
 
                                 return <ListItem key={ key }
                                                  secondaryText={ `${fieldTitle} (${UnitTitles[unitName]})` }>
-                                    <FieldClass value={ fieldsScript[fieldName].actions[0].value }
+                                    <FieldClass value={ value }
                                                 onChange={ this.changeElementField(fieldName) }/>
                                 </ListItem>;
                             })

@@ -8,30 +8,36 @@ import { COLOR_TIMELINE_HEIGHT } from './COLOR_TIMELINE_HEIGHT';
 import * as c from './index.pcss';
 
 export class ColorTimeLinePreview extends React.Component<TimelitePreviewProps<Unit.color>> {
-    private resizeSensor: ResizeSensor;
-    private containerElement: HTMLDivElement;
+    private resizeSensor?: ResizeSensor;
+    private containerElement?: HTMLDivElement | null;
 
-    private canvas: HTMLCanvasElement;
+    private canvas?: HTMLCanvasElement | null;
 
     public render() {
         return <div
             className={ c.ColorTimeLinePreview }
             style={ { height: `${COLOR_TIMELINE_HEIGHT}px` } }
             ref={ (element) => {
-                this.containerElement = element!;
+                this.containerElement = element;
             } }
         >
             <canvas
                 className={ c.ColorTimeLinePreview__canvas }
                 ref={ (element) => {
-                    this.canvas = element!;
+                    this.canvas = element;
                 } }
             />
         </div>;
     }
 
     public componentDidMount() {
-        this.resizeSensor = new ResizeSensor(this.containerElement, () => {
+        const { containerElement } = this;
+
+        if (!containerElement) {
+            throw new Error('Container element has not been initialized');
+        }
+
+        this.resizeSensor = new ResizeSensor(containerElement, () => {
             this.redrawCanvas();
         });
 
@@ -43,11 +49,22 @@ export class ColorTimeLinePreview extends React.Component<TimelitePreviewProps<U
     }
 
     public componentWillUnmount() {
-        this.resizeSensor.destroy();
+        const { resizeSensor } = this;
+
+        if (!resizeSensor) {
+            throw new Error('ResizeSensor has not been initialized');
+        }
+
+        resizeSensor.destroy();
     }
 
     private redrawCanvas() {
         const { canvas } = this;
+
+        if (!canvas) {
+            throw new Error('canvas element has not been initialized');
+        }
+
         const {
             actions,
             unit,

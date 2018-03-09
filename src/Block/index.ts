@@ -14,6 +14,8 @@ export class Block {
                 // TODO: add flexible option
                 flexibility: boolean) {
         this.element = createDivWithClass(container, c.Block);
+
+        this.position = initialPosition;
         this.setPosition(initialPosition);
     }
 

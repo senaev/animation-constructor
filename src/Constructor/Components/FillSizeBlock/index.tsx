@@ -18,8 +18,8 @@ export type FillSizeBlockState = {
 const defaultSize = '100%';
 
 export class FillSizeBlock extends React.Component<FillSizeBlockProps, FillSizeBlockState> {
-    private container: HTMLElement | null;
-    private element: HTMLElement | null;
+    private container?: HTMLElement | null;
+    private element?: HTMLElement | null;
     private resizeSensor: ResizeSensor | undefined;
 
     constructor(props: FillSizeBlockProps) {

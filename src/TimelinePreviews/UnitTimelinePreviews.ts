@@ -9,8 +9,8 @@ export type TimelitePreviewProps<T extends Unit> = {
 };
 
 export const UnitTimelinePreviews: Record<Unit, React.ComponentClass<TimelitePreviewProps<Unit>>> = {
-    [Unit.degree]: NumberTimelinePreview,
-    [Unit.percent]: NumberTimelinePreview,
-    [Unit.pixel]: NumberTimelinePreview,
-    [Unit.color]: ColorTimeLinePreview,
+    [Unit.degree]: NumberTimelinePreview as React.ComponentClass<TimelitePreviewProps<Unit>>,
+    [Unit.percent]: NumberTimelinePreview as React.ComponentClass<TimelitePreviewProps<Unit>>,
+    [Unit.pixel]: NumberTimelinePreview as React.ComponentClass<TimelitePreviewProps<Unit>>,
+    [Unit.color]: ColorTimeLinePreview as React.ComponentClass<TimelitePreviewProps<Unit>>,
 };

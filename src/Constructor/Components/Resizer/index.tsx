@@ -22,14 +22,14 @@ type ResizerState = {
 };
 
 export class Resizer extends React.Component<ResizerProps, ResizerState> {
-    private element: HTMLDivElement;
-    private moveElement: HTMLDivElement;
-    private resizeElement: HTMLDivElement;
-    private rotationElement: HTMLDivElement;
+    private element?: HTMLDivElement | null;
+    private moveElement?: HTMLDivElement | null;
+    private resizeElement?: HTMLDivElement | null;
+    private rotationElement?: HTMLDivElement | null;
 
-    private dragListenerForResize: DragListener;
-    private dragListenerForRotation: DragListener;
-    private dragListenerForMove: DragListener;
+    private dragListenerForResize?: DragListener;
+    private dragListenerForRotation?: DragListener;
+    private dragListenerForMove?: DragListener;
 
     constructor(props: ResizerProps) {
         super(props);
@@ -65,7 +65,7 @@ export class Resizer extends React.Component<ResizerProps, ResizerState> {
                 [c.Resizer_grabbing]: isMoving,
             }) }
             ref={ (element) => {
-                this.element = element!;
+                this.element = element;
             } }
             style={ resizerStyles }>
             <div className={ cx(c.Resizer__dottedLine, c.Resizer__dottedLine_white) }/>
@@ -73,17 +73,17 @@ export class Resizer extends React.Component<ResizerProps, ResizerState> {
             <div
                 className={ c.Resizer__mover }
                 ref={ (element) => {
-                    this.moveElement = element!;
+                    this.moveElement = element;
                 } }/>
             <div
                 className={ c.Resizer__resizeSlider }
                 ref={ (element) => {
-                    this.resizeElement = element!;
+                    this.resizeElement = element;
                 } }/>
             <div
                 className={ c.Resizer__rotationSlider }
                 ref={ (element) => {
-                    this.rotationElement = element!;
+                    this.rotationElement = element;
                 } }/>
         </div>;
     }
@@ -94,6 +94,10 @@ export class Resizer extends React.Component<ResizerProps, ResizerState> {
             resizeElement,
             rotationElement,
         } = this;
+
+        if (!moveElement || !resizeElement || !rotationElement) {
+            throw new Error('One of elements has not been initialized');
+        }
 
         let startBlockPosition: Readonly<PointCoordinates>;
         this.dragListenerForMove = new DragListener(moveElement, {
@@ -163,9 +167,19 @@ export class Resizer extends React.Component<ResizerProps, ResizerState> {
     }
 
     public componentWillUnmount() {
-        this.dragListenerForResize.destroy();
-        this.dragListenerForRotation.destroy();
-        this.dragListenerForMove.destroy();
+        const {
+            dragListenerForResize,
+            dragListenerForRotation,
+            dragListenerForMove,
+        } = this;
+
+        if (!dragListenerForResize || !dragListenerForRotation || !dragListenerForMove) {
+            throw new Error('One of drag listeners has not been initialized');
+        }
+
+        dragListenerForResize.destroy();
+        dragListenerForRotation.destroy();
+        dragListenerForMove.destroy();
     }
 
     private getBlockOriginAbsoluteCoordinates(): PointCoordinates {
@@ -188,7 +202,19 @@ export class Resizer extends React.Component<ResizerProps, ResizerState> {
     }
 
     private getParentBlockRect(): ClientRect {
-        return this.element.parentElement!.getBoundingClientRect();
+        const { element } = this;
+
+        if (!element) {
+            throw new Error('Element is not defined');
+        }
+
+        const { parentElement } = element;
+
+        if (!parentElement) {
+            throw new Error('Element has no parent');
+        }
+
+        return parentElement.getBoundingClientRect();
     }
 
     private getPercentageInPixel(): UnitTypes[Unit.percent] {

@@ -16,11 +16,11 @@ export type TimeLineProps =
     & Partial<TimeLineCallbacks>;
 
 export class TimeLine extends React.Component<TimeLineProps, {}> {
-    private resizeSensor: ResizeSensor;
+    private resizeSensor?: ResizeSensor;
 
-    private containerElement: HTMLDivElement;
-    private containerWidth: number;
-    private movePointStartPosition: number;
+    private containerElement?: HTMLDivElement | null;
+    private containerWidth?: number;
+    private movePointStartPosition?: number;
 
     constructor(props: TimeLineProps) {
         super(props);
@@ -40,7 +40,7 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
 
         return <div className={ c.TimeLine }
                     ref={ (element) => {
-                        this.containerElement = element!;
+                        this.containerElement = element;
                     } }>
             <div className={ c.TimeLine__content }>{ children }</div>
             {
@@ -52,7 +52,16 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
                             this.movePointStartPosition = this.props.pointPositoins[i];
                         } }
                         onPositionChange={ (pixelOffset) => {
-                            const nextPosition = clamp(this.movePointStartPosition + pixelOffset / this.containerWidth, 0, 1);
+                            const {
+                                movePointStartPosition,
+                                containerWidth,
+                            } = this;
+
+                            if (typeof movePointStartPosition !== 'number' || typeof containerWidth !== 'number') {
+                                throw new Error('One of properties is not defined');
+                            }
+
+                            const nextPosition = clamp(movePointStartPosition + pixelOffset / containerWidth, 0, 1);
                             onMovePoint(nextPosition, i);
                         } }
                     />;
@@ -62,7 +71,13 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
     }
 
     public componentDidMount() {
-        this.resizeSensor = new ResizeSensor(this.containerElement, ({ width }) => {
+        const { containerElement } = this;
+
+        if (!containerElement) {
+            throw new Error('Container element has not been initialized');
+        }
+
+        this.resizeSensor = new ResizeSensor(containerElement, ({ width }) => {
             this.containerWidth = width;
         });
 
@@ -70,6 +85,12 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
     }
 
     public componentWillUnmount() {
-        this.resizeSensor.destroy();
+        const { resizeSensor } = this;
+
+        if (!resizeSensor) {
+            throw new Error('ResizeSensor has not been initialized');
+        }
+
+        resizeSensor.destroy();
     }
 }

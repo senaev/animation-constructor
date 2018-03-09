@@ -17,22 +17,41 @@ export type AnimationPreviewProps = Pick<ConstructorState,
 };
 
 export class AnimationPreview extends React.Component<AnimationPreviewProps, {}> {
-    private container: HTMLDivElement;
-    private resizeSensor: ResizeSensor;
-    private animation: Animation;
+    private container?: HTMLDivElement | null;
+    private resizeSensor?: ResizeSensor;
+    private animation?: Animation;
 
     private removeElementClickListener = noop;
 
     public render() {
         return <div ref={ (element) => {
-            this.container = element!;
+            this.container = element;
         } }/>;
     }
 
     public componentDidMount() {
-        this.resizeSensor = new ResizeSensor(this.container.parentElement!, ({ width, height }) => {
+        const { container } = this;
+
+        if (!container) {
+            throw new Error('Container element has not been initialized');
+        }
+
+        const { parentElement } = container;
+
+        if (!parentElement) {
+            throw new Error('Container has no parent element');
+        }
+
+        this.resizeSensor = new ResizeSensor(parentElement, ({ width, height }) => {
             const size = Math.min(width, height);
-            this.animation.setSize(size);
+
+            const { animation } = this;
+
+            if (!animation) {
+                throw new Error('Animation has not been initialized');
+            }
+
+            animation.setSize(size);
         });
 
         const {
@@ -43,15 +62,23 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
         this.recreateAnimation(animationScript, animationPosition);
 
 
-        this.removeElementClickListener = addElementEventListener(this.container, 'click', ({ target }) => {
+        this.removeElementClickListener = addElementEventListener(container, 'click', ({ target }) => {
+            const { animation } = this;
+
+            if (!animation) {
+                throw new Error('Animation has not been initialized');
+            }
+
             const blockLocation = getBlockLocationByElement(
-                this.container,
+                container,
                 target as HTMLElement,
-                this.animation.elementsAnimations
+                animation.elementsAnimations
             );
 
             if (blockLocation !== undefined) {
                 this.props.onSelectBlock(blockLocation);
+            } else {
+                throw new Error('Cannot find location for block');
             }
         });
     }
@@ -66,7 +93,13 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
         } = this.props;
 
         if (animationPosition !== newAnimationPosition) {
-            this.animation.setAnimationPosition(newAnimationPosition);
+            const { animation } = this;
+
+            if (!animation) {
+                throw new Error('Animation has not been initialized');
+            }
+
+            animation.setAnimationPosition(newAnimationPosition);
         }
 
         if (!deepEqual(animationScript, newAnimationScript)) {
@@ -76,7 +109,14 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
 
     public componentWillUnmount() {
         this.removeElementClickListener();
-        this.resizeSensor.destroy();
+
+        const { resizeSensor } = this;
+
+        if (!resizeSensor) {
+            throw new Error('ResizeSensor has not been initialized');
+        }
+
+        resizeSensor.destroy();
     }
 
     private recreateAnimation(animationScript: AnimationScript, animationPosition: number) {
@@ -84,10 +124,22 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
             this.animation.destroy();
         }
 
-        const { width, height } = this.resizeSensor.getSize();
+        const { resizeSensor } = this;
+
+        if (!resizeSensor) {
+            throw new Error('ResizeSensor has not been initialized');
+        }
+
+        const { width, height } = resizeSensor.getSize();
+
+        const { container } = this;
+
+        if (!container) {
+            throw new Error('Container element has not been initialized');
+        }
 
         this.animation = new Animation(
-            this.container,
+            container,
             animationScript,
             animationPosition,
             Math.min(width, height),

@@ -23,10 +23,10 @@ export type TimeLinePointState = {
 };
 
 export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLinePointState> {
-    private containerElement: HTMLDivElement;
+    private containerElement?: HTMLDivElement | null;
 
     private unsubscribeHoverChange = noop;
-    private cursorDragListener: DragListener;
+    private cursorDragListener?: DragListener;
 
     constructor(props: TimeLinePointProps) {
         super(props);
@@ -46,7 +46,7 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
 
         return <div
             ref={ (element) => {
-                this.containerElement = element!;
+                this.containerElement = element;
             } }
             className={ c.TimeLinePoint }
             style={ {
@@ -66,7 +66,13 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
     }
 
     public componentDidMount() {
-        this.unsubscribeHoverChange = subscribeHoverChange(this.containerElement, (isHovered) => {
+        const { containerElement } = this;
+
+        if (!containerElement) {
+            throw new Error('Container element has not been initialized');
+        }
+
+        this.unsubscribeHoverChange = subscribeHoverChange(containerElement, (isHovered) => {
             this.setState({ isHovered });
         });
 
@@ -76,7 +82,7 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
             onPositionChangeEnd = noop,
         } = this.props;
 
-        this.cursorDragListener = new DragListener(this.containerElement, {
+        this.cursorDragListener = new DragListener(containerElement, {
             onStart: () => {
                 this.setState({ isDraggedCursor: true });
                 onPositionChangeStart();
@@ -93,6 +99,13 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
 
     public componentWillUnmount() {
         this.unsubscribeHoverChange();
-        this.cursorDragListener.destroy();
+
+        const { cursorDragListener } = this;
+
+        if (!cursorDragListener) {
+            throw new Error('cursorDragListener has not been initialized');
+        }
+
+        cursorDragListener.destroy();
     }
 }
