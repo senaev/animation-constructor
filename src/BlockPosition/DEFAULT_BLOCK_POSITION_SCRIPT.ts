@@ -1,5 +1,5 @@
 import { BlockPositionFieldsScript } from '../AnimationScript';
-import { createDefaultUnitScript } from '../Constructor/Store/utils/createDefaultUnitScript';
+import { createDefaultUnitScript } from '../Store/utils/createDefaultUnitScript';
 import { mapArrayValuesToObject } from '../utils/mapArrayValuesToObject';
 import { ALL_BLOCK_POSITION_FIELD_NAMES } from './ALL_BLOCK_POSITION_FIELD_NAMES';
 import { BlockPositionFieldUnits } from './BlockPositionFieldUnits';
