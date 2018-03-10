@@ -135,13 +135,13 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
         };
     })
     .on(setBlockPositionScriptActionPositionAction, (state, {
-        blockPositionFieldName,
+        fieldName,
         actionIndex,
         position,
     }): ConstructorState => {
         return setBlockPositionScriptActionPosition(
             state,
-            blockPositionFieldName,
+            fieldName,
             actionIndex,
             position,
         );

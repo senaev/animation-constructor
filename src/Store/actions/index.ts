@@ -1,14 +1,16 @@
 import { createAction } from 'redux-act';
 import { AnimationElementFieldsTypes } from '../../AnimationElements/AnimationElementFieldsTypes';
 import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
+import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementsFieldsUnits';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { BlockPosition } from '../../BlockPosition/BlockPosition';
+import { BlockPositionFieldUnits } from '../../BlockPosition/BlockPositionFieldUnits';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
 import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 import { ConstructorState } from '../State';
-import { BlockPositionActionPosition, FieldActionPosition } from '../types/ActionPosition';
+import { ActionPosition } from '../types/ActionPosition';
 
 export const addStandardElementAction =
     createAction<AnimationElementName>('addStandardElementAction');
@@ -38,6 +40,6 @@ export const setAnimationPositionAction =
     createAction<ConstructorState['animationPosition']>('setAnimationPositionAction');
 
 export const setBlockPositionScriptActionPositionAction =
-    createAction<BlockPositionActionPosition>('setBlockPositionScriptActionPositionAction');
+    createAction<ActionPosition<BlockPositionFieldUnits>>('setBlockPositionScriptActionPositionAction');
 export const setFieldsScriptActionPositionAction =
-    createAction<FieldActionPosition>('setFieldsScriptActionPositionAction');
+    createAction<ActionPosition<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptActionPositionAction');

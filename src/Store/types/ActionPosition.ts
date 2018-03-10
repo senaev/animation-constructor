@@ -1,15 +1,7 @@
-import { AnimationElementFieldsNames } from '../../AnimationElements/AnimationElementFieldsNames';
-import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
-import { BlockPositionFieldName } from '../../BlockPosition/BlockPositionFieldName';
+import { Unit } from '../../Unit/Unit';
 
-export type BlockPositionActionPosition = {
-    blockPositionFieldName: BlockPositionFieldName;
-    actionIndex: number;
-    position: number;
-};
-
-export type FieldActionPosition = {
-    fieldName: AnimationElementFieldsNames<AnimationElementName>;
+export type ActionPosition<T extends Record<string, Unit>> = {
+    fieldName: keyof T;
     actionIndex: number;
     position: number;
 };

@@ -7,7 +7,7 @@ export function getEditedAnimationElementBlockLocation(state: ConstructorState):
     } = state;
 
     if (editParams === undefined) {
-        throw new Error('editParams should be set on AnimationElementFieldsTimeLines initialization');
+        throw new Error('editParams should be set on FieldsTimeLines initialization');
     }
 
     return editParams.blockLocation;
