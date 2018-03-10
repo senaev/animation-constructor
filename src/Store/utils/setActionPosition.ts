@@ -1,5 +1,5 @@
 import { ScriptAction } from '../../AnimationScript';
-import { getActionsPositions } from '../../AnimationScript/utils/getActionsPositions';
+import { getActionsParams } from '../../AnimationScript/utils/getActionsParams';
 import { Unit } from '../../Unit/Unit';
 
 export function setActionPosition<T extends Unit>(actions: ScriptAction<T>[],
@@ -9,18 +9,18 @@ export function setActionPosition<T extends Unit>(actions: ScriptAction<T>[],
         throw new Error('It is impossible to change first action position in UnitScript');
     }
 
-    const actionsPositions = getActionsPositions(actions);
+    const actionsPositions = getActionsParams(actions);
 
-    const previousActionPosition = actionsPositions[actionIndex - 1];
-    const nextActionPosition = actionsPositions[actionIndex + 1];
+    const previousActionPosition = actionsPositions[actionIndex - 1].position;
+    const nextActionPosition = actionsPositions[actionIndex + 1].position;
 
-    if (position <= previousActionPosition) {
-        throw new Error('It is impossible to set action position that less than or equal to previous action position');
+    if (position < previousActionPosition) {
+        throw new Error('It is impossible to set action position that less than previous action position');
     }
 
     if (nextActionPosition !== undefined) {
-        if (position >= nextActionPosition) {
-            throw new Error('It is impossible to set action position that greater than or equal to next action position');
+        if (position > nextActionPosition) {
+            throw new Error('It is impossible to set action position that greater than next action position');
         }
     }
 

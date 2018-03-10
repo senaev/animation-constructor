@@ -27,7 +27,7 @@ export function getValueByPosition<T extends Unit>(position: number,
             return value;
         } else {
             if (durationSum <= position && position <= nextDurationSum) {
-                if (easing === undefined) {
+                if (easing === undefined || duration === 0) {
                     return value;
                 }
 

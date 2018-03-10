@@ -11,10 +11,15 @@ type TimeLinePointCallbacks = {
     onPositionChangeEnd: (dragPosition: DragPosition) => void;
 };
 
+export type TimeLinePointMovableParams = {
+    min: number;
+    max: number;
+};
+
 export type TimeLinePointProps =
     & {
         position: number;
-        movable: boolean;
+        movable?: TimeLinePointMovableParams;
     }
     & Partial<TimeLinePointCallbacks>;
 

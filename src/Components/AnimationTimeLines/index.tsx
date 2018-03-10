@@ -34,7 +34,10 @@ class AnimationTimeLinesComponent extends React.Component<AnimationTimeLinesProp
             <TimeLine
                 points={ [{
                     position: animationPosition,
-                    movable: true,
+                    movable: {
+                        min: 0,
+                        max: 1,
+                    },
                 }] }
                 onMovePoint={ this.onPositionChange }
             >

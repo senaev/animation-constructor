@@ -2,7 +2,7 @@ import * as React from 'react';
 import { clamp } from '../../utils/clamp';
 import { noop } from '../../utils/noop';
 import { ResizeSensor } from '../../utils/ResizeSensor';
-import { TimeLinePoint } from '../TimeLinePoint';
+import { TimeLinePoint, TimeLinePointMovableParams } from '../TimeLinePoint';
 import * as c from './index.pcss';
 
 export type TimeLineMoveParams = {
@@ -18,7 +18,7 @@ export type TimeLineCallbacks = {
 
 export type PointParams = {
     position: number;
-    movable: boolean;
+    movable?: TimeLinePointMovableParams;
 };
 
 export type TimeLineProps =
@@ -77,13 +77,13 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
                         } }
                         onPositionChange={ ({ relativeX }) => {
                             onMovePoint({
-                                position: this.getPositionByPixelOffset(relativeX),
+                                position: this.getPositionByPixelOffset(relativeX, i),
                                 pointIndex: i,
                             });
                         } }
                         onPositionChangeEnd={ ({ relativeX }) => {
                             onMovePointEnd({
-                                position: this.getPositionByPixelOffset(relativeX),
+                                position: this.getPositionByPixelOffset(relativeX, i),
                                 pointIndex: i,
                             });
                         } }
@@ -117,16 +117,25 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
         resizeSensor.destroy();
     }
 
-    private getPositionByPixelOffset(pixelOffset: number): number {
+    private getPositionByPixelOffset(pixelOffset: number,
+                                     pointIndex: number): number {
         const {
             movePointStartPosition,
             containerWidth,
         } = this;
 
+        const { movable } = this.props.points[pointIndex];
+
+        if (!movable) {
+            throw new Error('Point should not be moved');
+        }
+
+        const { min, max } = movable;
+
         if (typeof movePointStartPosition !== 'number' || typeof containerWidth !== 'number') {
             throw new Error('One of properties is not defined');
         }
 
-        return clamp(movePointStartPosition + pixelOffset / containerWidth, 0, 1);
+        return clamp(movePointStartPosition + pixelOffset / containerWidth, min, max);
     }
 }
