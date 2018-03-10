@@ -9,7 +9,8 @@ import { AnimationElementScript } from '../../AnimationScript';
 import { BlockPositionFieldTitles } from '../../BlockPosition/BlockPositionFieldTitles';
 import { BlockPositionFieldUnits } from '../../BlockPosition/BlockPositionFieldUnits';
 import {
-    setAnimationPositionAction, setBlockPositionScriptActionPositionAction,
+    setAnimationPositionAction,
+    setBlockPositionScriptActionPositionAction,
     setFieldsScriptActionPositionAction,
 } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
@@ -23,6 +24,7 @@ import * as c from './index.pcss';
 import { TimeLine } from './TimeLine';
 
 export type TimeLinesState = {
+    isChangingActionPosition: boolean;
     containerWidth: UnitTypes[Unit.pixel];
 };
 
@@ -48,6 +50,7 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
         super(props);
 
         this.state = {
+            isChangingActionPosition: false,
             containerWidth: 0,
         };
     }
@@ -61,6 +64,7 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
         } = this.props;
 
         const {
+            isChangingActionPosition,
             containerWidth,
         } = this.state;
 
@@ -88,16 +92,22 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                     ? null
                     : <>
                         <FieldsTimeLines
+                            isChangingActionPosition={isChangingActionPosition}
                             fieldsScripts={ animationElementScript.blockPositionScript }
                             titlesDictionary={ BlockPositionFieldTitles }
                             containerWidth={ containerWidth }
+                            onScriptActionPositionChangeStart={ this.onScriptActionPositionChangeStart }
                             onScriptActionPositionChange={ setBlockPositionScriptActionPosition }
+                            onScriptActionPositionChangeEnd={ this.onScriptActionPositionChangeEnd }
                         />
                         <FieldsTimeLines
+                            isChangingActionPosition={isChangingActionPosition}
                             fieldsScripts={ animationElementScript.fieldsScript }
                             titlesDictionary={ AnimationElementFieldTitles[animationElementScript.elementName] }
                             containerWidth={ containerWidth }
+                            onScriptActionPositionChangeStart={ this.onScriptActionPositionChangeStart }
                             onScriptActionPositionChange={ setFieldsScriptActionPosition }
+                            onScriptActionPositionChangeEnd={ this.onScriptActionPositionChangeEnd }
                         />
                     </>
             }
@@ -122,6 +132,14 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
 
     private onPositionChange = (position: number) => {
         this.props.setAnimationPosition(position);
+    }
+
+    private onScriptActionPositionChangeStart = () => {
+        this.setState({ isChangingActionPosition: true });
+    }
+
+    private onScriptActionPositionChangeEnd = () => {
+        this.setState({ isChangingActionPosition: false });
     }
 }
 

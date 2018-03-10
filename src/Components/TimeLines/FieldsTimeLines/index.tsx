@@ -1,6 +1,9 @@
 import * as React from 'react';
+import { getValueByPosition } from '../../../Animation/util/getValueByPosition';
 import { FieldsScripts } from '../../../AnimationScript/index';
 import { getActionsParams } from '../../../AnimationScript/utils/getActionsParams';
+import { ALL_FIELDS } from '../../../Fields/ALL_FIELDS';
+import { FieldClass } from '../../../Fields/Field';
 import { ActionPosition } from '../../../Store/types/ActionPosition';
 import { UnitTimelinePreviews } from '../../../TimelinePreviews/UnitTimelinePreviews';
 import { Unit } from '../../../Unit/Unit';
@@ -14,7 +17,10 @@ export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
     fieldsScripts: FieldsScripts<T>;
     titlesDictionary: Record<keyof T, string>;
     containerWidth: UnitTypes[Unit.pixel];
+    isChangingActionPosition: boolean;
+    onScriptActionPositionChangeStart: (actionPosition: ActionPosition<T>) => void;
     onScriptActionPositionChange: (actionPosition: ActionPosition<T>) => void;
+    onScriptActionPositionChangeEnd: (actionPosition: ActionPosition<T>) => void;
 };
 
 export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Component<FieldsTimeLinesProps<T>, {}> {
@@ -23,7 +29,10 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
             fieldsScripts,
             titlesDictionary,
             containerWidth,
+            isChangingActionPosition,
+            onScriptActionPositionChangeStart,
             onScriptActionPositionChange,
+            onScriptActionPositionChangeEnd,
         } = this.props;
 
         return getObjectKeys(fieldsScripts).map((fieldName, i) => {
@@ -55,12 +64,36 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                     };
                 }
 
+                const value: any = getValueByPosition(position, unit, actions);
+                const FieldClassX: FieldClass<any> = ALL_FIELDS[unit];
+
                 return {
                     position,
                     movable,
+                    tooltip: isChangingActionPosition
+                        ? undefined
+                        : <FieldClassX
+                            value={ value }
+                            onChange={ (value: any) => {
+                                console.log(value);
+                            } }/>,
                     containerWidth,
+                    onPositionChangeStart: (nextPosition: number) => {
+                        onScriptActionPositionChangeStart({
+                            fieldName,
+                            actionIndex,
+                            position: nextPosition,
+                        });
+                    },
                     onPositionChange: (nextPosition: number) => {
                         onScriptActionPositionChange({
+                            fieldName,
+                            actionIndex,
+                            position: nextPosition,
+                        });
+                    },
+                    onPositionChangeEnd: (nextPosition: number) => {
+                        onScriptActionPositionChangeEnd({
                             fieldName,
                             actionIndex,
                             position: nextPosition,

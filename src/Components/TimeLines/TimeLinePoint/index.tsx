@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Cursor } from '../../../Cursor/Cursor';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
-import { clamp } from '../../../utils/clamp/index';
-import { DragListener, DragPosition } from '../../../utils/DragListener/index';
-import { noop } from '../../../utils/noop/index';
-import { subscribeHoverChange } from '../../../utils/subscribeHoverChange/index';
+import { clamp } from '../../../utils/clamp';
+import { DragListener, DragPosition } from '../../../utils/DragListener';
+import { noop } from '../../../utils/noop';
+import { subscribeHoverChange } from '../../../utils/subscribeHoverChange';
+import { TimeLinePointTooltip } from '../TimeLinePointTooltip';
 import * as c from './index.pcss';
 
 type TimeLinePointCallbacks = {
@@ -24,6 +25,7 @@ export type TimeLinePointProps =
         position: number;
         containerWidth: UnitTypes[Unit.pixel];
         movable?: TimeLinePointMovableParams;
+        tooltip?: React.ReactNode;
     }
     & Partial<TimeLinePointCallbacks>;
 
@@ -34,6 +36,7 @@ export type TimeLinePointState = {
 
 export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLinePointState> {
     private containerElement?: HTMLDivElement | null;
+    private dragElement?: HTMLDivElement | null;
 
     private unsubscribeHoverChange = noop;
     private cursorDragListener?: DragListener;
@@ -49,13 +52,14 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
 
     public render() {
         const {
-            // isHovered,
+            isHovered,
             draggingStartPosition,
         } = this.state;
 
         const {
             position,
             movable,
+            tooltip,
         } = this.props;
 
         return <div
@@ -80,15 +84,26 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
                         ? Cursor.grab
                         : Cursor.default,
                 } }
+                ref={ (element) => {
+                    this.dragElement = element;
+                } }
             />
+            {
+                tooltip && isHovered && draggingStartPosition === undefined
+                    ? <TimeLinePointTooltip>{ tooltip }</TimeLinePointTooltip>
+                    : null
+            }
         </div>;
     }
 
     public componentDidMount() {
-        const { containerElement } = this;
+        const {
+            containerElement,
+            dragElement,
+        } = this;
 
-        if (!containerElement) {
-            throw new Error('Container element has not been initialized');
+        if (!containerElement || !dragElement) {
+            throw new Error('One of elements has not been initialized');
         }
 
         this.unsubscribeHoverChange = subscribeHoverChange(containerElement, (isHovered) => {
@@ -103,7 +118,7 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
         } = this.props;
 
         if (movable) {
-            this.cursorDragListener = new DragListener(containerElement, {
+            this.cursorDragListener = new DragListener(dragElement, {
                 onStart: (dragPosition) => {
                     this.setState({ draggingStartPosition: this.props.position });
                     onPositionChangeStart(this.getPositionByPixelOffset(dragPosition));
