@@ -18,7 +18,7 @@ export class ColorField extends Field<UNIT> {
     public static Preview = ({ value }: FieldPreviewProps<UNIT>) => {
         return <div className={ c.ColorField__preview }>
             <div className={ c.ColorField__preview_filler }
-                 style={ { backgroundColor: value } }/>
+                 style={ { backgroundColor: colorToRGBAString(value) } }/>
         </div>;
     }
 
