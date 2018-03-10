@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { ConstructorState } from '../../Store/State';
 import { DragListener, DragPosition } from '../../utils/DragListener';
 import { noop } from '../../utils/noop';
 import { subscribeHoverChange } from '../../utils/subscribeHoverChange';
-import { ConstructorState } from '../../Store/State';
 import * as c from './index.pcss';
 
 type TimeLinePointCallbacks = {
