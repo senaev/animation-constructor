@@ -19,8 +19,8 @@ import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 import { ResizeSensor } from '../../utils/ResizeSensor';
 import { FieldsTimeLines } from './FieldsTimeLines';
-import { TimeLine } from './TimeLine';
 import * as c from './index.pcss';
+import { TimeLine } from './TimeLine';
 
 export type TimeLinesState = {
     containerWidth: UnitTypes[Unit.pixel];

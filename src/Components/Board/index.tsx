@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { ConstructorState } from '../../Store/State';
-import { TimeLines } from '../TimeLines';
 import { BoardFields } from '../BoardFields';
 import { BoardPalette } from '../BoardPalette';
 import { BoardPreview } from '../BoardPreview';
+import { TimeLines } from '../TimeLines';
 import * as c from './index.pcss';
 
 export type BoardProps = Pick<ConstructorState,
