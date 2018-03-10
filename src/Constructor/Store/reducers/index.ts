@@ -2,18 +2,14 @@ import { createReducer } from 'redux-act';
 import { AnimationElementName } from '../../../AnimationElements/AnimationElementName';
 import { AnimationElementScript } from '../../../AnimationScript';
 import { DEFAULT_BLOCK_POSITION_SCRIPT } from '../../../BlockPosition/DEFAULT_BLOCK_POSITION_SCRIPT';
-import { getAnimationElementScript } from '../../utils/getAnimationElementScript';
-import { getDefaultFieldsScriptForAnimationElement } from '../../utils/getDefaultFieldsScriptForAnimationElement';
-import { removeElement } from '../../utils/removeElement';
-import { setAnimationElementFields } from '../../utils/setAnimationElementFields';
-import { setAnimationElementScript } from '../../utils/setAnimationElementScript';
-import { setBlockPositionFields } from '../../utils/setBlockPositionFields';
 import {
     addStandardElementAction,
+    completeBlockPositionScriptActionPositionChangeAction,
     discardChangesAction,
     saveElementAction,
     selectBlockAction,
     setAnimationPositionAction,
+    setBlockPositionScriptActionPositionAction,
     setEditedBlockCoordinatesAction,
     setEditedBlockPositionAction,
     setEditedBlockRotationAction,
@@ -22,6 +18,13 @@ import {
     setRelationAction,
 } from '../actions';
 import { ConstructorState } from '../State';
+import { getDefaultFieldsScriptForAnimationElement } from '../utils/getDefaultFieldsScriptForAnimationElement';
+import { getEditedAnimationElementScript } from '../utils/getEditedAnimationElementScript';
+import { removeElement } from '../utils/removeElement';
+import { setAnimationElementFields } from '../utils/setAnimationElementFields';
+import { setBlockPositionFields } from '../utils/setBlockPositionFields';
+import { setBlockPositionScriptActionPosition } from '../utils/setBlockPositionScriptActionPosition';
+import { setEditedAnimationElementScript } from '../utils/setEditedAnimationElementScript';
 
 export const createConstructorReducer = (appState: ConstructorState) => createReducer<ConstructorState>({}, appState)
     .on(addStandardElementAction, (state, elementName): ConstructorState => {
@@ -60,7 +63,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             editParams: {
                 isNewElement: false,
                 blockLocation,
-                initialAnimationElementScript: getAnimationElementScript(state, blockLocation),
+                initialAnimationElementScript: getEditedAnimationElementScript(state),
             },
         };
     })
@@ -92,7 +95,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             };
         } else {
             return {
-                ...setAnimationElementScript(state, blockLocation, initialAnimationElementScript),
+                ...setEditedAnimationElementScript(state, initialAnimationElementScript),
                 editParams: undefined,
             };
         }
@@ -152,5 +155,27 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
         return {
             ...state,
             animationPosition,
+        };
+    })
+    .on(setBlockPositionScriptActionPositionAction, (state, {
+        blockPositionFieldName,
+        actionIndex,
+        position,
+    }): ConstructorState => {
+        return setBlockPositionScriptActionPosition(
+            state,
+            blockPositionFieldName,
+            actionIndex,
+            position,
+        );
+    })
+    .on(completeBlockPositionScriptActionPositionChangeAction, (state, {
+        blockPositionFieldName,
+        actionIndex,
+        position,
+    }): ConstructorState => {
+        // TODO
+        return {
+            ...state,
         };
     });

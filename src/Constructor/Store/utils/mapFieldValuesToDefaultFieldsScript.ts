@@ -1,9 +1,9 @@
-import { AnimationElementFieldsTypes } from '../../AnimationElements/AnimationElementFieldsTypes';
-import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
-import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementsFieldsUnits';
-import { AnimationElementFieldsScript } from '../../AnimationScript';
-import { Unit } from '../../Unit/Unit';
-import { mapObjectValues } from '../../utils/mapObjectValues';
+import { AnimationElementFieldsTypes } from '../../../AnimationElements/AnimationElementFieldsTypes';
+import { AnimationElementName } from '../../../AnimationElements/AnimationElementName';
+import { AnimationElementsFieldsUnits } from '../../../AnimationElements/AnimationElementsFieldsUnits';
+import { AnimationElementFieldsScript } from '../../../AnimationScript';
+import { Unit } from '../../../Unit/Unit';
+import { mapObjectValues } from '../../../utils/mapObjectValues';
 import { createDefaultUnitScript } from './createDefaultUnitScript';
 
 export function mapFieldValuesToDefaultFieldsScript<T extends AnimationElementName>

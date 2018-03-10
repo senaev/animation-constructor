@@ -4,10 +4,9 @@ import * as Redux from 'redux';
 import { Action } from 'redux-act';
 import { AnimationElementName } from '../../../AnimationElements/AnimationElementName';
 import { AnimationElementScript } from '../../../AnimationScript';
-import { setAnimationPositionAction, setBlockPositionScriptActionPositionAction } from '../../Store/actions';
+import { setAnimationPositionAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
-import { ActionPosition } from '../../Store/types/ActionPosition';
-import { getAnimationElementScript } from '../../utils/getAnimationElementScript';
+import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { AnimationElementFieldsTimeLines } from '../AnimationElementFieldsTimeLines';
 import { TimeLine, TimeLineMoveParams } from '../TimeLine';
 import * as c from './index.pcss';
@@ -18,7 +17,6 @@ export type AnimationTimeLinesStateProps = {
 };
 export type AnimationTimeLinesDispatchProps = {
     setAnimationPosition: (animationPosition: ConstructorState['animationPosition']) => void;
-    setBlockPositionScriptActionPosition: (actionPosition: ActionPosition) => void;
 };
 
 export type AnimationTimeLinesProps =
@@ -42,9 +40,7 @@ class AnimationTimeLinesComponent extends React.Component<AnimationTimeLinesProp
             {
                 animationElementScript === undefined
                     ? null
-                    : <AnimationElementFieldsTimeLines
-                        animationElementScript={ animationElementScript }
-                    />
+                    : <AnimationElementFieldsTimeLines/>
             }
         </div>;
     }
@@ -62,7 +58,7 @@ const mapStateToProps = (state: ConstructorState): AnimationTimeLinesStateProps 
 
     const animationElementScript = editParams === undefined
         ? undefined
-        : getAnimationElementScript(state, editParams.blockLocation);
+        : getEditedAnimationElementScript(state);
 
     return {
         animationPosition,
@@ -73,9 +69,6 @@ const mapStateToProps = (state: ConstructorState): AnimationTimeLinesStateProps 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): AnimationTimeLinesDispatchProps => ({
     setAnimationPosition: (animationPosition) => {
         dispatch(setAnimationPositionAction(animationPosition));
-    },
-    setBlockPositionScriptActionPosition: (actionPosition: ActionPosition) => {
-        dispatch(setBlockPositionScriptActionPositionAction(actionPosition));
     },
 });
 

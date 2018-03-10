@@ -1,7 +1,7 @@
-import { AnimationElementFieldsTypes } from '../../AnimationElements/AnimationElementFieldsTypes';
-import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
-import { AnimationElementsDefaultValues } from '../../AnimationElements/AnimationElementsDefaultValues';
-import { AnimationElementFieldsScript } from '../../AnimationScript';
+import { AnimationElementFieldsTypes } from '../../../AnimationElements/AnimationElementFieldsTypes';
+import { AnimationElementName } from '../../../AnimationElements/AnimationElementName';
+import { AnimationElementsDefaultValues } from '../../../AnimationElements/AnimationElementsDefaultValues';
+import { AnimationElementFieldsScript } from '../../../AnimationScript';
 import { mapFieldValuesToDefaultFieldsScript } from './mapFieldValuesToDefaultFieldsScript';
 
 export function getDefaultFieldsScriptForAnimationElement<T extends AnimationElementName>

@@ -1,11 +1,11 @@
-import { AnimationElementFieldsTypes } from '../../AnimationElements/AnimationElementFieldsTypes';
-import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
-import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementsFieldsUnits';
-import { AnimationElementScript } from '../../AnimationScript';
-import { BlockLocation } from '../../BlockLocation/BlockLocation';
-import { Unit } from '../../Unit/Unit';
-import { mapObjectValues } from '../../utils/mapObjectValues';
-import { ConstructorState } from '../Store/State';
+import { AnimationElementFieldsTypes } from '../../../AnimationElements/AnimationElementFieldsTypes';
+import { AnimationElementName } from '../../../AnimationElements/AnimationElementName';
+import { AnimationElementsFieldsUnits } from '../../../AnimationElements/AnimationElementsFieldsUnits';
+import { AnimationElementScript } from '../../../AnimationScript';
+import { BlockLocation } from '../../../BlockLocation/BlockLocation';
+import { Unit } from '../../../Unit/Unit';
+import { mapObjectValues } from '../../../utils/mapObjectValues';
+import { ConstructorState } from '../State';
 import { createDefaultUnitScript } from './createDefaultUnitScript';
 
 export function setAnimationElementFields<T extends AnimationElementName>
