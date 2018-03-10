@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ConstructorState } from '../../Store/State';
+import { Cursor } from '../../Cursor/Cursor';
 import { DragListener, DragPosition } from '../../utils/DragListener';
 import { noop } from '../../utils/noop';
 import { subscribeHoverChange } from '../../utils/subscribeHoverChange';
@@ -13,13 +13,14 @@ type TimeLinePointCallbacks = {
 
 export type TimeLinePointProps =
     & {
-        position: ConstructorState['animationPosition'];
+        position: number;
+        movable: boolean;
     }
     & Partial<TimeLinePointCallbacks>;
 
 export type TimeLinePointState = {
     isHovered: boolean;
-    isDraggedCursor: boolean;
+    isDragging: boolean;
 };
 
 export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLinePointState> {
@@ -33,16 +34,20 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
 
         this.state = {
             isHovered: false,
-            isDraggedCursor: false,
+            isDragging: false,
         };
     }
 
     public render() {
         const {
-            isHovered,
-            isDraggedCursor,
+            // isHovered,
+            isDragging,
         } = this.state;
-        const { position } = this.props;
+
+        const {
+            position,
+            movable,
+        } = this.props;
 
         return <div
             ref={ (element) => {
@@ -51,15 +56,20 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
             className={ c.TimeLinePoint }
             style={ {
                 left: `${position * 100}%`,
-                cursor: isDraggedCursor ? '-webkit-grabbing' : '-webkit-grab',
+                cursor: movable ?
+                    isDragging
+                        ? Cursor.grabbing
+                        : Cursor.grab
+                    : Cursor.default,
             } }
         >
             <div className={ c.TimeLinePoint__pointer }/>
-            <div className={ c.TimeLinePoint__hoverZone }/>
             <div
-                className={ c.TimeLinePoint__cursor }
+                className={ c.TimeLinePoint__hoverZone }
                 style={ {
-                    display: isHovered || isDraggedCursor ? 'block' : 'none',
+                    cursor: movable
+                        ? Cursor.grab
+                        : Cursor.default,
                 } }
             />
         </div>;
@@ -77,24 +87,27 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
         });
 
         const {
+            movable,
             onPositionChangeStart = noop,
             onPositionChange = noop,
             onPositionChangeEnd = noop,
         } = this.props;
 
-        this.cursorDragListener = new DragListener(containerElement, {
-            onStart: (dragPosition) => {
-                this.setState({ isDraggedCursor: true });
-                onPositionChangeStart(dragPosition);
-            },
-            onMove: (dragPosition) => {
-                onPositionChange(dragPosition);
-            },
-            onEnd: (dragPosition) => {
-                this.setState({ isDraggedCursor: false });
-                onPositionChangeEnd(dragPosition);
-            },
-        });
+        if (movable) {
+            this.cursorDragListener = new DragListener(containerElement, {
+                onStart: (dragPosition) => {
+                    this.setState({ isDragging: true });
+                    onPositionChangeStart(dragPosition);
+                },
+                onMove: (dragPosition) => {
+                    onPositionChange(dragPosition);
+                },
+                onEnd: (dragPosition) => {
+                    this.setState({ isDragging: false });
+                    onPositionChangeEnd(dragPosition);
+                },
+            });
+        }
     }
 
     public componentWillUnmount() {

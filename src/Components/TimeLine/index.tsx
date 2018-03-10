@@ -16,9 +16,14 @@ export type TimeLineCallbacks = {
     onMovePointEnd: (timeLineMoveParams: TimeLineMoveParams) => void;
 };
 
+export type PointParams = {
+    position: number;
+    movable: boolean;
+};
+
 export type TimeLineProps =
     & {
-        pointPositoins: number[];
+        points: PointParams[];
     }
     & Partial<TimeLineCallbacks>;
 
@@ -40,7 +45,7 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
 
     public render() {
         const {
-            pointPositoins,
+            points,
             onMovePointStart = noop,
             onMovePoint = noop,
             onMovePointEnd = noop,
@@ -53,12 +58,16 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
                     } }>
             <div className={ c.TimeLine__content }>{ children }</div>
             {
-                pointPositoins.map((position, i) => {
+                points.map(({
+                                position,
+                                movable,
+                            }, i) => {
                     return <TimeLinePoint
                         key={ i }
                         position={ position }
+                        movable={ movable }
                         onPositionChangeStart={ () => {
-                            const startPosition = this.props.pointPositoins[i];
+                            const startPosition = this.props.points[i].position;
 
                             this.movePointStartPosition = startPosition;
                             onMovePointStart({

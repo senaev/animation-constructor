@@ -32,7 +32,10 @@ class AnimationTimeLinesComponent extends React.Component<AnimationTimeLinesProp
 
         return <div className={ c.AnimationTimelines }>
             <TimeLine
-                pointPositoins={ [animationPosition] }
+                points={ [{
+                    position: animationPosition,
+                    movable: true,
+                }] }
                 onMovePoint={ this.onPositionChange }
             >
                 <div className={ c.AnimationTimelines__positionTimeLine }/>

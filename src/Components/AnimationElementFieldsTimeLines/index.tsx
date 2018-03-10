@@ -14,7 +14,7 @@ import { ConstructorState } from '../../Store/State';
 import { ActionPosition } from '../../Store/types/ActionPosition';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { getObjectKeys } from '../../utils/getObjectKeys';
-import * as c from '../AnimationTimelines/index.pcss';
+import * as c from '../AnimationTimeLines/index.pcss';
 import { UnitScriptTimeLine } from '../UnitScriptTimeLine';
 
 export type AnimationElementFieldsTimeLinesStateProps = {

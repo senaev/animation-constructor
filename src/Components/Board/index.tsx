@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { ConstructorState } from '../../Store/State';
-import { AnimationTimelines } from '../AnimationTimelines';
+import { AnimationTimelines } from '../AnimationTimeLines';
 import { BoardFields } from '../BoardFields';
 import { BoardPalette } from '../BoardPalette';
 import { BoardPreview } from '../BoardPreview';

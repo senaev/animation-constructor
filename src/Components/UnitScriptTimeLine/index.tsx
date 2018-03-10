@@ -3,7 +3,7 @@ import { UnitScript } from '../../AnimationScript';
 import { getActionsPositions } from '../../AnimationScript/utils/getActionsPositions';
 import { UnitTimelinePreviews } from '../../TimelinePreviews/UnitTimelinePreviews';
 import { Unit } from '../../Unit/Unit';
-import { TimeLine, TimeLineCallbacks } from '../TimeLine';
+import { PointParams, TimeLine, TimeLineCallbacks } from '../TimeLine';
 
 export type UnitScriptTimeLineProps<T extends Unit> =
     & {
@@ -29,8 +29,15 @@ export class UnitScriptTimeLine<T extends Unit> extends React.Component<UnitScri
 
         const TimelinePreviewClass = UnitTimelinePreviews[unit];
 
+        const points: PointParams[] = pointPositions.map((position, i) => {
+            return {
+                position,
+                movable: i !== 0,
+            };
+        });
+
         return <TimeLine
-            pointPositoins={ pointPositions }
+            points={ points }
             onMovePointStart={ onMovePointStart }
             onMovePoint={ onMovePoint }
             onMovePointEnd={ onMovePointEnd }
