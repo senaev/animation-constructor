@@ -5,14 +5,13 @@ import { Action } from 'redux-act';
 import { AnimationElementFieldTitles } from '../../../AnimationElements/AnimationElementFieldTitles';
 import { AnimationElementName } from '../../../AnimationElements/AnimationElementName';
 import { AnimationElementScript } from '../../../AnimationScript';
-import { ALL_BLOCK_POSITION_FIELD_NAMES } from '../../../BlockPosition/ALL_BLOCK_POSITION_FIELD_NAMES';
 import { BlockPositionFieldTitles } from '../../../BlockPosition/BlockPositionFieldTitles';
 import { getObjectKeys } from '../../../utils/getObjectKeys';
 import { setAnimationPositionAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
 import { getAnimationElementScript } from '../../utils/getAnimationElementScript';
-import { TimeLine } from '../Timeline';
-import { createTimeLineForUnitScript } from '../Timeline/createTimeLineForUnitScript';
+import { TimeLine, TimeLineMoveParams } from '../TimeLine';
+import { UnitScriptTimeLine } from '../UnitScriptTimeLine';
 import * as c from './index.pcss';
 
 export type AnimationTimelinesOwnProps = {};
@@ -48,12 +47,11 @@ class AnimationTimelinesComponent extends React.Component<AnimationTimelinesProp
                     ? null
                     : this.createAnimationElementFieldsTimeLines(animationElementScript)
             }
-        </div>
-            ;
+        </div>;
     }
 
-    private onPositionChange = (nextAnimationPosition: number) => {
-        this.props.setAnimationPosition(nextAnimationPosition);
+    private onPositionChange = ({ position }: TimeLineMoveParams) => {
+        this.props.setAnimationPosition(position);
     }
 
     private createAnimationElementFieldsTimeLines = ({
@@ -62,7 +60,7 @@ class AnimationTimelinesComponent extends React.Component<AnimationTimelinesProp
                                                          fieldsScript,
                                                      }: AnimationElementScript<AnimationElementName>) => {
         return <React.Fragment>
-            { ALL_BLOCK_POSITION_FIELD_NAMES.map((blockPositionFieldName, i) => {
+            { getObjectKeys(blockPositionScript).map((blockPositionFieldName, i) => {
                 const title = BlockPositionFieldTitles[blockPositionFieldName];
 
                 return <div
@@ -70,7 +68,7 @@ class AnimationTimelinesComponent extends React.Component<AnimationTimelinesProp
                     className={ c.AnimationTimelines__TimeLine__padding }
                 >
                     <div className={ c.AnimationTimelines__TimeLine__title }>{ title }</div>
-                    { createTimeLineForUnitScript(blockPositionScript[blockPositionFieldName]) }
+                    <UnitScriptTimeLine unitScript={ blockPositionScript[blockPositionFieldName] }/>
                 </div>;
             }) }
             { getObjectKeys(fieldsScript).map((fieldName, i) => {
@@ -83,7 +81,7 @@ class AnimationTimelinesComponent extends React.Component<AnimationTimelinesProp
                     <div className={ c.AnimationTimelines__TimeLine__title }>
                         { title }
                     </div>
-                    { createTimeLineForUnitScript(fieldsScript[fieldName]) }
+                    <UnitScriptTimeLine unitScript={ fieldsScript[fieldName] }/>
                 </div>;
             }) }
         </React.Fragment>;

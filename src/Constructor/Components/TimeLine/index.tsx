@@ -2,11 +2,18 @@ import * as React from 'react';
 import { clamp } from '../../../utils/clamp';
 import { noop } from '../../../utils/noop';
 import { ResizeSensor } from '../../../utils/ResizeSensor';
-import { TimeLinePoint } from '../TimelinePoint';
+import { TimeLinePoint } from '../TimeLinePoint';
 import * as c from './index.pcss';
 
+export type TimeLineMoveParams = {
+    position: number;
+    pointIndex: number;
+};
+
 export type TimeLineCallbacks = {
-    onMovePoint: (position: number, pointIndex: number) => void;
+    onMovePointStart: (timeLineMoveParams: TimeLineMoveParams) => void;
+    onMovePoint: (timeLineMoveParams: TimeLineMoveParams) => void;
+    onMovePointEnd: (timeLineMoveParams: TimeLineMoveParams) => void;
 };
 
 export type TimeLineProps =
@@ -34,7 +41,9 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
     public render() {
         const {
             pointPositoins,
+            onMovePointStart = noop,
             onMovePoint = noop,
+            onMovePointEnd = noop,
             children,
         } = this.props;
 
@@ -49,20 +58,25 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
                         key={ i }
                         position={ position }
                         onPositionChangeStart={ () => {
-                            this.movePointStartPosition = this.props.pointPositoins[i];
+                            const startPosition = this.props.pointPositoins[i];
+
+                            this.movePointStartPosition = startPosition;
+                            onMovePointStart({
+                                position: startPosition,
+                                pointIndex: i,
+                            });
                         } }
                         onPositionChange={ (pixelOffset) => {
-                            const {
-                                movePointStartPosition,
-                                containerWidth,
-                            } = this;
-
-                            if (typeof movePointStartPosition !== 'number' || typeof containerWidth !== 'number') {
-                                throw new Error('One of properties is not defined');
-                            }
-
-                            const nextPosition = clamp(movePointStartPosition + pixelOffset / containerWidth, 0, 1);
-                            onMovePoint(nextPosition, i);
+                            onMovePoint({
+                                position: this.getPositionByPixelOffset(pixelOffset),
+                                pointIndex: i,
+                            });
+                        } }
+                        onPositionChangeEnd={() => {
+                            onMovePointEnd({
+                                position: this.props.pointPositoins[i],
+                                pointIndex: i,
+                            });
                         } }
                     />;
                 })
@@ -92,5 +106,18 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
         }
 
         resizeSensor.destroy();
+    }
+
+    private getPositionByPixelOffset (pixelOffset: number): number {
+        const {
+            movePointStartPosition,
+            containerWidth,
+        } = this;
+
+        if (typeof movePointStartPosition !== 'number' || typeof containerWidth !== 'number') {
+            throw new Error('One of properties is not defined');
+        }
+
+        return clamp(movePointStartPosition + pixelOffset / containerWidth, 0, 1);
     }
 }
