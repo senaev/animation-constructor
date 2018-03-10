@@ -2,33 +2,30 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import { AnimationElementFieldTitles } from '../../../AnimationElements/AnimationElementFieldTitles';
 import { AnimationElementName } from '../../../AnimationElements/AnimationElementName';
 import { AnimationElementScript } from '../../../AnimationScript';
-import { BlockPositionFieldTitles } from '../../../BlockPosition/BlockPositionFieldTitles';
-import { getObjectKeys } from '../../../utils/getObjectKeys';
-import { setAnimationPositionAction } from '../../Store/actions';
+import { setAnimationPositionAction, setBlockPositionScriptActionPositionAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
+import { ActionPosition } from '../../Store/types/ActionPosition';
 import { getAnimationElementScript } from '../../utils/getAnimationElementScript';
+import { AnimationElementFieldsTimeLines } from '../AnimationElementFieldsTimeLines';
 import { TimeLine, TimeLineMoveParams } from '../TimeLine';
-import { UnitScriptTimeLine } from '../UnitScriptTimeLine';
 import * as c from './index.pcss';
 
-export type AnimationTimelinesOwnProps = {};
-export type AnimationTimelinesStateProps = {
+export type AnimationTimeLinesStateProps = {
     animationPosition: ConstructorState['animationPosition'];
     animationElementScript: AnimationElementScript<AnimationElementName> | undefined;
 };
-export type AnimationTimelinesDispatchProps = {
+export type AnimationTimeLinesDispatchProps = {
     setAnimationPosition: (animationPosition: ConstructorState['animationPosition']) => void;
+    setBlockPositionScriptActionPosition: (actionPosition: ActionPosition) => void;
 };
 
-export type AnimationTimelinesProps =
-    & AnimationTimelinesOwnProps
-    & AnimationTimelinesStateProps
-    & AnimationTimelinesDispatchProps;
+export type AnimationTimeLinesProps =
+    & AnimationTimeLinesStateProps
+    & AnimationTimeLinesDispatchProps;
 
-class AnimationTimelinesComponent extends React.Component<AnimationTimelinesProps, {}> {
+class AnimationTimeLinesComponent extends React.Component<AnimationTimeLinesProps, {}> {
     public render() {
         const {
             animationPosition,
@@ -45,7 +42,9 @@ class AnimationTimelinesComponent extends React.Component<AnimationTimelinesProp
             {
                 animationElementScript === undefined
                     ? null
-                    : this.createAnimationElementFieldsTimeLines(animationElementScript)
+                    : <AnimationElementFieldsTimeLines
+                        animationElementScript={ animationElementScript }
+                    />
             }
         </div>;
     }
@@ -53,42 +52,9 @@ class AnimationTimelinesComponent extends React.Component<AnimationTimelinesProp
     private onPositionChange = ({ position }: TimeLineMoveParams) => {
         this.props.setAnimationPosition(position);
     }
-
-    private createAnimationElementFieldsTimeLines = ({
-                                                         elementName,
-                                                         blockPositionScript,
-                                                         fieldsScript,
-                                                     }: AnimationElementScript<AnimationElementName>) => {
-        return <React.Fragment>
-            { getObjectKeys(blockPositionScript).map((blockPositionFieldName, i) => {
-                const title = BlockPositionFieldTitles[blockPositionFieldName];
-
-                return <div
-                    key={ i }
-                    className={ c.AnimationTimelines__TimeLine__padding }
-                >
-                    <div className={ c.AnimationTimelines__TimeLine__title }>{ title }</div>
-                    <UnitScriptTimeLine unitScript={ blockPositionScript[blockPositionFieldName] }/>
-                </div>;
-            }) }
-            { getObjectKeys(fieldsScript).map((fieldName, i) => {
-                const title = AnimationElementFieldTitles[elementName][fieldName];
-
-                return <div
-                    key={ i }
-                    className={ c.AnimationTimelines__TimeLine__padding }
-                >
-                    <div className={ c.AnimationTimelines__TimeLine__title }>
-                        { title }
-                    </div>
-                    <UnitScriptTimeLine unitScript={ fieldsScript[fieldName] }/>
-                </div>;
-            }) }
-        </React.Fragment>;
-    }
 }
 
-const mapStateToProps = (state: ConstructorState): AnimationTimelinesStateProps => {
+const mapStateToProps = (state: ConstructorState): AnimationTimeLinesStateProps => {
     const {
         animationPosition,
         editParams,
@@ -104,10 +70,13 @@ const mapStateToProps = (state: ConstructorState): AnimationTimelinesStateProps 
     };
 };
 
-const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): AnimationTimelinesDispatchProps => ({
+const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): AnimationTimeLinesDispatchProps => ({
     setAnimationPosition: (animationPosition) => {
         dispatch(setAnimationPositionAction(animationPosition));
     },
+    setBlockPositionScriptActionPosition: (actionPosition: ActionPosition) => {
+        dispatch(setBlockPositionScriptActionPositionAction(actionPosition));
+    },
 });
 
-export const AnimationTimelines = connect(mapStateToProps, mapDispatchToProps)(AnimationTimelinesComponent);
+export const AnimationTimelines = connect(mapStateToProps, mapDispatchToProps)(AnimationTimeLinesComponent);

@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { DragListener } from '../../../utils/DragListener';
+import { DragListener, DragPosition } from '../../../utils/DragListener';
 import { noop } from '../../../utils/noop';
 import { subscribeHoverChange } from '../../../utils/subscribeHoverChange';
 import { ConstructorState } from '../../Store/State';
 import * as c from './index.pcss';
 
 type TimeLinePointCallbacks = {
-    onPositionChangeStart: () => void;
-    onPositionChange: (pixelOffset: number) => void;
-    onPositionChangeEnd: () => void;
+    onPositionChangeStart: (dragPosition: DragPosition) => void;
+    onPositionChange: (dragPosition: DragPosition) => void;
+    onPositionChangeEnd: (dragPosition: DragPosition) => void;
 };
 
 export type TimeLinePointProps =
@@ -83,16 +83,16 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
         } = this.props;
 
         this.cursorDragListener = new DragListener(containerElement, {
-            onStart: () => {
+            onStart: (dragPosition) => {
                 this.setState({ isDraggedCursor: true });
-                onPositionChangeStart();
+                onPositionChangeStart(dragPosition);
             },
-            onMove: ({ relativeX }) => {
-                onPositionChange(relativeX);
+            onMove: (dragPosition) => {
+                onPositionChange(dragPosition);
             },
-            onEnd: () => {
+            onEnd: (dragPosition) => {
                 this.setState({ isDraggedCursor: false });
-                onPositionChangeEnd();
+                onPositionChangeEnd(dragPosition);
             },
         });
     }

@@ -66,15 +66,15 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
                                 pointIndex: i,
                             });
                         } }
-                        onPositionChange={ (pixelOffset) => {
+                        onPositionChange={ ({ relativeX }) => {
                             onMovePoint({
-                                position: this.getPositionByPixelOffset(pixelOffset),
+                                position: this.getPositionByPixelOffset(relativeX),
                                 pointIndex: i,
                             });
                         } }
-                        onPositionChangeEnd={() => {
+                        onPositionChangeEnd={ ({ relativeX }) => {
                             onMovePointEnd({
-                                position: this.props.pointPositoins[i],
+                                position: this.getPositionByPixelOffset(relativeX),
                                 pointIndex: i,
                             });
                         } }
@@ -108,7 +108,7 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
         resizeSensor.destroy();
     }
 
-    private getPositionByPixelOffset (pixelOffset: number): number {
+    private getPositionByPixelOffset(pixelOffset: number): number {
         const {
             movePointStartPosition,
             containerWidth,
