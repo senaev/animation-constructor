@@ -1,39 +1,12 @@
 import * as React from 'react';
-import { clamp } from '../../utils/clamp';
-import { noop } from '../../utils/noop';
-import { ResizeSensor } from '../../utils/ResizeSensor';
-import { TimeLinePoint, TimeLinePointMovableParams } from '../TimeLinePoint';
+import { TimeLinePoint, TimeLinePointProps } from '../TimeLinePoint';
 import * as c from './index.pcss';
 
-export type TimeLineMoveParams = {
-    position: number;
-    pointIndex: number;
+export type TimeLineProps = {
+    points: TimeLinePointProps[];
 };
-
-export type TimeLineCallbacks = {
-    onMovePointStart: (timeLineMoveParams: TimeLineMoveParams) => void;
-    onMovePoint: (timeLineMoveParams: TimeLineMoveParams) => void;
-    onMovePointEnd: (timeLineMoveParams: TimeLineMoveParams) => void;
-};
-
-export type PointParams = {
-    position: number;
-    movable?: TimeLinePointMovableParams;
-};
-
-export type TimeLineProps =
-    & {
-        points: PointParams[];
-    }
-    & Partial<TimeLineCallbacks>;
 
 export class TimeLine extends React.Component<TimeLineProps, {}> {
-    private resizeSensor?: ResizeSensor;
-
-    private containerElement?: HTMLDivElement | null;
-    private containerWidth?: number;
-    private movePointStartPosition?: number;
-
     constructor(props: TimeLineProps) {
         super(props);
 
@@ -46,96 +19,19 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
     public render() {
         const {
             points,
-            onMovePointStart = noop,
-            onMovePoint = noop,
-            onMovePointEnd = noop,
             children,
         } = this.props;
 
-        return <div className={ c.TimeLine }
-                    ref={ (element) => {
-                        this.containerElement = element;
-                    } }>
+        return <div className={ c.TimeLine }>
             <div className={ c.TimeLine__content }>{ children }</div>
             {
-                points.map(({
-                                position,
-                                movable,
-                            }, i) => {
+                points.map((pointProps, i) => {
                     return <TimeLinePoint
                         key={ i }
-                        position={ position }
-                        movable={ movable }
-                        onPositionChangeStart={ () => {
-                            const startPosition = this.props.points[i].position;
-
-                            this.movePointStartPosition = startPosition;
-                            onMovePointStart({
-                                position: startPosition,
-                                pointIndex: i,
-                            });
-                        } }
-                        onPositionChange={ ({ relativeX }) => {
-                            onMovePoint({
-                                position: this.getPositionByPixelOffset(relativeX, i),
-                                pointIndex: i,
-                            });
-                        } }
-                        onPositionChangeEnd={ ({ relativeX }) => {
-                            onMovePointEnd({
-                                position: this.getPositionByPixelOffset(relativeX, i),
-                                pointIndex: i,
-                            });
-                        } }
+                        { ...pointProps }
                     />;
                 })
             }
         </div>;
-    }
-
-    public componentDidMount() {
-        const { containerElement } = this;
-
-        if (!containerElement) {
-            throw new Error('Container element has not been initialized');
-        }
-
-        this.resizeSensor = new ResizeSensor(containerElement, ({ width }) => {
-            this.containerWidth = width;
-        });
-
-        this.containerWidth = this.resizeSensor.getSize().width;
-    }
-
-    public componentWillUnmount() {
-        const { resizeSensor } = this;
-
-        if (!resizeSensor) {
-            throw new Error('ResizeSensor has not been initialized');
-        }
-
-        resizeSensor.destroy();
-    }
-
-    private getPositionByPixelOffset(pixelOffset: number,
-                                     pointIndex: number): number {
-        const {
-            movePointStartPosition,
-            containerWidth,
-        } = this;
-
-        const { movable } = this.props.points[pointIndex];
-
-        if (!movable) {
-            throw new Error('Point should not be moved');
-        }
-
-        const { min, max } = movable;
-
-        if (typeof movePointStartPosition !== 'number' || typeof containerWidth !== 'number') {
-            throw new Error('One of properties is not defined');
-        }
-
-        return clamp(movePointStartPosition + pixelOffset / containerWidth, min, max);
     }
 }

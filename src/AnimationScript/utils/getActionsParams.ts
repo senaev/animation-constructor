@@ -2,9 +2,9 @@ import { ScriptAction } from '../';
 import { Unit } from '../../Unit/Unit';
 
 export type ActionParams = {
-    previousPosition: number | undefined;
+    previousActionPosition: number | undefined;
     position: number;
-    nextPosition: number | undefined;
+    nextActionPosition: number | undefined;
     duration: number;
 };
 
@@ -17,11 +17,11 @@ export function getActionsParams(actions: ScriptAction<Unit>[]): ActionParams[] 
         durationSum += duration;
 
         return {
-            previousPosition: i === 0
+            previousActionPosition: i === 0
                 ? undefined
                 : position - actions[i - 1].duration,
             position,
-            nextPosition: i === actions.length - 1
+            nextActionPosition: i === actions.length - 1
                 ? undefined
                 : durationSum,
             duration,

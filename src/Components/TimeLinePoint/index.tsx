@@ -1,14 +1,17 @@
 import * as React from 'react';
 import { Cursor } from '../../Cursor/Cursor';
+import { Unit } from '../../Unit/Unit';
+import { UnitTypes } from '../../Unit/UnitTypes';
+import { clamp } from '../../utils/clamp';
 import { DragListener, DragPosition } from '../../utils/DragListener';
 import { noop } from '../../utils/noop';
 import { subscribeHoverChange } from '../../utils/subscribeHoverChange';
 import * as c from './index.pcss';
 
 type TimeLinePointCallbacks = {
-    onPositionChangeStart: (dragPosition: DragPosition) => void;
-    onPositionChange: (dragPosition: DragPosition) => void;
-    onPositionChangeEnd: (dragPosition: DragPosition) => void;
+    onPositionChangeStart: (position: number) => void;
+    onPositionChange: (position: number) => void;
+    onPositionChangeEnd: (position: number) => void;
 };
 
 export type TimeLinePointMovableParams = {
@@ -19,13 +22,14 @@ export type TimeLinePointMovableParams = {
 export type TimeLinePointProps =
     & {
         position: number;
+        containerWidth: UnitTypes[Unit.pixel],
         movable?: TimeLinePointMovableParams;
     }
     & Partial<TimeLinePointCallbacks>;
 
 export type TimeLinePointState = {
     isHovered: boolean;
-    isDragging: boolean;
+    draggingStartPosition: number | undefined;
 };
 
 export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLinePointState> {
@@ -39,14 +43,14 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
 
         this.state = {
             isHovered: false,
-            isDragging: false,
+            draggingStartPosition: undefined,
         };
     }
 
     public render() {
         const {
             // isHovered,
-            isDragging,
+            draggingStartPosition,
         } = this.state;
 
         const {
@@ -62,9 +66,9 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
             style={ {
                 left: `${position * 100}%`,
                 cursor: movable ?
-                    isDragging
-                        ? Cursor.grabbing
-                        : Cursor.grab
+                    draggingStartPosition === undefined
+                        ? Cursor.grab
+                        : Cursor.grabbing
                     : Cursor.default,
             } }
         >
@@ -101,15 +105,15 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
         if (movable) {
             this.cursorDragListener = new DragListener(containerElement, {
                 onStart: (dragPosition) => {
-                    this.setState({ isDragging: true });
-                    onPositionChangeStart(dragPosition);
+                    this.setState({ draggingStartPosition: this.props.position });
+                    onPositionChangeStart(this.getPositionByPixelOffset(dragPosition));
                 },
                 onMove: (dragPosition) => {
-                    onPositionChange(dragPosition);
+                    onPositionChange(this.getPositionByPixelOffset(dragPosition));
                 },
                 onEnd: (dragPosition) => {
-                    this.setState({ isDragging: false });
-                    onPositionChangeEnd(dragPosition);
+                    onPositionChangeEnd(this.getPositionByPixelOffset(dragPosition));
+                    this.setState({ draggingStartPosition: undefined });
                 },
             });
         }
@@ -123,5 +127,28 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
         if (cursorDragListener !== undefined) {
             cursorDragListener.destroy();
         }
+    }
+
+    private getPositionByPixelOffset({ relativeX }: DragPosition): number {
+        const {
+            containerWidth,
+            movable,
+        } = this.props;
+
+        if (movable === undefined) {
+            throw new Error('Point should not be moved');
+        }
+
+        const {
+            draggingStartPosition,
+        } = this.state;
+
+        if (draggingStartPosition === undefined) {
+            throw new Error('draggingStartPosition is not set');
+        }
+
+        const { min, max } = movable;
+
+        return clamp(draggingStartPosition + relativeX / containerWidth, min, max);
     }
 }
