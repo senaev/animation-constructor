@@ -5,7 +5,7 @@ import { applyBlockPositionToElement } from '../BlockPosition/utils/applyBlockPo
 import { removeNodeFromParent } from '../utils/removeNodeFromParent';
 import { ElementsAnimations } from './ElementsAnimations';
 import * as c from './index.pcss';
-import { createFieldsFunctionByUnitScripts } from './util/createFieldsFunctionByUnitScripts';
+import { createFieldsFunctionByFieldsScripts } from './util/createFieldsFunctionByFieldsScripts';
 
 export class Animation {
     // use just in constructor
@@ -26,8 +26,8 @@ export class Animation {
             container.className = c.AnimationBlock;
 
             const getBlockPositionByAnimationPosition =
-                createFieldsFunctionByUnitScripts(blockPositionScript);
-            const getFieldValuesByAnimationPosition = createFieldsFunctionByUnitScripts(fieldsScript);
+                createFieldsFunctionByFieldsScripts(blockPositionScript);
+            const getFieldValuesByAnimationPosition = createFieldsFunctionByFieldsScripts(fieldsScript);
 
             const initialBlockPosition = getBlockPositionByAnimationPosition(animationPosition);
             applyBlockPositionToElement(container, initialBlockPosition);

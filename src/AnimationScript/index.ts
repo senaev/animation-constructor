@@ -16,14 +16,14 @@ export type UnitScript<T extends Unit> = {
     actions: ScriptAction<T>[];
 };
 
-export type UnitScripts<T extends Record<string, Unit>> = {
+export type FieldsScripts<T extends Record<string, Unit>> = {
     [key in keyof T]: UnitScript<T[key]>;
     };
 
-export type BlockPositionFieldsScript = UnitScripts<BlockPositionFieldUnits>;
+export type BlockPositionFieldsScript = FieldsScripts<BlockPositionFieldUnits>;
 
 export type AnimationElementFieldsScript<T extends AnimationElementName>
-    = UnitScripts<AnimationElementsFieldsUnits[T]>;
+    = FieldsScripts<AnimationElementsFieldsUnits[T]>;
 
 export type AnimationElementScript<T extends AnimationElementName> = {
     elementName: T;
