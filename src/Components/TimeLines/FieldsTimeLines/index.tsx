@@ -74,8 +74,8 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                         ? undefined
                         : <FieldClassX
                             value={ value }
-                            onChange={ (value: any) => {
-                                console.log(value);
+                            onChange={ (v: any) => {
+                                // console.log(value);
                             } }/>,
                     containerWidth,
                     onPositionChangeStart: (nextPosition: number) => {
