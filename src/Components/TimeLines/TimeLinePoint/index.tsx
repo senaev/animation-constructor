@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Cursor } from '../../Cursor/Cursor';
-import { Unit } from '../../Unit/Unit';
-import { UnitTypes } from '../../Unit/UnitTypes';
-import { clamp } from '../../utils/clamp';
-import { DragListener, DragPosition } from '../../utils/DragListener';
-import { noop } from '../../utils/noop';
-import { subscribeHoverChange } from '../../utils/subscribeHoverChange';
+import { Cursor } from '../../../Cursor/Cursor';
+import { Unit } from '../../../Unit/Unit';
+import { UnitTypes } from '../../../Unit/UnitTypes';
+import { clamp } from '../../../utils/clamp/index';
+import { DragListener, DragPosition } from '../../../utils/DragListener/index';
+import { noop } from '../../../utils/noop/index';
+import { subscribeHoverChange } from '../../../utils/subscribeHoverChange/index';
 import * as c from './index.pcss';
 
 type TimeLinePointCallbacks = {
@@ -22,7 +22,7 @@ export type TimeLinePointMovableParams = {
 export type TimeLinePointProps =
     & {
         position: number;
-        containerWidth: UnitTypes[Unit.pixel],
+        containerWidth: UnitTypes[Unit.pixel];
         movable?: TimeLinePointMovableParams;
     }
     & Partial<TimeLinePointCallbacks>;

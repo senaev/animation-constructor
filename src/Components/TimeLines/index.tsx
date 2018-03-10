@@ -18,33 +18,33 @@ import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnim
 import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 import { ResizeSensor } from '../../utils/ResizeSensor';
-import { FieldsTimeLines } from '../FieldsTimeLines';
-import { TimeLine } from '../TimeLine';
+import { FieldsTimeLines } from './FieldsTimeLines';
+import { TimeLine } from './TimeLine';
 import * as c from './index.pcss';
 
-export type AnimationTimeLinesState = {
+export type TimeLinesState = {
     containerWidth: UnitTypes[Unit.pixel];
 };
 
-export type AnimationTimeLinesStateProps = {
+export type TimeLinesStateProps = {
     animationPosition: ConstructorState['animationPosition'];
     animationElementScript: AnimationElementScript<AnimationElementName> | undefined;
 };
-export type AnimationTimeLinesDispatchProps = {
+export type TimeLinesDispatchProps = {
     setAnimationPosition: (animationPosition: ConstructorState['animationPosition']) => void;
     setBlockPositionScriptActionPosition: (actionPosition: ActionPosition<BlockPositionFieldUnits>) => void;
     setFieldsScriptActionPosition: (actionPosition: ActionPosition<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
 };
 
-export type AnimationTimeLinesProps =
-    & AnimationTimeLinesStateProps
-    & AnimationTimeLinesDispatchProps;
+export type TimeLinesProps =
+    & TimeLinesStateProps
+    & TimeLinesDispatchProps;
 
-class AnimationTimeLinesComponent extends React.Component<AnimationTimeLinesProps, AnimationTimeLinesState> {
+class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState> {
     private containerElement?: HTMLDivElement | null;
     private resizeSensor?: ResizeSensor;
 
-    constructor(props: AnimationTimeLinesProps) {
+    constructor(props: TimeLinesProps) {
         super(props);
 
         this.state = {
@@ -125,7 +125,7 @@ class AnimationTimeLinesComponent extends React.Component<AnimationTimeLinesProp
     }
 }
 
-const mapStateToProps = (state: ConstructorState): AnimationTimeLinesStateProps => {
+const mapStateToProps = (state: ConstructorState): TimeLinesStateProps => {
     const {
         animationPosition,
         editParams,
@@ -141,7 +141,7 @@ const mapStateToProps = (state: ConstructorState): AnimationTimeLinesStateProps 
     };
 };
 
-const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): AnimationTimeLinesDispatchProps => ({
+const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): TimeLinesDispatchProps => ({
     setAnimationPosition: (animationPosition) => {
         dispatch(setAnimationPositionAction(animationPosition));
     },
@@ -153,4 +153,4 @@ const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): AnimationTim
     },
 });
 
-export const AnimationTimelines = connect(mapStateToProps, mapDispatchToProps)(AnimationTimeLinesComponent);
+export const TimeLines = connect(mapStateToProps, mapDispatchToProps)(TimeLinesComponent);

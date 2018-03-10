@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TimeLinePoint, TimeLinePointProps } from '../TimeLinePoint';
+import { TimeLinePoint, TimeLinePointProps } from '../TimeLinePoint/index';
 import * as c from './index.pcss';
 
 export type TimeLineProps = {

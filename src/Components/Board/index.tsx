@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { ConstructorState } from '../../Store/State';
-import { AnimationTimelines } from '../AnimationTimeLines';
+import { TimeLines } from '../TimeLines';
 import { BoardFields } from '../BoardFields';
 import { BoardPalette } from '../BoardPalette';
 import { BoardPreview } from '../BoardPreview';
@@ -23,7 +23,7 @@ class BoardComponent extends React.Component<BoardProps, {}> {
             <BoardPreview/>
             <div className={ c.Board__animationControlsContainer }>
                 <div className={ c.Board__animationControlsContainerPadding }>
-                    <AnimationTimelines/>
+                    <TimeLines/>
                 </div>
             </div>
         </div>;

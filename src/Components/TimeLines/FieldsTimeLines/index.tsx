@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { FieldsScripts } from '../../AnimationScript';
-import { getActionsParams } from '../../AnimationScript/utils/getActionsParams';
-import { ActionPosition } from '../../Store/types/ActionPosition';
-import { Unit } from '../../Unit/Unit';
-import { UnitTypes } from '../../Unit/UnitTypes';
-import { getObjectKeys } from '../../utils/getObjectKeys';
-import * as c from '../AnimationTimeLines/index.pcss';
-import { TimeLinePointProps } from '../TimeLinePoint';
-import { UnitScriptTimeLine } from '../UnitScriptTimeLine';
+import { FieldsScripts } from '../../../AnimationScript/index';
+import { getActionsParams } from '../../../AnimationScript/utils/getActionsParams';
+import { ActionPosition } from '../../../Store/types/ActionPosition';
+import { UnitTimelinePreviews } from '../../../TimelinePreviews/UnitTimelinePreviews';
+import { Unit } from '../../../Unit/Unit';
+import { UnitTypes } from '../../../Unit/UnitTypes';
+import { getObjectKeys } from '../../../utils/getObjectKeys/index';
+import * as c from '../index.pcss';
+import { TimeLine } from '../TimeLine/index';
+import { TimeLinePointProps } from '../TimeLinePoint/index';
 
 export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
     fieldsScripts: FieldsScripts<T>;
@@ -30,6 +31,7 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
             const unitScript = fieldsScripts[fieldName];
 
             const {
+                unit,
                 actions,
             } = unitScript;
             const pointPositions = getActionsParams(actions);
@@ -53,11 +55,11 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                     };
                 }
 
-                const point: TimeLinePointProps = {
+                return {
                     position,
                     movable,
                     containerWidth,
-                    onPositionChange: (nextPosition) => {
+                    onPositionChange: (nextPosition: number) => {
                         onScriptActionPositionChange({
                             fieldName,
                             actionIndex,
@@ -65,19 +67,18 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                         });
                     },
                 };
-
-                return point;
             });
+
+            const TimeLinePreviewClass = UnitTimelinePreviews[unit];
 
             return <div
                 key={ i }
                 className={ c.AnimationTimelines__TimeLine__padding }
             >
                 <div className={ c.AnimationTimelines__TimeLine__title }>{ title }</div>
-                <UnitScriptTimeLine
-                    points={ points }
-                    unitScript={ unitScript }
-                />
+                <TimeLine points={ points }>
+                    <TimeLinePreviewClass unitScript={ unitScript }/>
+                </TimeLine>
             </div>;
         });
     }
