@@ -39,5 +39,3 @@ export const setAnimationPositionAction =
 
 export const setBlockPositionScriptActionPositionAction =
     createAction<ActionPosition>('setBlockPositionScriptActionPositionAction');
-export const completeBlockPositionScriptActionPositionChangeAction =
-    createAction<ActionPosition>('completeBlockPositionScriptActionPositionChangeAction');

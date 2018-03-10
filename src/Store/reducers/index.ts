@@ -4,7 +4,6 @@ import { AnimationElementScript } from '../../AnimationScript';
 import { DEFAULT_BLOCK_POSITION_SCRIPT } from '../../BlockPosition/DEFAULT_BLOCK_POSITION_SCRIPT';
 import {
     addStandardElementAction,
-    completeBlockPositionScriptActionPositionChangeAction,
     discardChangesAction,
     saveElementAction,
     selectBlockAction,
@@ -168,14 +167,4 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             actionIndex,
             position,
         );
-    })
-    .on(completeBlockPositionScriptActionPositionChangeAction, (state, {
-        blockPositionFieldName,
-        actionIndex,
-        position,
-    }): ConstructorState => {
-        // TODO
-        return {
-            ...state,
-        };
     });

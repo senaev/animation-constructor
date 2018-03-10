@@ -12,7 +12,10 @@ export function setActionPosition<T extends Unit>(actions: ScriptAction<T>[],
     const actionsPositions = getActionsParams(actions);
 
     const previousActionPosition = actionsPositions[actionIndex - 1].position;
-    const nextActionPosition = actionsPositions[actionIndex + 1].position;
+    const nextAction = actionsPositions[actionIndex + 1];
+    const nextActionPosition = nextAction === undefined
+        ? undefined
+        : nextAction.position;
 
     if (position < previousActionPosition) {
         throw new Error('It is impossible to set action position that less than previous action position');
