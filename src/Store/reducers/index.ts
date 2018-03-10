@@ -14,16 +14,18 @@ import {
     setEditedBlockRotationAction,
     setEditedBlockSizeAction,
     setEditedElementFieldsAction,
+    setFieldsScriptActionPositionAction,
     setRelationAction,
 } from '../actions';
 import { ConstructorState } from '../State';
+import { getAnimationElementScriptByBlockLocation } from '../utils/getAnimationElementScriptByBlockLocation';
 import { getDefaultFieldsScriptForAnimationElement } from '../utils/getDefaultFieldsScriptForAnimationElement';
-import { getEditedAnimationElementScript } from '../utils/getEditedAnimationElementScript';
 import { removeElement } from '../utils/removeElement';
 import { setAnimationElementFields } from '../utils/setAnimationElementFields';
-import { setBlockPositionFields } from '../utils/setBlockPositionFields';
 import { setBlockPositionScriptActionPosition } from '../utils/setBlockPositionScriptActionPosition';
 import { setEditedAnimationElementScript } from '../utils/setEditedAnimationElementScript';
+import { setEditedBlockPositionFields } from '../utils/setEditedBlockPositionFields';
+import { setFieldsScriptActionPosition } from '../utils/setFieldsScriptActionPosition';
 
 export const createConstructorReducer = (appState: ConstructorState) => createReducer<ConstructorState>({}, appState)
     .on(addStandardElementAction, (state, elementName): ConstructorState => {
@@ -62,7 +64,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             editParams: {
                 isNewElement: false,
                 blockLocation,
-                initialAnimationElementScript: getEditedAnimationElementScript(state),
+                initialAnimationElementScript: getAnimationElementScriptByBlockLocation(state, blockLocation),
             },
         };
     })
@@ -115,40 +117,16 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
         return setAnimationElementFields(state, editParams.blockLocation, fieldsValues);
     })
     .on(setEditedBlockCoordinatesAction, (state, pointCoordinates): ConstructorState => {
-        const { editParams } = state;
-
-        if (editParams === undefined) {
-            throw new Error('setEditedBlockCoordinatesAction should not be called without editParams');
-        }
-
-        return setBlockPositionFields(state, editParams.blockLocation, pointCoordinates);
+        return setEditedBlockPositionFields(state, pointCoordinates);
     })
     .on(setEditedBlockSizeAction, (state, blockSize): ConstructorState => {
-        const { editParams } = state;
-
-        if (editParams === undefined) {
-            throw new Error('setEditedBlockSizeAction should not be called without editParams');
-        }
-
-        return setBlockPositionFields(state, editParams.blockLocation, blockSize);
+        return setEditedBlockPositionFields(state, blockSize);
     })
     .on(setEditedBlockRotationAction, (state, blockRotation): ConstructorState => {
-        const { editParams } = state;
-
-        if (editParams === undefined) {
-            throw new Error('setEditedBlockRotationAction should not be called without editParams');
-        }
-
-        return setBlockPositionFields(state, editParams.blockLocation, { rotation: blockRotation });
+        return setEditedBlockPositionFields(state, { rotation: blockRotation });
     })
     .on(setEditedBlockPositionAction, (state, blockPositionFields): ConstructorState => {
-        const { editParams } = state;
-
-        if (editParams === undefined) {
-            throw new Error('setEditedBlockPositionAction should not be called without editParams');
-        }
-
-        return setBlockPositionFields(state, editParams.blockLocation, blockPositionFields);
+        return setEditedBlockPositionFields(state, blockPositionFields);
     })
     .on(setAnimationPositionAction, (state, animationPosition): ConstructorState => {
         return {
@@ -164,6 +142,18 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
         return setBlockPositionScriptActionPosition(
             state,
             blockPositionFieldName,
+            actionIndex,
+            position,
+        );
+    })
+    .on(setFieldsScriptActionPositionAction, (state, {
+        fieldName,
+        actionIndex,
+        position,
+    }): ConstructorState => {
+        return setFieldsScriptActionPosition(
+            state,
+            fieldName,
             actionIndex,
             position,
         );

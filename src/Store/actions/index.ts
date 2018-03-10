@@ -8,7 +8,7 @@ import { Size } from '../../types/Size';
 import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 import { ConstructorState } from '../State';
-import { ActionPosition } from '../types/ActionPosition';
+import { BlockPositionActionPosition, FieldActionPosition } from '../types/ActionPosition';
 
 export const addStandardElementAction =
     createAction<AnimationElementName>('addStandardElementAction');
@@ -38,4 +38,6 @@ export const setAnimationPositionAction =
     createAction<ConstructorState['animationPosition']>('setAnimationPositionAction');
 
 export const setBlockPositionScriptActionPositionAction =
-    createAction<ActionPosition>('setBlockPositionScriptActionPositionAction');
+    createAction<BlockPositionActionPosition>('setBlockPositionScriptActionPositionAction');
+export const setFieldsScriptActionPositionAction =
+    createAction<FieldActionPosition>('setFieldsScriptActionPositionAction');

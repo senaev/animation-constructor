@@ -1,23 +1,23 @@
 import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
 import { AnimationElementScript } from '../../AnimationScript';
-import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { BlockPosition } from '../../BlockPosition/BlockPosition';
 import { BlockPositionFieldsTypes } from '../../BlockPosition/BlockPositionFieldsTypes';
 import { BlockPositionFieldUnits } from '../../BlockPosition/BlockPositionFieldUnits';
 import { mapObjectValues } from '../../utils/mapObjectValues';
 import { ConstructorState } from '../State';
 import { createDefaultUnitScript } from './createDefaultUnitScript';
+import { getEditedAnimationElementBlockLocation } from './getEditedAnimationElementBlockLocation';
+import { getEditedAnimationElementScript } from './getEditedAnimationElementScript';
 
-export function setBlockPositionFields(state: ConstructorState,
-                                       blockLocation: BlockLocation,
-                                       blockPositionFields: Partial<BlockPosition>): ConstructorState {
+export function setEditedBlockPositionFields(state: ConstructorState,
+                                             blockPositionFields: Partial<BlockPosition>): ConstructorState {
 
     const {
         animationScript,
     } = state;
 
-    const editedAnimationElementIndex = blockLocation[0];
-    const editedAnimationElement = animationScript[editedAnimationElementIndex];
+    const editedAnimationElementIndex = getEditedAnimationElementBlockLocation(state)[0];
+    const editedAnimationElement = getEditedAnimationElementScript(state);
 
     const {
         elementName,

@@ -120,10 +120,8 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
 
         const { cursorDragListener } = this;
 
-        if (!cursorDragListener) {
-            throw new Error('cursorDragListener has not been initialized');
+        if (cursorDragListener !== undefined) {
+            cursorDragListener.destroy();
         }
-
-        cursorDragListener.destroy();
     }
 }

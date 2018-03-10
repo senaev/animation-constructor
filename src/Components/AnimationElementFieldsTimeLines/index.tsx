@@ -7,10 +7,10 @@ import { AnimationElementName } from '../../AnimationElements/AnimationElementNa
 import { AnimationElementScript } from '../../AnimationScript';
 import { BlockPositionFieldTitles } from '../../BlockPosition/BlockPositionFieldTitles';
 import {
-    setBlockPositionScriptActionPositionAction,
+    setBlockPositionScriptActionPositionAction, setFieldsScriptActionPositionAction,
 } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
-import { ActionPosition } from '../../Store/types/ActionPosition';
+import { BlockPositionActionPosition, FieldActionPosition } from '../../Store/types/ActionPosition';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { getObjectKeys } from '../../utils/getObjectKeys';
 import * as c from '../AnimationTimeLines/index.pcss';
@@ -21,7 +21,8 @@ export type AnimationElementFieldsTimeLinesStateProps = {
 };
 
 export type AnimationElementFieldsTimeLinesDispatchProps = {
-    setBlockPositionScriptActionPosition: (actionPosition: ActionPosition) => void;
+    setBlockPositionScriptActionPosition: (actionPosition: BlockPositionActionPosition) => void;
+    setFieldsScriptActionPosition: (actionPosition: FieldActionPosition) => void;
 };
 
 export type AnimationElementFieldsTimeLinesProps =
@@ -33,6 +34,7 @@ class AnimationElementFieldsTimeLinesComponent extends React.Component<Animation
         const {
             animationElementScript,
             setBlockPositionScriptActionPosition,
+            setFieldsScriptActionPosition,
         } = this.props;
 
         const {
@@ -75,7 +77,19 @@ class AnimationElementFieldsTimeLinesComponent extends React.Component<Animation
                     <div className={ c.AnimationTimelines__TimeLine__title }>
                         { title }
                     </div>
-                    <UnitScriptTimeLine unitScript={ fieldsScript[fieldName] }/>
+                    <UnitScriptTimeLine
+                        unitScript={ fieldsScript[fieldName] }
+                        onMovePoint={ ({
+                                           pointIndex,
+                                           position,
+                                       }) => {
+                            setFieldsScriptActionPosition({
+                                fieldName,
+                                actionIndex: pointIndex,
+                                position,
+                            });
+                        } }
+                    />
                 </div>;
             }) }
         </>;
@@ -90,8 +104,11 @@ const mapStateToProps = (state: ConstructorState): AnimationElementFieldsTimeLin
 };
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): AnimationElementFieldsTimeLinesDispatchProps => ({
-    setBlockPositionScriptActionPosition: (actionPosition: ActionPosition) => {
+    setBlockPositionScriptActionPosition: (actionPosition: BlockPositionActionPosition) => {
         dispatch(setBlockPositionScriptActionPositionAction(actionPosition));
+    },
+    setFieldsScriptActionPosition: (actionPosition: FieldActionPosition) => {
+        dispatch(setFieldsScriptActionPositionAction(actionPosition));
     },
 });
 
