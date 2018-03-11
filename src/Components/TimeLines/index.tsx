@@ -89,7 +89,9 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                         min: 0,
                         max: 1,
                     },
+                    onPositionChangeStart: this.onScriptActionPositionChangeStart,
                     onPositionChange: this.onPositionChange,
+                    onPositionChangeEnd: this.onScriptActionPositionChangeEnd,
                 }] }
             >
                 <div className={ c.AnimationTimelines__positionTimeLine }/>

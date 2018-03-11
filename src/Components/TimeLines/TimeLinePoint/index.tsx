@@ -20,32 +20,41 @@ export type TimeLinePointMovableParams = {
     max: number;
 };
 
-export type TimeLinePointProps =
+export type TimeLinePointChangeableParams<T extends Unit> = {
+    unit: T;
+    title: string;
+    value: UnitTypes[T];
+    onChange: (value: UnitTypes[T]) => void;
+};
+
+export type TimeLinePointProps<T extends Unit> =
     & {
         position: number;
         containerWidth: UnitTypes[Unit.pixel];
         movable?: TimeLinePointMovableParams;
-        tooltip?: React.ReactNode;
+        changeable?: TimeLinePointChangeableParams<T>;
     }
     & Partial<TimeLinePointCallbacks>;
 
 export type TimeLinePointState = {
     isHovered: boolean;
+    isChangeableDialogOpened: boolean;
     draggingStartPosition: number | undefined;
 };
 
-export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLinePointState> {
+export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePointProps<T>, TimeLinePointState> {
     private containerElement?: HTMLDivElement | null;
     private dragElement?: HTMLDivElement | null;
 
     private unsubscribeHoverChange = noop;
     private cursorDragListener?: DragListener;
 
-    constructor(props: TimeLinePointProps) {
+    constructor(props: TimeLinePointProps<T>) {
         super(props);
 
         this.state = {
             isHovered: false,
+            isChangeableDialogOpened: false,
             draggingStartPosition: undefined,
         };
     }
@@ -53,13 +62,14 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
     public render() {
         const {
             isHovered,
+            isChangeableDialogOpened,
             draggingStartPosition,
         } = this.state;
 
         const {
             position,
             movable,
-            tooltip,
+            changeable,
         } = this.props;
 
         return <div
@@ -89,8 +99,12 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
                 } }
             />
             {
-                tooltip && isHovered && draggingStartPosition === undefined
-                    ? <TimeLinePointTooltip>{ tooltip }</TimeLinePointTooltip>
+                isHovered && draggingStartPosition === undefined || isChangeableDialogOpened
+                    ? <TimeLinePointTooltip
+                        changeable={ changeable }
+                        isChangeableDialogOpen={ isChangeableDialogOpened }
+                        requestChangeableDialogOpened={ this.requestChangeableDialogOpened }
+                    />
                     : null
             }
         </div>;
@@ -165,5 +179,9 @@ export class TimeLinePoint extends React.Component<TimeLinePointProps, TimeLineP
         const { min, max } = movable;
 
         return clamp(draggingStartPosition + relativeX / containerWidth, min, max);
+    }
+
+    private requestChangeableDialogOpened = (opened: boolean) => {
+        this.setState({ isChangeableDialogOpened: opened });
     }
 }

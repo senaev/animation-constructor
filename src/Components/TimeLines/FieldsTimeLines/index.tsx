@@ -1,9 +1,6 @@
 import * as React from 'react';
-import { getValueByPosition } from '../../../Animation/util/getValueByPosition';
 import { FieldsScripts } from '../../../AnimationScript/index';
 import { getActionsParams } from '../../../AnimationScript/utils/getActionsParams';
-import { ALL_FIELDS } from '../../../Fields/ALL_FIELDS';
-import { FieldClass } from '../../../Fields/Field';
 import { ActionPosition } from '../../../Store/types/ActionPosition';
 import { ActionValue } from '../../../Store/types/ActionValue';
 import { UnitTimelinePreviews } from '../../../TimelinePreviews/UnitTimelinePreviews';
@@ -47,12 +44,12 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                 actions,
             } = unitScript;
             const pointPositions = getActionsParams(actions);
-            const points: TimeLinePointProps[] = pointPositions.map(({
-                                                                         previousActionPosition,
-                                                                         position,
-                                                                         nextActionPosition,
-                                                                     }, actionIndex) => {
-                let movable: TimeLinePointProps['movable'];
+            const points: TimeLinePointProps<Unit>[] = pointPositions.map(({
+                                                                               previousActionPosition,
+                                                                               position,
+                                                                               nextActionPosition,
+                                                                           }, actionIndex) => {
+                let movable: TimeLinePointProps<Unit>['movable'];
 
                 if (actionIndex > 0) {
                     if (previousActionPosition === undefined) {
@@ -67,23 +64,25 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                     };
                 }
 
-                const value: any = getValueByPosition(position, unit, actions);
-                const UnitFieldClass = ALL_FIELDS[unit] as FieldClass<any>;
+                const { value } = actions[actionIndex];
 
-                return {
+                const point: TimeLinePointProps<Unit> = {
                     position,
                     movable,
-                    tooltip: isChangingActionPosition
+                    changeable: isChangingActionPosition
                         ? undefined
-                        : <UnitFieldClass
-                            value={ value }
-                            onChange={ (nextValue: UnitTypes[Unit]) => {
+                        : {
+                            unit,
+                            title,
+                            value,
+                            onChange: (nextValue) => {
                                 onScriptActionValueChange({
                                     fieldName,
                                     actionIndex,
                                     value: nextValue,
                                 });
-                            } }/>,
+                            },
+                        },
                     containerWidth,
                     onPositionChangeStart: (nextPosition: number) => {
                         onScriptActionPositionChangeStart({
@@ -107,6 +106,8 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                         });
                     },
                 };
+
+                return point;
             });
 
             const TimeLinePreviewClass = UnitTimelinePreviews[unit];

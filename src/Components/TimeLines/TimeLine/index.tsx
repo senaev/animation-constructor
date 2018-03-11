@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { Unit } from '../../../Unit/Unit';
 import { TimeLinePoint, TimeLinePointProps } from '../TimeLinePoint/index';
 import * as c from './index.pcss';
 
 export type TimeLineProps = {
-    points: TimeLinePointProps[];
+    points: TimeLinePointProps<Unit>[];
 };
 
 export class TimeLine extends React.Component<TimeLineProps, {}> {
