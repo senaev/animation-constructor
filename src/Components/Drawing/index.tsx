@@ -2,11 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import {
-    setEditedBlockCoordinatesAction,
-    setEditedBlockRotationAction,
-    setEditedBlockSizeAction,
-} from '../../Store/actions';
+import { Block } from '../../Block/Block';
+import { setEditedBlockFieldsAction, } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
@@ -21,9 +18,7 @@ export type DrawingStateProps = Pick<ConstructorState,
     | 'animationScript'>;
 
 export type DrawingDispatchProps = {
-    setEditedBlockCoordinates: (pointCoordinates: PointCoordinates) => void;
-    setEditedBlockSize: (blockSize: Size) => void;
-    setEditedBlockRotation: (blockRotation: UnitTypes[Unit.degree]) => void;
+    setEditedBlockFields: (blockFields: Partial<Block>) => void;
 };
 
 export type DrawingProps =
@@ -72,15 +67,15 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
     }
 
     private onResize = (blockSize: Size) => {
-        this.props.setEditedBlockSize(blockSize);
+        this.props.setEditedBlockFields(blockSize);
     }
 
     private onRotate = (rotation: UnitTypes[Unit.degree]) => {
-        this.props.setEditedBlockRotation(rotation);
+        this.props.setEditedBlockFields({ rotation });
     }
 
     private onMove = (pointCoordinates: PointCoordinates) => {
-        this.props.setEditedBlockCoordinates(pointCoordinates);
+        this.props.setEditedBlockFields(pointCoordinates);
     }
 }
 
@@ -95,14 +90,8 @@ const mapStateToProps = ({
 };
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): DrawingDispatchProps => ({
-    setEditedBlockCoordinates: (position) => {
-        dispatch(setEditedBlockCoordinatesAction(position));
-    },
-    setEditedBlockSize: (blockSize) => {
-        dispatch(setEditedBlockSizeAction(blockSize));
-    },
-    setEditedBlockRotation: (blockRotation) => {
-        dispatch(setEditedBlockRotationAction(blockRotation));
+    setEditedBlockFields: (blockFields) => {
+        dispatch(setEditedBlockFieldsAction(blockFields));
     },
 });
 

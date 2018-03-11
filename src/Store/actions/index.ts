@@ -5,10 +5,6 @@ import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationE
 import { Block } from '../../Block/Block';
 import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
-import { PointCoordinates } from '../../types/PointCoordinates';
-import { Size } from '../../types/Size';
-import { Unit } from '../../Unit/Unit';
-import { UnitTypes } from '../../Unit/UnitTypes';
 import { ConstructorState } from '../State';
 import { ActionPosition } from '../types/ActionPosition';
 import { ActionValue } from '../types/ActionValue';
@@ -20,12 +16,6 @@ export const setEditedBlockAction =
 
 export const setEditedBlockFieldsAction =
     createAction<Partial<Block>>('setEditedBlockFieldsAction');
-export const setEditedBlockCoordinatesAction =
-    createAction<PointCoordinates>('setEditedBlockCoordinatesAction');
-export const setEditedBlockSizeAction =
-    createAction<Size>('setEditedBlockSizeAction');
-export const setEditedBlockRotationAction =
-    createAction<UnitTypes[Unit.degree]>('setEditedBlockRotationAction');
 export const setEditedElementFieldsAction =
     createAction<Partial<AnimationElementFieldsTypes<AnimationElementName>>>('setEditedElementFieldsAction');
 

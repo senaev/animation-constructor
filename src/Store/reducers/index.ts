@@ -6,10 +6,7 @@ import {
     setBlockScriptActionPositionAction,
     setBlockScriptActionValueAction,
     setEditedBlockAction,
-    setEditedBlockCoordinatesAction,
     setEditedBlockFieldsAction,
-    setEditedBlockRotationAction,
-    setEditedBlockSizeAction,
     setEditedElementFieldsAction,
     setFieldsScriptActionPositionAction,
     setFieldsScriptActionValueAction,
@@ -64,15 +61,6 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
         }
 
         return setAnimationElementFields(state, editParams.blockLocation, fieldsValues);
-    })
-    .on(setEditedBlockCoordinatesAction, (state, pointCoordinates): ConstructorState => {
-        return setEditedBlockFields(state, pointCoordinates);
-    })
-    .on(setEditedBlockSizeAction, (state, blockSize): ConstructorState => {
-        return setEditedBlockFields(state, blockSize);
-    })
-    .on(setEditedBlockRotationAction, (state, blockRotation): ConstructorState => {
-        return setEditedBlockFields(state, { rotation: blockRotation });
     })
     .on(setEditedBlockFieldsAction, (state, blockFields): ConstructorState => {
         return setEditedBlockFields(state, blockFields);
