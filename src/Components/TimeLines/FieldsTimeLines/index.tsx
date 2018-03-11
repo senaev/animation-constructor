@@ -5,6 +5,7 @@ import { getActionsParams } from '../../../AnimationScript/utils/getActionsParam
 import { ALL_FIELDS } from '../../../Fields/ALL_FIELDS';
 import { FieldClass } from '../../../Fields/Field';
 import { ActionPosition } from '../../../Store/types/ActionPosition';
+import { ActionValue } from '../../../Store/types/ActionValue';
 import { UnitTimelinePreviews } from '../../../TimelinePreviews/UnitTimelinePreviews';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
@@ -21,6 +22,7 @@ export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
     onScriptActionPositionChangeStart: (actionPosition: ActionPosition<T>) => void;
     onScriptActionPositionChange: (actionPosition: ActionPosition<T>) => void;
     onScriptActionPositionChangeEnd: (actionPosition: ActionPosition<T>) => void;
+    onScriptActionValueChange: (actionValue: ActionValue<T>) => void;
 };
 
 export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Component<FieldsTimeLinesProps<T>, {}> {
@@ -33,6 +35,7 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
             onScriptActionPositionChangeStart,
             onScriptActionPositionChange,
             onScriptActionPositionChangeEnd,
+            onScriptActionValueChange,
         } = this.props;
 
         return getObjectKeys(fieldsScripts).map((fieldName, i) => {
@@ -65,17 +68,21 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                 }
 
                 const value: any = getValueByPosition(position, unit, actions);
-                const FieldClassX: FieldClass<any> = ALL_FIELDS[unit];
+                const UnitFieldClass = ALL_FIELDS[unit] as FieldClass<any>;
 
                 return {
                     position,
                     movable,
                     tooltip: isChangingActionPosition
                         ? undefined
-                        : <FieldClassX
+                        : <UnitFieldClass
                             value={ value }
-                            onChange={ (v: any) => {
-                                // console.log(value);
+                            onChange={ (nextValue: UnitTypes[Unit]) => {
+                                onScriptActionValueChange({
+                                    fieldName,
+                                    actionIndex,
+                                    value: nextValue,
+                                });
                             } }/>,
                     containerWidth,
                     onPositionChangeStart: (nextPosition: number) => {

@@ -11,6 +11,7 @@ import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 import { ConstructorState } from '../State';
 import { ActionPosition } from '../types/ActionPosition';
+import { ActionValue } from '../types/ActionValue';
 
 export const addStandardElementAction =
     createAction<AnimationElementName>('addStandardElementAction');
@@ -43,3 +44,8 @@ export const setBlockPositionScriptActionPositionAction =
     createAction<ActionPosition<BlockPositionFieldUnits>>('setBlockPositionScriptActionPositionAction');
 export const setFieldsScriptActionPositionAction =
     createAction<ActionPosition<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptActionPositionAction');
+
+export const setBlockPositionScriptActionValueAction =
+    createAction<ActionValue<BlockPositionFieldUnits>>('setBlockPositionScriptActionValueAction');
+export const setFieldsScriptActionValueAction =
+    createAction<ActionValue<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptActionValueAction');

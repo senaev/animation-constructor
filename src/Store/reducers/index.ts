@@ -8,24 +8,25 @@ import {
     saveElementAction,
     selectBlockAction,
     setAnimationPositionAction,
-    setBlockPositionScriptActionPositionAction,
+    setBlockPositionScriptActionPositionAction, setBlockPositionScriptActionValueAction,
     setEditedBlockCoordinatesAction,
     setEditedBlockPositionAction,
     setEditedBlockRotationAction,
     setEditedBlockSizeAction,
     setEditedElementFieldsAction,
-    setFieldsScriptActionPositionAction,
+    setFieldsScriptActionPositionAction, setFieldsScriptActionValueAction,
     setRelationAction,
 } from '../actions';
 import { ConstructorState } from '../State';
 import { getAnimationElementScriptByBlockLocation } from '../utils/getAnimationElementScriptByBlockLocation';
 import { getDefaultFieldsScriptForAnimationElement } from '../utils/getDefaultFieldsScriptForAnimationElement';
+import { getEditedAnimationElementScript } from '../utils/getEditedAnimationElementScript';
 import { removeElement } from '../utils/removeElement';
 import { setAnimationElementFields } from '../utils/setAnimationElementFields';
-import { setBlockPositionScriptActionPosition } from '../utils/setBlockPositionScriptActionPosition';
 import { setEditedAnimationElementScript } from '../utils/setEditedAnimationElementScript';
 import { setEditedBlockPositionFields } from '../utils/setEditedBlockPositionFields';
-import { setFieldsScriptActionPosition } from '../utils/setFieldsScriptActionPosition';
+import { setFieldsScriptsActionPosition } from '../utils/setFieldsScriptsActionPosition';
+import { setFieldsScriptsActionValue } from '../utils/setFieldsScriptsActionValue';
 
 export const createConstructorReducer = (appState: ConstructorState) => createReducer<ConstructorState>({}, appState)
     .on(addStandardElementAction, (state, elementName): ConstructorState => {
@@ -139,22 +140,74 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
         actionIndex,
         position,
     }): ConstructorState => {
-        return setBlockPositionScriptActionPosition(
-            state,
+        const animationElementScript = getEditedAnimationElementScript(state);
+
+        const blockPositionScript = setFieldsScriptsActionPosition(
+            animationElementScript.blockPositionScript,
             fieldName,
             actionIndex,
             position,
         );
+
+        return setEditedAnimationElementScript(state, {
+            ...animationElementScript,
+            blockPositionScript,
+        });
     })
     .on(setFieldsScriptActionPositionAction, (state, {
         fieldName,
         actionIndex,
         position,
     }): ConstructorState => {
-        return setFieldsScriptActionPosition(
-            state,
+        const animationElementScript = getEditedAnimationElementScript(state);
+
+        const fieldsScript = setFieldsScriptsActionPosition(
+            animationElementScript.fieldsScript,
             fieldName,
             actionIndex,
             position,
         );
+
+        return setEditedAnimationElementScript(state, {
+            ...animationElementScript,
+            fieldsScript,
+        });
+    })
+    .on(setBlockPositionScriptActionValueAction, (state, {
+        fieldName,
+        actionIndex,
+        value,
+    }): ConstructorState => {
+        const animationElementScript = getEditedAnimationElementScript(state);
+
+        const blockPositionScript = setFieldsScriptsActionValue(
+            animationElementScript.blockPositionScript,
+            fieldName,
+            actionIndex,
+            value,
+        );
+
+        return setEditedAnimationElementScript(state, {
+            ...animationElementScript,
+            blockPositionScript,
+        });
+    })
+    .on(setFieldsScriptActionValueAction, (state, {
+        fieldName,
+        actionIndex,
+        value,
+    }): ConstructorState => {
+        const animationElementScript = getEditedAnimationElementScript(state);
+
+        const fieldsScript = setFieldsScriptsActionValue(
+            animationElementScript.fieldsScript,
+            fieldName,
+            actionIndex,
+            value,
+        );
+
+        return setEditedAnimationElementScript(state, {
+            ...animationElementScript,
+            fieldsScript,
+        });
     });

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { getValueByPosition } from '../../Animation/util/getValueByPosition';
+import { UnitScript } from '../../AnimationScript';
 import { Unit } from '../../Unit/Unit';
 import { colorToRGBAString } from '../../utils/colorToRGBAString';
 import { ResizeSensor } from '../../utils/ResizeSensor';
@@ -38,14 +39,14 @@ export class ColorTimeLinePreview extends React.Component<TimelitePreviewProps<U
         }
 
         this.resizeSensor = new ResizeSensor(containerElement, () => {
-            this.redrawCanvas();
+            this.redrawCanvas(this.props.unitScript);
         });
 
-        this.redrawCanvas();
+        this.redrawCanvas(this.props.unitScript);
     }
 
-    public componentWillReceiveProps() {
-        this.redrawCanvas();
+    public componentWillReceiveProps({ unitScript }: TimelitePreviewProps<Unit.color>) {
+        this.redrawCanvas(unitScript);
     }
 
     public componentWillUnmount() {
@@ -58,7 +59,7 @@ export class ColorTimeLinePreview extends React.Component<TimelitePreviewProps<U
         resizeSensor.destroy();
     }
 
-    private redrawCanvas() {
+    private redrawCanvas(unitScript: UnitScript<Unit.color>) {
         const { canvas } = this;
 
         if (!canvas) {
@@ -68,7 +69,7 @@ export class ColorTimeLinePreview extends React.Component<TimelitePreviewProps<U
         const {
             actions,
             unit,
-        } = this.props.unitScript;
+        } = unitScript;
 
         if (actions.length === 0) {
             throw new Error('actions array cannot be zero-length');
