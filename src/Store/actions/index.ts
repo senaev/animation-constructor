@@ -14,8 +14,8 @@ export const addStandardElementAction =
 export const setEditedBlockAction =
     createAction<BlockLocation | undefined>('setEditedBlockAction');
 
-export const setEditedBlockFieldsAction =
-    createAction<Partial<Block>>('setEditedBlockFieldsAction');
+export const setEditedBlockFieldsOnCurrentPositionAction =
+    createAction<Partial<Block>>('setEditedBlockFieldsOnCurrentPositionAction');
 export const setEditedElementFieldsAction =
     createAction<Partial<AnimationElementFieldsTypes<AnimationElementName>>>('setEditedElementFieldsAction');
 

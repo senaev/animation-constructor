@@ -37,8 +37,8 @@ export class Animation {
             const AnimationElementClass = ALL_STANDARD_ELEMENTS[elementName];
             const animationElement = new AnimationElementClass(
                 container,
-                this.getBlockSize(initialBlock),
                 initialFieldValues,
+                this.getBlockSize(initialBlock),
             );
 
             animationContainer.appendChild(container);
@@ -62,9 +62,15 @@ export class Animation {
             getBlockByAnimationPosition,
             getFieldValuesByAnimationPosition,
         } of this.elementsAnimations) {
-            // TODO: set just changed values
-            applyBlockToElement(container, getBlockByAnimationPosition(animationPosition));
-            animationElement.setValues(getFieldValuesByAnimationPosition(animationPosition));
+            const block = getBlockByAnimationPosition(animationPosition);
+            const fieldsValues = getFieldValuesByAnimationPosition(animationPosition);
+            const blockSize = this.getBlockSize(block);
+
+            applyBlockToElement(container, block);
+            animationElement.setValues(
+                fieldsValues,
+                blockSize,
+            );
         }
     }
 
@@ -75,11 +81,21 @@ export class Animation {
     public setSize(size: number): void {
         this.size = size;
 
-        for (const { animationElement, getBlockByAnimationPosition } of this.elementsAnimations) {
-            // TODO: если где-то хранить текущее значение позиции, в это месте его не придется высчитывать
-            const block = getBlockByAnimationPosition(this.animationPosition);
+        const { animationPosition } = this;
 
-            animationElement.setSize(this.getBlockSize(block));
+        for (const {
+            animationElement,
+            getBlockByAnimationPosition,
+            getFieldValuesByAnimationPosition,
+        } of this.elementsAnimations) {
+            const block = getBlockByAnimationPosition(animationPosition);
+            const fieldsValues = getFieldValuesByAnimationPosition(animationPosition);
+            const blockSize = this.getBlockSize(block);
+
+            animationElement.setValues(
+                fieldsValues,
+                blockSize,
+            );
         }
     }
 

@@ -9,14 +9,17 @@ import { createDefaultUnitScript } from './createDefaultUnitScript';
 import { getEditedAnimationElementBlockLocation } from './getEditedAnimationElementBlockLocation';
 import { getEditedAnimationElementScript } from './getEditedAnimationElementScript';
 
-export function setEditedBlockFields(state: ConstructorState,
-                                     blockFields: Partial<Block>): ConstructorState {
+export function setEditedBlockFieldsOnCurrentPosition(state: ConstructorState,
+                                                      blockFields: Partial<Block>): ConstructorState {
 
     const {
         animationScript,
     } = state;
 
-    const editedAnimationElementIndex = getEditedAnimationElementBlockLocation(state)[0];
+    const blockLocation = getEditedAnimationElementBlockLocation(state);
+
+    // TODO: circular elements
+    const editedAnimationElementIndex = blockLocation[0];
     const editedAnimationElement = getEditedAnimationElementScript(state);
 
     const {
@@ -28,6 +31,9 @@ export function setEditedBlockFields(state: ConstructorState,
     const nextBlockFieldsScripts = mapObjectValues(
         blockFields,
         (value, blockFieldName) => {
+            // const {actions} = blockScript[blockFieldName];
+            // const action = getAction
+
             return createDefaultUnitScript(
                 BlockFieldUnits[blockFieldName],
                 value as BlockFieldsTypes,

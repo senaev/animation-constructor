@@ -1,11 +1,10 @@
 import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
-import { AnimationElementScript } from '../../AnimationScript';
+import { AnimationElementScript, AnimationScript } from '../../AnimationScript';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
-import { ConstructorState } from '../State';
 
 export function getAnimationElementScriptByBlockLocation<T extends AnimationElementName>
-(state: ConstructorState,
+(animationScript: AnimationScript,
  blockLocation: BlockLocation): AnimationElementScript<T> {
     const blockIndex = blockLocation[0];
-    return state.animationScript[blockIndex] as AnimationElementScript<T>;
+    return animationScript[blockIndex] as AnimationElementScript<T>;
 }

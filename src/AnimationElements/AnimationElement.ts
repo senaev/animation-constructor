@@ -6,21 +6,16 @@ import { AnimationElementName } from './AnimationElementName';
 export abstract class AnimationElement<T extends AnimationElementName> {
 
     constructor(protected readonly container: HTMLDivElement,
-                protected size: UnitTypes[Unit.pixel],
-                public values: AnimationElementFieldsTypes<T>) {
+                public values: AnimationElementFieldsTypes<T>,
+                protected size: UnitTypes[Unit.pixel]) {
     }
 
-    public setSize(size: UnitTypes[Unit.pixel]): void {
-        this.size = size;
-
-        this.setValues(this.values);
-    }
-
-    public abstract setValues(values: AnimationElementFieldsTypes<T>): void;
+    public abstract setValues(values: AnimationElementFieldsTypes<T>,
+                              size: UnitTypes[Unit.pixel]): void;
 }
 
 export interface AnimationElementClass<T extends AnimationElementName> {
     new(container: HTMLDivElement,
-        size: UnitTypes[Unit.pixel],
-        values: AnimationElementFieldsTypes<T>): AnimationElement<T>;
+        values: AnimationElementFieldsTypes<T>,
+        size: UnitTypes[Unit.pixel]): AnimationElement<T>;
 }

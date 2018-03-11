@@ -6,5 +6,5 @@ import { getEditedAnimationElementBlockLocation } from './getEditedAnimationElem
 
 export function getEditedAnimationElementScript<T extends AnimationElementName>
 (state: ConstructorState): AnimationElementScript<T> {
-    return getAnimationElementScriptByBlockLocation(state, getEditedAnimationElementBlockLocation(state));
+    return getAnimationElementScriptByBlockLocation(state.animationScript, getEditedAnimationElementBlockLocation(state));
 }

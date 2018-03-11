@@ -2,23 +2,24 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
+import { getFieldsValuesByPosition } from '../../Animation/util/getFieldsValuesByPosition';
 import { Block } from '../../Block/Block';
-import { setEditedBlockFieldsAction, } from '../../Store/actions';
+import { setEditedBlockFieldsOnCurrentPositionAction, } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
+import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
 import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
-import { mapObjectValues } from '../../utils/mapObjectValues';
 import { Resizer } from '../Resizer';
 import * as c from './index.pcss';
 
-export type DrawingStateProps = Pick<ConstructorState,
-    | 'editParams'
-    | 'animationScript'>;
+export type DrawingStateProps = {
+    block: Block;
+};
 
 export type DrawingDispatchProps = {
-    setEditedBlockFields: (blockFields: Partial<Block>) => void;
+    setEditedBlockFieldsOnCurrentPosition: (blockFields: Partial<Block>) => void;
 };
 
 export type DrawingProps =
@@ -28,21 +29,8 @@ export type DrawingProps =
 class DrawingComponent extends React.Component<DrawingProps, {}> {
     public render() {
         const {
-            editParams,
-            animationScript,
+            block,
         } = this.props;
-
-        if (editParams === undefined) {
-            throw new Error('DrawingComponent should not be rendered without editParams');
-        }
-
-        const {
-            blockScript,
-        } = animationScript[editParams.blockLocation[0]];
-
-        const position = mapObjectValues(blockScript, (unitScript) => {
-            return unitScript.actions[0].value;
-        });
 
         const {
             y,
@@ -50,7 +38,7 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
             height,
             width,
             rotation,
-        } = position;
+        } = block;
 
         return <div className={ c.Drawing }>
             <Resizer
@@ -67,31 +55,33 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
     }
 
     private onResize = (blockSize: Size) => {
-        this.props.setEditedBlockFields(blockSize);
+        this.props.setEditedBlockFieldsOnCurrentPosition(blockSize);
     }
 
     private onRotate = (rotation: UnitTypes[Unit.degree]) => {
-        this.props.setEditedBlockFields({ rotation });
+        this.props.setEditedBlockFieldsOnCurrentPosition({ rotation });
     }
 
     private onMove = (pointCoordinates: PointCoordinates) => {
-        this.props.setEditedBlockFields(pointCoordinates);
+        this.props.setEditedBlockFieldsOnCurrentPosition(pointCoordinates);
     }
 }
 
-const mapStateToProps = ({
-                             editParams,
-                             animationScript,
-                         }: ConstructorState): DrawingStateProps => {
+const mapStateToProps = (state: ConstructorState): DrawingStateProps => {
+    const {
+        blockScript,
+    } = getEditedAnimationElementScript(state);
+
+    const block = getFieldsValuesByPosition(state.animationPosition, blockScript);
+
     return {
-        editParams,
-        animationScript,
+        block,
     };
 };
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): DrawingDispatchProps => ({
-    setEditedBlockFields: (blockFields) => {
-        dispatch(setEditedBlockFieldsAction(blockFields));
+    setEditedBlockFieldsOnCurrentPosition: (blockFields) => {
+        dispatch(setEditedBlockFieldsOnCurrentPositionAction(blockFields));
     },
 });
 

@@ -6,7 +6,7 @@ import {
     setBlockScriptActionPositionAction,
     setBlockScriptActionValueAction,
     setEditedBlockAction,
-    setEditedBlockFieldsAction,
+    setEditedBlockFieldsOnCurrentPositionAction,
     setEditedElementFieldsAction,
     setFieldsScriptActionPositionAction,
     setFieldsScriptActionValueAction,
@@ -16,7 +16,7 @@ import { getDefaultFieldsScriptForAnimationElement } from '../utils/getDefaultFi
 import { getEditedAnimationElementScript } from '../utils/getEditedAnimationElementScript';
 import { setAnimationElementFields } from '../utils/setAnimationElementFields';
 import { setEditedAnimationElementScript } from '../utils/setEditedAnimationElementScript';
-import { setEditedBlockFields } from '../utils/setEditedBlockFields';
+import { setEditedBlockFieldsOnCurrentPosition } from '../utils/setEditedBlockFieldsOnCurrentPosition';
 import { setFieldsScriptsActionPosition } from '../utils/setFieldsScriptsActionPosition';
 import { setFieldsScriptsActionValue } from '../utils/setFieldsScriptsActionValue';
 
@@ -62,8 +62,8 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
 
         return setAnimationElementFields(state, editParams.blockLocation, fieldsValues);
     })
-    .on(setEditedBlockFieldsAction, (state, blockFields): ConstructorState => {
-        return setEditedBlockFields(state, blockFields);
+    .on(setEditedBlockFieldsOnCurrentPositionAction, (state, blockFields): ConstructorState => {
+        return setEditedBlockFieldsOnCurrentPosition(state, blockFields);
     })
     .on(setAnimationPositionAction, (state, animationPosition): ConstructorState => {
         return {
