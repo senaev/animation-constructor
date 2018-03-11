@@ -1,7 +1,7 @@
 import * as cx from 'classnames';
 import * as React from 'react';
-import { BlockPosition } from '../../BlockPosition/BlockPosition';
-import { blockPositionToStyles } from '../../BlockPosition/utils/blockPositionToStyles';
+import { Block } from '../../Block/Block';
+import { blockToStyles } from '../../Block/utils/blockToStyles';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
 import { Unit } from '../../Unit/Unit';
@@ -11,7 +11,7 @@ import { getAngleRelativeToOrigin } from '../../utils/Trigonometry/getAngleRelat
 import { getRectangleSizeByPointAndAngle } from '../../utils/Trigonometry/getRectangleSizeByPointAndAngle';
 import * as c from './index.pcss';
 
-type ResizerProps = BlockPosition & {
+type ResizerProps = Block & {
     onResize: (newSize: Size) => void;
     onRotate: (rotation: number) => void;
     onMove: (newSize: PointCoordinates) => void;
@@ -52,7 +52,7 @@ export class Resizer extends React.Component<ResizerProps, ResizerState> {
             isMoving,
         } = this.state;
 
-        const resizerStyles = blockPositionToStyles({
+        const resizerStyles = blockToStyles({
             x,
             y,
             width,
@@ -99,10 +99,10 @@ export class Resizer extends React.Component<ResizerProps, ResizerState> {
             throw new Error('One of elements has not been initialized');
         }
 
-        let startBlockPosition: Readonly<PointCoordinates>;
+        let startBlock: Readonly<PointCoordinates>;
         this.dragListenerForMove = new DragListener(moveElement, {
             onStart: () => {
-                startBlockPosition = {
+                startBlock = {
                     x: this.props.x,
                     y: this.props.y,
                 };
@@ -115,8 +115,8 @@ export class Resizer extends React.Component<ResizerProps, ResizerState> {
                 const percentageInPixel = this.getPercentageInPixel();
 
                 this.props.onMove({
-                    x: startBlockPosition.x + relativeX * percentageInPixel,
-                    y: startBlockPosition.y + relativeY * percentageInPixel,
+                    x: startBlock.x + relativeX * percentageInPixel,
+                    y: startBlock.y + relativeY * percentageInPixel,
                 });
             },
             onEnd: () => {

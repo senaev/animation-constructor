@@ -22,7 +22,7 @@ export function setAnimationElementFields<T extends AnimationElementName>
 
     const {
         elementName,
-        blockPositionScript,
+        blockScript,
         fieldsScript,
     } = editedAnimationElement;
 
@@ -47,7 +47,7 @@ export function setAnimationElementFields<T extends AnimationElementName>
             if (i === editedAnimationElementIndex) {
                 return {
                     elementName,
-                    blockPositionScript,
+                    blockScript,
                     fieldsScript: nextAnimationElementFieldsScript,
                 } as AnimationElementScript<T>;
             } else {

@@ -1,6 +1,6 @@
-import { BlockPositionFieldName } from './BlockPositionFieldName';
+import { BlockFieldName } from './BlockFieldName';
 
-export const BlockPositionFieldTitles: Record<BlockPositionFieldName, string> = {
+export const BlockFieldTitles: Record<BlockFieldName, string> = {
     x: 'Отступ слева',
     y: 'Отступ сверху',
     height: 'Высота',

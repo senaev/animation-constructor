@@ -1,7 +1,7 @@
 import { ALL_STANDARD_ELEMENTS } from '../AnimationElements/ALL_STANDARD_ELEMENTS';
 import { AnimationScript } from '../AnimationScript';
-import { BlockPosition } from '../BlockPosition/BlockPosition';
-import { applyBlockPositionToElement } from '../BlockPosition/utils/applyBlockPositionToElement';
+import { Block } from '../Block/Block';
+import { applyBlockToElement } from '../Block/utils/applyBlockToElement';
 import { removeNodeFromParent } from '../utils/removeNodeFromParent';
 import { ElementsAnimations } from './ElementsAnimations';
 import * as c from './index.pcss';
@@ -18,26 +18,26 @@ export class Animation {
 
         this.elementsAnimations = animationScript.map(({
                                                            elementName,
-                                                           blockPositionScript,
+                                                           blockScript,
                                                            fieldsScript,
                                                        }) => {
             const { ownerDocument } = animationContainer;
             const container = ownerDocument.createElement('div');
             container.className = c.AnimationBlock;
 
-            const getBlockPositionByAnimationPosition =
-                createFieldsFunctionByFieldsScripts(blockPositionScript);
+            const getBlockByAnimationPosition =
+                createFieldsFunctionByFieldsScripts(blockScript);
             const getFieldValuesByAnimationPosition = createFieldsFunctionByFieldsScripts(fieldsScript);
 
-            const initialBlockPosition = getBlockPositionByAnimationPosition(animationPosition);
-            applyBlockPositionToElement(container, initialBlockPosition);
+            const initialBlock = getBlockByAnimationPosition(animationPosition);
+            applyBlockToElement(container, initialBlock);
 
             const initialFieldValues = getFieldValuesByAnimationPosition(animationPosition);
 
             const AnimationElementClass = ALL_STANDARD_ELEMENTS[elementName];
             const animationElement = new AnimationElementClass(
                 container,
-                this.getBlockSize(initialBlockPosition),
+                this.getBlockSize(initialBlock),
                 initialFieldValues,
             );
 
@@ -46,7 +46,7 @@ export class Animation {
             return {
                 animationElement,
                 container,
-                getBlockPositionByAnimationPosition,
+                getBlockByAnimationPosition,
                 getFieldValuesByAnimationPosition,
             };
         });
@@ -59,11 +59,11 @@ export class Animation {
         for (const {
             animationElement,
             container,
-            getBlockPositionByAnimationPosition,
+            getBlockByAnimationPosition,
             getFieldValuesByAnimationPosition,
         } of this.elementsAnimations) {
             // TODO: set just changed values
-            applyBlockPositionToElement(container, getBlockPositionByAnimationPosition(animationPosition));
+            applyBlockToElement(container, getBlockByAnimationPosition(animationPosition));
             animationElement.setValues(getFieldValuesByAnimationPosition(animationPosition));
         }
     }
@@ -75,11 +75,11 @@ export class Animation {
     public setSize(size: number): void {
         this.size = size;
 
-        for (const { animationElement, getBlockPositionByAnimationPosition } of this.elementsAnimations) {
+        for (const { animationElement, getBlockByAnimationPosition } of this.elementsAnimations) {
             // TODO: если где-то хранить текущее значение позиции, в это месте его не придется высчитывать
-            const blockPosition = getBlockPositionByAnimationPosition(this.animationPosition);
+            const block = getBlockByAnimationPosition(this.animationPosition);
 
-            animationElement.setSize(this.getBlockSize(blockPosition));
+            animationElement.setSize(this.getBlockSize(block));
         }
     }
 
@@ -91,7 +91,7 @@ export class Animation {
         this.elementsAnimations = [];
     }
 
-    private getBlockSize({ width, height }: BlockPosition): number {
+    private getBlockSize({ width, height }: Block): number {
         return (Math.min(width, height) * this.size) / 100;
     }
 }

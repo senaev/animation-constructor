@@ -1,16 +1,16 @@
 import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
 import { AnimationElementScript } from '../../AnimationScript';
-import { BlockPosition } from '../../BlockPosition/BlockPosition';
-import { BlockPositionFieldsTypes } from '../../BlockPosition/BlockPositionFieldsTypes';
-import { BlockPositionFieldUnits } from '../../BlockPosition/BlockPositionFieldUnits';
+import { Block } from '../../Block/Block';
+import { BlockFieldsTypes } from '../../Block/BlockFieldsTypes';
+import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import { mapObjectValues } from '../../utils/mapObjectValues';
 import { ConstructorState } from '../State';
 import { createDefaultUnitScript } from './createDefaultUnitScript';
 import { getEditedAnimationElementBlockLocation } from './getEditedAnimationElementBlockLocation';
 import { getEditedAnimationElementScript } from './getEditedAnimationElementScript';
 
-export function setEditedBlockPositionFields(state: ConstructorState,
-                                             blockPositionFields: Partial<BlockPosition>): ConstructorState {
+export function setEditedBlockFields(state: ConstructorState,
+                                     blockFields: Partial<Block>): ConstructorState {
 
     const {
         animationScript,
@@ -21,23 +21,23 @@ export function setEditedBlockPositionFields(state: ConstructorState,
 
     const {
         elementName,
-        blockPositionScript,
+        blockScript,
         fieldsScript,
     } = editedAnimationElement;
 
-    const nextBlockPositionFieldsScripts = mapObjectValues(
-        blockPositionFields,
-        (value, blockPositionFieldName) => {
+    const nextBlockFieldsScripts = mapObjectValues(
+        blockFields,
+        (value, blockFieldName) => {
             return createDefaultUnitScript(
-                BlockPositionFieldUnits[blockPositionFieldName],
-                value as BlockPositionFieldsTypes,
+                BlockFieldUnits[blockFieldName],
+                value as BlockFieldsTypes,
             );
         },
     );
 
-    const nextBlockPositionScript = {
-        ...blockPositionScript,
-        ...nextBlockPositionFieldsScripts,
+    const nextBlockScript = {
+        ...blockScript,
+        ...nextBlockFieldsScripts,
     };
 
     return {
@@ -46,7 +46,7 @@ export function setEditedBlockPositionFields(state: ConstructorState,
             if (i === editedAnimationElementIndex) {
                 return {
                     elementName,
-                    blockPositionScript: nextBlockPositionScript,
+                    blockScript: nextBlockScript,
                     fieldsScript,
                 } as AnimationElementScript<AnimationElementName>;
             } else {

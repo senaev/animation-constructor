@@ -2,9 +2,9 @@ import { createAction } from 'redux-act';
 import { AnimationElementFieldsTypes } from '../../AnimationElements/AnimationElementFieldsTypes';
 import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
 import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementsFieldsUnits';
+import { Block } from '../../Block/Block';
+import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
-import { BlockPosition } from '../../BlockPosition/BlockPosition';
-import { BlockPositionFieldUnits } from '../../BlockPosition/BlockPositionFieldUnits';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
 import { Unit } from '../../Unit/Unit';
@@ -23,8 +23,8 @@ export const saveElementAction =
 export const discardChangesAction =
     createAction('discardChangesAction');
 
-export const setEditedBlockPositionAction =
-    createAction<Partial<BlockPosition>>('setEditedElementPositionAction');
+export const setEditedBlockFieldsAction =
+    createAction<Partial<Block>>('setEditedBlockFieldsAction');
 export const setEditedBlockCoordinatesAction =
     createAction<PointCoordinates>('setEditedBlockCoordinatesAction');
 export const setEditedBlockSizeAction =
@@ -40,12 +40,12 @@ export const setRelationAction =
 export const setAnimationPositionAction =
     createAction<ConstructorState['animationPosition']>('setAnimationPositionAction');
 
-export const setBlockPositionScriptActionPositionAction =
-    createAction<ActionPosition<BlockPositionFieldUnits>>('setBlockPositionScriptActionPositionAction');
+export const setBlockScriptActionPositionAction =
+    createAction<ActionPosition<BlockFieldUnits>>('setBlockScriptActionPositionAction');
 export const setFieldsScriptActionPositionAction =
     createAction<ActionPosition<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptActionPositionAction');
 
-export const setBlockPositionScriptActionValueAction =
-    createAction<ActionValue<BlockPositionFieldUnits>>('setBlockPositionScriptActionValueAction');
+export const setBlockScriptActionValueAction =
+    createAction<ActionValue<BlockFieldUnits>>('setBlockScriptActionValueAction');
 export const setFieldsScriptActionValueAction =
     createAction<ActionValue<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptActionValueAction');

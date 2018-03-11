@@ -11,17 +11,17 @@ import { AnimationElementFieldsValues } from '../../AnimationElements/AnimationE
 import { AnimationElementFieldTitles } from '../../AnimationElements/AnimationElementFieldTitles';
 import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
 import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementsFieldsUnits';
-import { ALL_BLOCK_POSITION_FIELD_NAMES } from '../../BlockPosition/ALL_BLOCK_POSITION_FIELD_NAMES';
-import { BlockPosition } from '../../BlockPosition/BlockPosition';
-import { BlockPositionFieldName } from '../../BlockPosition/BlockPositionFieldName';
-import { BlockPositionFieldTitles } from '../../BlockPosition/BlockPositionFieldTitles';
-import { BlockPositionFieldUnits } from '../../BlockPosition/BlockPositionFieldUnits';
-import { BlockPositionMinValues } from '../../BlockPosition/BlockPositionMinValues';
+import { AllBlockFieldNames } from '../../Block/AllBlockFieldNames';
+import { Block } from '../../Block/Block';
+import { BlockFieldName } from '../../Block/BlockFieldName';
+import { BlockFieldTitles } from '../../Block/BlockFieldTitles';
+import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
+import { BlockMinValues } from '../../Block/BlockMinValues';
 import { ALL_FIELDS } from '../../Fields/ALL_FIELDS';
 import {
     discardChangesAction,
     saveElementAction,
-    setEditedBlockPositionAction,
+    setEditedBlockFieldsAction,
     setEditedElementFieldsAction,
 } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
@@ -37,7 +37,7 @@ export type BoardFieldsStateProps = Pick<ConstructorState,
 export type BoardFieldsDispatchProps = {
     saveElement: () => void;
     discardChanges: () => void;
-    setEditedBlockPosition: (blockPositionFields: Partial<BlockPosition>) => void;
+    setEditedBlockFields: (blockFields: Partial<Block>) => void;
     setEditedElementFields: (elementFields: Partial<AnimationElementFieldsTypes<AnimationElementName>>) => void;
 };
 
@@ -58,13 +58,13 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
 
         const {
             elementName,
-            blockPositionScript,
+            blockScript,
             fieldsScript,
         } = animationScript[editParams.blockLocation[0]];
 
-        const blockPositionSubmenuTitle = ALL_BLOCK_POSITION_FIELD_NAMES.map((blockPositionFieldName, key, arr) => {
-            const fieldTitle = BlockPositionFieldTitles[blockPositionFieldName];
-            const fieldName = BlockPositionFieldUnits[blockPositionFieldName];
+        const blockSubmenuTitle = AllBlockFieldNames.map((blockFieldName, key, arr) => {
+            const fieldTitle = BlockFieldTitles[blockFieldName];
+            const fieldName = BlockFieldUnits[blockFieldName];
 
             const FieldClass = ALL_FIELDS[fieldName];
 
@@ -72,7 +72,7 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
                 {
                     `${fieldTitle} `
                 }
-                <FieldClass.Preview value={ blockPositionScript[blockPositionFieldName].actions[0].value }/>
+                <FieldClass.Preview value={ blockScript[blockFieldName].actions[0].value }/>
                 {
                     arr.length === key + 1 ? '' : ', '
                 }
@@ -106,14 +106,14 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
                 <List>
                     <Subheader inset={ true }>Расположение блока</Subheader>
                     <ListItem
-                        primaryText={ blockPositionSubmenuTitle }
+                        primaryText={ blockSubmenuTitle }
                         leftIcon={ <MapsZoomOutMap/> }
                         initiallyOpen={ false }
                         primaryTogglesNestedList={ true }
                         nestedItems={
-                            ALL_BLOCK_POSITION_FIELD_NAMES.map((blockPositionFieldName, key) => {
-                                const fieldTitle = BlockPositionFieldTitles[blockPositionFieldName];
-                                const unit = BlockPositionFieldUnits[blockPositionFieldName];
+                            AllBlockFieldNames.map((blockFieldName, key) => {
+                                const fieldTitle = BlockFieldTitles[blockFieldName];
+                                const unit = BlockFieldUnits[blockFieldName];
 
                                 const FieldClass = ALL_FIELDS[unit];
 
@@ -122,8 +122,8 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
                                                      `${fieldTitle} (${UnitTitles[unit]})`
                                                  }>
                                     <FieldClass
-                                        value={ blockPositionScript[blockPositionFieldName].actions[0].value }
-                                        onChange={ this.changeElementPosition(blockPositionFieldName) }/>
+                                        value={ blockScript[blockFieldName].actions[0].value }
+                                        onChange={ this.changeElementPosition(blockFieldName) }/>
                                 </ListItem>;
                             })
                         }/>
@@ -167,16 +167,16 @@ class BoardFieldsComponent extends React.Component<BoardFieldsProps, {}> {
         </div>;
     }
 
-    private changeElementPosition = (positionFieldName: BlockPositionFieldName): (value: number) => void => {
-        const blockPositionFieldMinValue = BlockPositionMinValues[positionFieldName];
-        const min = blockPositionFieldMinValue === undefined
+    private changeElementPosition = (positionFieldName: BlockFieldName): (value: number) => void => {
+        const blockFieldMinValue = BlockMinValues[positionFieldName];
+        const min = blockFieldMinValue === undefined
             ? -Infinity
-            : blockPositionFieldMinValue;
+            : blockFieldMinValue;
 
         return (value) => {
             const normalizedValue = Math.max(value, min);
 
-            this.props.setEditedBlockPosition({ [positionFieldName]: normalizedValue });
+            this.props.setEditedBlockFields({ [positionFieldName]: normalizedValue });
         };
     }
 
@@ -210,8 +210,8 @@ const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): BoardFieldsD
     discardChanges: () => {
         dispatch(discardChangesAction());
     },
-    setEditedBlockPosition: (position) => {
-        dispatch(setEditedBlockPositionAction(position));
+    setEditedBlockFields: (position) => {
+        dispatch(setEditedBlockFieldsAction(position));
     },
     setEditedElementFields: (elementFields: Partial<AnimationElementFieldsTypes<AnimationElementName>>) => {
         dispatch(setEditedElementFieldsAction(elementFields));

@@ -2,8 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import { BlockPosition } from '../../BlockPosition/BlockPosition';
-import { blockPositionToStyles } from '../../BlockPosition/utils/blockPositionToStyles';
+import { blockToStyles } from '../../Block/utils/blockToStyles';
 import {
     setEditedBlockCoordinatesAction,
     setEditedBlockRotationAction,
@@ -44,12 +43,12 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
         }
 
         const {
-            blockPositionScript,
+            blockScript,
         } = animationScript[editParams.blockLocation[0]];
 
-        const position = mapObjectValues(blockPositionScript, (blockPositionFieldScript) => {
-            return blockPositionFieldScript.actions[0].value;
-        }) as BlockPosition;
+        const position = mapObjectValues(blockScript, (unitScript) => {
+            return unitScript.actions[0].value;
+        });
 
         const {
             y,
@@ -59,7 +58,7 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
             rotation,
         } = position;
 
-        const elementContainerStyle = blockPositionToStyles(position);
+        const elementContainerStyle = blockToStyles(position);
 
         return <div className={ c.Drawing }>
             <div
