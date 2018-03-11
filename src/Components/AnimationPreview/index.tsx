@@ -5,15 +5,15 @@ import { AnimationScript } from '../../AnimationScript';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { getBlockLocationByElement } from '../../BlockLocation/getBlockLocationByElement';
 import { ConstructorState } from '../../Store/State';
-import { addElementEventListener } from '../../utils/addElementEventListener';
-import { noop } from '../../utils/noop';
+import { getIfNodeIsChild } from '../../utils/getIfNodeIsChild';
 import { ResizeSensor } from '../../utils/ResizeSensor';
+import * as c from './index.pcss';
 
 
 export type AnimationPreviewProps = Pick<ConstructorState,
     | 'animationScript'
     | 'animationPosition'> & {
-    onSelectBlock: (blockLocation: BlockLocation) => void,
+    setEditedBlock: (blockLocation: BlockLocation | undefined) => void;
 };
 
 export class AnimationPreview extends React.Component<AnimationPreviewProps, {}> {
@@ -21,12 +21,42 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
     private resizeSensor?: ResizeSensor;
     private animation?: Animation;
 
-    private removeElementClickListener = noop;
-
     public render() {
-        return <div ref={ (element) => {
-            this.container = element;
-        } }/>;
+        return <div
+            className={ c.AnimationPreview }
+            ref={ (element) => {
+                this.container = element;
+            } }
+        />;
+    }
+
+    public getIfHTMLElementIsPartOfAnimation(element: HTMLElement): boolean {
+        const {
+            container,
+        } = this;
+
+        if (!container) {
+            throw new Error('One of properties has not been initialized');
+        }
+
+        return getIfNodeIsChild(container, element);
+    }
+
+    public getBlockLocationByHTMLElement(element: HTMLElement): BlockLocation | undefined {
+        const {
+            container,
+            animation,
+        } = this;
+
+        if (!container || !animation) {
+            throw new Error('One of properties has not been initialized');
+        }
+
+        return getBlockLocationByElement(
+            container,
+            element,
+            animation.elementsAnimations,
+        );
     }
 
     public componentDidMount() {
@@ -60,27 +90,6 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
         } = this.props;
 
         this.recreateAnimation(animationScript, animationPosition);
-
-
-        this.removeElementClickListener = addElementEventListener(container, 'click', ({ target }) => {
-            const { animation } = this;
-
-            if (!animation) {
-                throw new Error('Animation has not been initialized');
-            }
-
-            const blockLocation = getBlockLocationByElement(
-                container,
-                target as HTMLElement,
-                animation.elementsAnimations,
-            );
-
-            if (blockLocation !== undefined) {
-                this.props.onSelectBlock(blockLocation);
-            } else {
-                throw new Error('Cannot find location for block');
-            }
-        });
     }
 
     public componentWillReceiveProps({
@@ -108,8 +117,6 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
     }
 
     public componentWillUnmount() {
-        this.removeElementClickListener();
-
         const { resizeSensor } = this;
 
         if (!resizeSensor) {

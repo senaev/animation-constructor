@@ -15,13 +15,8 @@ import { ActionValue } from '../types/ActionValue';
 
 export const addStandardElementAction =
     createAction<AnimationElementName>('addStandardElementAction');
-export const selectBlockAction =
-    createAction<BlockLocation>('selectBlockAction');
-
-export const saveElementAction =
-    createAction('saveElementAction');
-export const discardChangesAction =
-    createAction('discardChangesAction');
+export const setEditedBlockAction =
+    createAction<BlockLocation | undefined>('setEditedBlockAction');
 
 export const setEditedBlockFieldsAction =
     createAction<Partial<Block>>('setEditedBlockFieldsAction');
@@ -33,9 +28,6 @@ export const setEditedBlockRotationAction =
     createAction<UnitTypes[Unit.degree]>('setEditedBlockRotationAction');
 export const setEditedElementFieldsAction =
     createAction<Partial<AnimationElementFieldsTypes<AnimationElementName>>>('setEditedElementFieldsAction');
-
-export const setRelationAction =
-    createAction<ConstructorState['relation']>('setRelationAction');
 
 export const setAnimationPositionAction =
     createAction<ConstructorState['animationPosition']>('setAnimationPositionAction');

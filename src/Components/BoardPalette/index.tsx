@@ -7,16 +7,13 @@ import { Action } from 'redux-act';
 import { ALL_STANDARD_ELEMENT_NAMES } from '../../AnimationElements/ALL_STANDARD_ELEMENT_NAMES';
 import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
 import { AnimationElementsTitles } from '../../AnimationElements/AnimationElementsTitles';
-import { addStandardElementAction, setRelationAction } from '../../Store/actions';
+import { addStandardElementAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
-import { RelationInput } from '../RelationInput';
 
-export type BoardPaletteStateProps = Pick<ConstructorState,
-    | 'relation'>;
+export type BoardPaletteStateProps = {};
 
 export type BoardPaletteDispatchProps = {
     addStandardElement: (elementName: AnimationElementName) => void;
-    setRelation: (elementName: ConstructorState['relation']) => void;
 };
 
 export type BoardPaletteProps =
@@ -35,10 +32,6 @@ class BoardPaletteComponent extends React.Component<BoardPaletteProps, {
     }
 
     public render() {
-        const {
-            relation,
-        } = this.props;
-
         return <Toolbar>
             <ToolbarGroup firstChild={ true }>
                 <RaisedButton onClick={ this.openMenu } label={ 'Добавить элемент' }/>
@@ -59,13 +52,6 @@ class BoardPaletteComponent extends React.Component<BoardPaletteProps, {
                     }
                 </IconMenu>
             </ToolbarGroup>
-            <ToolbarGroup>
-                <RelationInput
-                    relation={ relation }
-                    onChange={ (newRelation) => {
-                        this.props.setRelation(newRelation);
-                    } }/>
-            </ToolbarGroup>
         </Toolbar>;
     }
 
@@ -80,17 +66,12 @@ class BoardPaletteComponent extends React.Component<BoardPaletteProps, {
     }
 }
 
-const mapStateToProps = ({
-                             relation,
-                         }: ConstructorState): BoardPaletteStateProps => ({
-    relation,
-});
+const mapStateToProps = ({}: ConstructorState): BoardPaletteStateProps => ({});
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): BoardPaletteDispatchProps => ({
     addStandardElement: (elementName) => {
         dispatch(addStandardElementAction(elementName));
     },
-    setRelation: (relation) => dispatch(setRelationAction(relation)),
 });
 
 export const BoardPalette = connect(mapStateToProps, mapDispatchToProps)(BoardPaletteComponent);

@@ -1,3 +1,4 @@
+import * as cx from 'classnames';
 import * as React from 'react';
 import { ResizeSensor } from '../../utils/ResizeSensor';
 import * as c from './index.pcss';
@@ -5,7 +6,7 @@ import * as c from './index.pcss';
 export type FillSizeBlockProps = {
     relationX: number;
     relationY: number;
-    additionalContainerStyles?: React.CSSProperties;
+    className?: string;
 };
 
 export type FillSizeBlockState = {
@@ -35,14 +36,13 @@ export class FillSizeBlock extends React.Component<FillSizeBlockProps, FillSizeB
 
     public render() {
         const { width, height } = this.state;
-        const { additionalContainerStyles } = this.props;
+        const { className } = this.props;
 
         return <div
-            className={ c.FillSizeBlock }
+            className={ cx(c.FillSizeBlock, className) }
             ref={ (element) => {
                 this.container = element;
             } }
-            style={ additionalContainerStyles }
         >
             <div
                 ref={ (element) => {

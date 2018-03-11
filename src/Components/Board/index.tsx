@@ -1,25 +1,13 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { ConstructorState } from '../../Store/State';
-import { BoardFields } from '../BoardFields';
 import { BoardPalette } from '../BoardPalette';
 import { BoardPreview } from '../BoardPreview';
 import { TimeLines } from '../TimeLines';
 import * as c from './index.pcss';
 
-export type BoardProps = Pick<ConstructorState,
-    | 'editParams'>;
-
-class BoardComponent extends React.Component<BoardProps, {}> {
+export class Board extends React.Component<{}, {}> {
     public render() {
-        const { editParams } = this.props;
-
         return <div>
-            {
-                editParams === undefined
-                    ? <BoardPalette/>
-                    : <BoardFields/>
-            }
+            <BoardPalette/>
             <BoardPreview/>
             <div className={ c.Board__animationControlsContainer }>
                 <div className={ c.Board__animationControlsContainerPadding }>
@@ -29,14 +17,3 @@ class BoardComponent extends React.Component<BoardProps, {}> {
         </div>;
     }
 }
-
-const mapStateToProps = ({
-                             editParams,
-                             animationScript,
-                         }: ConstructorState): BoardProps => {
-    return {
-        editParams,
-    };
-};
-
-export const Board = connect(mapStateToProps)(BoardComponent);

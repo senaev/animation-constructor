@@ -1,27 +1,22 @@
 import { createReducer } from 'redux-act';
-import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
-import { AnimationElementScript } from '../../AnimationScript';
 import { DefaultBlockScript } from '../../Block/DefaultBlockScript';
 import {
     addStandardElementAction,
-    discardChangesAction,
-    saveElementAction,
-    selectBlockAction,
     setAnimationPositionAction,
-    setBlockScriptActionPositionAction, setBlockScriptActionValueAction,
+    setBlockScriptActionPositionAction,
+    setBlockScriptActionValueAction,
+    setEditedBlockAction,
     setEditedBlockCoordinatesAction,
     setEditedBlockFieldsAction,
     setEditedBlockRotationAction,
     setEditedBlockSizeAction,
     setEditedElementFieldsAction,
-    setFieldsScriptActionPositionAction, setFieldsScriptActionValueAction,
-    setRelationAction,
+    setFieldsScriptActionPositionAction,
+    setFieldsScriptActionValueAction,
 } from '../actions';
 import { ConstructorState } from '../State';
-import { getAnimationElementScriptByBlockLocation } from '../utils/getAnimationElementScriptByBlockLocation';
 import { getDefaultFieldsScriptForAnimationElement } from '../utils/getDefaultFieldsScriptForAnimationElement';
 import { getEditedAnimationElementScript } from '../utils/getEditedAnimationElementScript';
-import { removeElement } from '../utils/removeElement';
 import { setAnimationElementFields } from '../utils/setAnimationElementFields';
 import { setEditedAnimationElementScript } from '../utils/setEditedAnimationElementScript';
 import { setEditedBlockFields } from '../utils/setEditedBlockFields';
@@ -36,18 +31,10 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
 
         const { length } = animationScript;
 
-        const initialAnimationElementScript: AnimationElementScript<AnimationElementName> = {
-            elementName,
-            blockScript: DefaultBlockScript,
-            fieldsScript: getDefaultFieldsScriptForAnimationElement(elementName),
-        };
-
         return {
             ...state,
             editParams: {
-                isNewElement: true,
                 blockLocation: [length],
-                initialAnimationElementScript,
             },
             animationScript: [
                 ...animationScript,
@@ -59,53 +46,14 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             ],
         };
     })
-    .on(selectBlockAction, (state, blockLocation): ConstructorState => {
+    .on(setEditedBlockAction, (state, blockLocation): ConstructorState => {
         return {
             ...state,
-            editParams: {
-                isNewElement: false,
-                blockLocation,
-                initialAnimationElementScript: getAnimationElementScriptByBlockLocation(state, blockLocation),
-            },
-        };
-    })
-    .on(saveElementAction, (state): ConstructorState => {
-        return {
-            ...state,
-            editParams: undefined,
-        };
-    })
-    .on(discardChangesAction, (state): ConstructorState => {
-        const {
-            editParams,
-        } = state;
-
-        if (editParams === undefined) {
-            throw new Error('editParams should not be undefined no discardChangesAction');
-        }
-
-        const {
-            isNewElement,
-            blockLocation,
-            initialAnimationElementScript,
-        } = editParams;
-
-        if (isNewElement) {
-            return {
-                ...removeElement(state, blockLocation),
-                editParams: undefined,
-            };
-        } else {
-            return {
-                ...setEditedAnimationElementScript(state, initialAnimationElementScript),
-                editParams: undefined,
-            };
-        }
-    })
-    .on(setRelationAction, (state, relation): ConstructorState => {
-        return {
-            ...state,
-            relation,
+            editParams: blockLocation === undefined
+                ? undefined
+                : {
+                    blockLocation,
+                },
         };
     })
     .on(setEditedElementFieldsAction, (state, fieldsValues): ConstructorState => {

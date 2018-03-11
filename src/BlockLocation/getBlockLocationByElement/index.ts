@@ -10,12 +10,23 @@ export function getBlockLocationByElement(containerElement: HTMLElement,
     while (comparationElement !== containerElement) {
         for (let i = 0; i < elementsAnimations.length; i++) {
             const { container } = elementsAnimations[i];
+
             if (comparationElement === container) {
                 return [i];
             }
         }
 
-        comparationElement = element.parentElement!;
+        const { parentElement } = comparationElement;
+
+        if (parentElement === containerElement) {
+            return undefined;
+        }
+
+        if (parentElement === null) {
+            throw new Error('Wrong containerElement has been passed to getBlockLocationByHTMLElement()');
+        }
+
+        comparationElement = parentElement;
     }
 
     return undefined;

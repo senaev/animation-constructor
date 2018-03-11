@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import { blockToStyles } from '../../Block/utils/blockToStyles';
 import {
     setEditedBlockCoordinatesAction,
     setEditedBlockRotationAction,
@@ -58,16 +57,7 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
             rotation,
         } = position;
 
-        const elementContainerStyle = blockToStyles(position);
-
         return <div className={ c.Drawing }>
-            <div
-                className={ c.Drawing__elementContainer }
-                ref={ (element) => {
-                    // this.elementContainer = element!;
-                } }
-                style={ elementContainerStyle }
-            />
             <Resizer
                 y={ y }
                 x={ x }

@@ -1,23 +1,20 @@
-import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
-import { AnimationElementScript, AnimationScript } from '../../AnimationScript';
+import { AnimationScript } from '../../AnimationScript';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
-import { AVAILABLE_RELATIONS } from '../../Relation/AVAILABLE_RELATIONS';
-import { Relation } from '../../Relation/Relation';
+import { DefaultScale } from '../../Scale/DefaultScale';
+import { Scale } from '../../Scale/Scale';
 
 export type ConstructorState = {
     editParams: {
-        isNewElement: boolean;
         blockLocation: BlockLocation;
-        initialAnimationElementScript: AnimationElementScript<AnimationElementName>;
     } | undefined,
-    relation: Relation;
+    scale: Scale;
     animationScript: AnimationScript;
     animationPosition: number;
 };
 
 export const defaultConstructorState: ConstructorState = {
     editParams: undefined,
-    relation: AVAILABLE_RELATIONS[0],
+    scale: DefaultScale,
     animationScript: [],
     animationPosition: 0,
 };
