@@ -23,7 +23,7 @@ export function getActionByPosition<T extends Unit>(position: number,
                 index: i,
             };
         } else {
-            if (durationSum <= position && position <= nextDurationSum) {
+            if (durationSum <= position && position < nextDurationSum) {
                 return {
                     action,
                     actionPosition: durationSum,

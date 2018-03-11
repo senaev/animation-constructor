@@ -1,18 +1,19 @@
+import { getActionByPosition } from '../../Animation/util/getActionByPosition';
 import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
 import { AnimationElementScript } from '../../AnimationScript';
 import { Block } from '../../Block/Block';
-import { BlockFieldsTypes } from '../../Block/BlockFieldsTypes';
-import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import { mapObjectValues } from '../../utils/mapObjectValues';
 import { ConstructorState } from '../State';
-import { createDefaultUnitScript } from './createDefaultUnitScript';
+import { addAction } from './addAction';
 import { getEditedAnimationElementBlockLocation } from './getEditedAnimationElementBlockLocation';
 import { getEditedAnimationElementScript } from './getEditedAnimationElementScript';
+import { setActionValue } from './setActionValue';
 
 export function setEditedBlockFieldsOnCurrentPosition(state: ConstructorState,
                                                       blockFields: Partial<Block>): ConstructorState {
 
     const {
+        animationPosition,
         animationScript,
     } = state;
 
@@ -31,13 +32,22 @@ export function setEditedBlockFieldsOnCurrentPosition(state: ConstructorState,
     const nextBlockFieldsScripts = mapObjectValues(
         blockFields,
         (value, blockFieldName) => {
-            // const {actions} = blockScript[blockFieldName];
-            // const action = getAction
+            const {
+                unit,
+                actions,
+            } = blockScript[blockFieldName];
 
-            return createDefaultUnitScript(
-                BlockFieldUnits[blockFieldName],
-                value as BlockFieldsTypes,
-            );
+            const {
+                actionPosition,
+                index,
+            } = getActionByPosition(animationPosition, actions);
+
+            return {
+                unit,
+                actions: actionPosition === animationPosition
+                    ? setActionValue(actions, index, value!)
+                    : addAction(actions, animationPosition, value!),
+            };
         },
     );
 
