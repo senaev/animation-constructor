@@ -1,5 +1,6 @@
 import * as cx from 'classnames';
 import * as React from 'react';
+import { Size } from '../../types/Size';
 import { ResizeSensor } from '../../utils/ResizeSensor';
 import * as c from './index.pcss';
 
@@ -7,17 +8,19 @@ export type FillSizeBlockProps = {
     relationX: number;
     relationY: number;
     className?: string;
+    rel?: (fillSizeBlock: FillSizeBlock) => void;
 };
 
 export type FillSizeBlockState = {
-    width: string;
-    height: string;
+    width: number;
+    height: number;
     relationX: number;
     relationY: number;
 };
 
-const defaultSize = '100%';
+const DEFAULT_SIZE = 100;
 
+// TODO: fillSquareBlock maybe?
 export class FillSizeBlock extends React.Component<FillSizeBlockProps, FillSizeBlockState> {
     private container?: HTMLElement | null;
     private element?: HTMLElement | null;
@@ -27,15 +30,18 @@ export class FillSizeBlock extends React.Component<FillSizeBlockProps, FillSizeB
         super(props);
 
         this.state = {
-            width: defaultSize,
-            height: defaultSize,
+            width: DEFAULT_SIZE,
+            height: DEFAULT_SIZE,
             relationX: props.relationX,
             relationY: props.relationY,
         };
     }
 
     public render() {
-        const { width, height } = this.state;
+        const {
+            width,
+            height,
+        } = this.state;
         const { className } = this.props;
 
         return <div
@@ -50,8 +56,8 @@ export class FillSizeBlock extends React.Component<FillSizeBlockProps, FillSizeB
                 } }
                 style={ {
                     position: 'absolute',
-                    width,
-                    height,
+                    width: `${width}px`,
+                    height: `${height}px`,
                 } }
             >
                 { this.props.children }
@@ -64,7 +70,14 @@ export class FillSizeBlock extends React.Component<FillSizeBlockProps, FillSizeB
             this.resizeSensor = new ResizeSensor(this.container, this.adaptSize);
             this.adaptSize();
         }
+
+        const { rel } = this.props;
+
+        if (typeof rel === 'function') {
+            rel(this);
+        }
     }
+
 
     public componentWillReceiveProps({
                                          relationX,
@@ -74,6 +87,18 @@ export class FillSizeBlock extends React.Component<FillSizeBlockProps, FillSizeB
             relationX,
             relationY,
         }, this.adaptSize);
+    }
+
+    public getSize(): Size {
+        const {
+            width,
+            height,
+        } = this.state;
+
+        return {
+            width,
+            height,
+        };
     }
 
     private adaptSize = (): void => {
@@ -89,8 +114,8 @@ export class FillSizeBlock extends React.Component<FillSizeBlockProps, FillSizeB
             const calculatedHeight = (calculatedWidth / relationX) * relationY;
 
             this.setState({
-                width: `${calculatedWidth}px`,
-                height: `${calculatedHeight}px`,
+                width: calculatedWidth,
+                height: calculatedHeight,
             });
         }
     }

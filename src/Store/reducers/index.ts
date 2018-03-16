@@ -10,6 +10,7 @@ import {
     setEditedElementFieldsAction,
     setFieldsScriptActionPositionAction,
     setFieldsScriptActionValueAction,
+    setScaleFieldsAction,
 } from '../actions';
 import { ConstructorState } from '../State';
 import { getDefaultFieldsScriptForAnimationElement } from '../utils/getDefaultFieldsScriptForAnimationElement';
@@ -19,6 +20,7 @@ import { setEditedAnimationElementScript } from '../utils/setEditedAnimationElem
 import { setEditedBlockFieldsOnCurrentPosition } from '../utils/setEditedBlockFieldsOnCurrentPosition';
 import { setFieldsScriptsActionPosition } from '../utils/setFieldsScriptsActionPosition';
 import { setFieldsScriptsActionValue } from '../utils/setFieldsScriptsActionValue';
+import { setScaleFields } from '../utils/setScaleFields';
 
 export const createConstructorReducer = (appState: ConstructorState) => createReducer<ConstructorState>({}, appState)
     .on(addStandardElementAction, (state, elementName): ConstructorState => {
@@ -146,4 +148,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             ...animationElementScript,
             fieldsScript,
         });
+    })
+    .on(setScaleFieldsAction, (state, scaleFields): ConstructorState => {
+        return setScaleFields(state, scaleFields);
     });

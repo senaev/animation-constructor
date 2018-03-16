@@ -5,6 +5,7 @@ import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationE
 import { Block } from '../../Block/Block';
 import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
+import { Scale } from '../../Scale/Scale';
 import { ConstructorState } from '../State';
 import { ActionPosition } from '../types/ActionPosition';
 import { ActionValue } from '../types/ActionValue';
@@ -13,6 +14,8 @@ export const addStandardElementAction =
     createAction<AnimationElementName>('addStandardElementAction');
 export const setEditedBlockAction =
     createAction<BlockLocation | undefined>('setEditedBlockAction');
+
+export const setScaleFieldsAction = createAction<Partial<Scale>>('setScaleFieldsAction');
 
 export const setEditedBlockFieldsOnCurrentPositionAction =
     createAction<Partial<Block>>('setEditedBlockFieldsOnCurrentPositionAction');
