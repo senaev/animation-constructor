@@ -58,11 +58,11 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
                 } }
                 onMouseDown={ this.onScaleDragElementMouseDown }
             />
-            <div ref={ (element) => {
-                this.clickElement = element;
+            <ScaleView rel={ (scaleView) => {
+                this.scaleView = scaleView;
             } }>
-                <ScaleView rel={ (scaleView) => {
-                    this.scaleView = scaleView;
+                <div ref={ (element) => {
+                    this.clickElement = element;
                 } }>
                     <div className={ c.BoardPreview__editContainer }>
                         <AnimationPreview
@@ -73,15 +73,13 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
                             animationPosition={ animationPosition }
                             setEditedBlock={ setEditedBlock }/>
                     </div>
-                </ScaleView>
-            </div>
-            {
-                editParams === undefined
-                    ? null
-                    : <ScaleView>
-                        <Drawing/>
-                    </ScaleView>
-            }
+                </div>
+                {
+                    editParams === undefined
+                        ? null
+                        : <Drawing/>
+                }
+            </ScaleView>
             <Zoom className={ c.BoardPreview__Zoom }/>
         </div>;
     }

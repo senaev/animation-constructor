@@ -161,7 +161,10 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
 
         return {
             ...state,
-            scale: scaleRectangle(scale, -ZOOM_IN_OUT_STEP),
+            scale: scaleRectangle(scale, {
+                x: 50,
+                y: 50,
+            }, 1 + ZOOM_IN_OUT_STEP),
         };
     })
     .on(zoomOutAction, (state): ConstructorState => {
@@ -169,6 +172,9 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
 
         return {
             ...state,
-            scale: scaleRectangle(scale, ZOOM_IN_OUT_STEP),
+            scale: scaleRectangle(scale, {
+                x: 50,
+                y: 50,
+            }, 1 - ZOOM_IN_OUT_STEP),
         };
     });

@@ -1,5 +1,5 @@
 import { PointCoordinates } from '../../types/PointCoordinates';
-import { Line } from './Line';
+import { Line } from './Types/Line';
 
 export function getLinesIntersectionPoint(firstLine: Line, secondLine: Line): PointCoordinates | undefined {
     if (firstLine.k === secondLine.k) {
