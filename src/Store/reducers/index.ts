@@ -1,5 +1,6 @@
 import { createReducer } from 'redux-act';
 import { DefaultBlockScript } from '../../Block/DefaultBlockScript';
+import { scaleRectangle } from '../../utils/Trigonometry/scaleRectangle';
 import {
     addStandardElementAction,
     setAnimationPositionAction,
@@ -11,7 +12,10 @@ import {
     setFieldsScriptActionPositionAction,
     setFieldsScriptActionValueAction,
     setScaleFieldsAction,
+    zoomInAction,
+    zoomOutAction,
 } from '../actions';
+import { ZOOM_IN_OUT_STEP } from '../const/ZOOM_IN_OUT_STEP';
 import { ConstructorState } from '../State';
 import { getDefaultFieldsScriptForAnimationElement } from '../utils/getDefaultFieldsScriptForAnimationElement';
 import { getEditedAnimationElementScript } from '../utils/getEditedAnimationElementScript';
@@ -151,4 +155,20 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
     })
     .on(setScaleFieldsAction, (state, scaleFields): ConstructorState => {
         return setScaleFields(state, scaleFields);
+    })
+    .on(zoomInAction, (state): ConstructorState => {
+        const { scale } = state;
+
+        return {
+            ...state,
+            scale: scaleRectangle(scale, -ZOOM_IN_OUT_STEP),
+        };
+    })
+    .on(zoomOutAction, (state): ConstructorState => {
+        const { scale } = state;
+
+        return {
+            ...state,
+            scale: scaleRectangle(scale, ZOOM_IN_OUT_STEP),
+        };
     });

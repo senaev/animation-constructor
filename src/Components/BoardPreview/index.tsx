@@ -13,6 +13,7 @@ import { noop } from '../../utils/noop';
 import { AnimationPreview } from '../AnimationPreview';
 import { Drawing } from '../Drawing';
 import { ScaleView, ScaleViewComponent } from '../ScaleView';
+import { Zoom } from '../Zoom';
 import * as c from './index.pcss';
 
 export type BoardPreviewStateProps = Pick<ConstructorState,
@@ -31,7 +32,8 @@ export type BoardPreviewProps =
     & BoardPreviewDispatchProps;
 
 class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
-    private clickerElement?: HTMLElement | null;
+    private scaleDragElement?: HTMLElement | null;
+    private clickElement?: HTMLElement | null;
     private animationPreview?: AnimationPreview | null;
 
     private clickElementDragListener?: DragListener;
@@ -50,11 +52,15 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
 
         return <div className={ c.BoardPreview }>
             <div
-                className={ c.BoardPreview__clicker }
+                className={ c.BoardPreview__scaleDragElement }
                 ref={ (element) => {
-                    this.clickerElement = element;
+                    this.scaleDragElement = element;
                 } }
-            >
+                onMouseDown={ this.onScaleDragElementMouseDown }
+            />
+            <div ref={ (element) => {
+                this.clickElement = element;
+            } }>
                 <ScaleView rel={ (scaleView) => {
                     this.scaleView = scaleView;
                 } }>
@@ -76,17 +82,19 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
                         <Drawing/>
                     </ScaleView>
             }
+            <Zoom className={ c.BoardPreview__Zoom }/>
         </div>;
     }
 
     public componentDidMount() {
         const {
-            clickerElement,
+            scaleDragElement,
+            clickElement,
             animationPreview,
             scaleView,
         } = this;
 
-        if (!clickerElement || !animationPreview || !scaleView) {
+        if (!scaleDragElement || !animationPreview || !scaleView || !clickElement) {
             throw new Error('One of properties has not been initialized');
         }
 
@@ -96,22 +104,30 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
         } = this.props;
 
         this.removeElementClickListener = addElementEventListener(
-            clickerElement,
+            clickElement,
             'click',
             (event) => {
                 const targetElement = event.target as HTMLElement;
 
-                setEditedBlock(
-                    animationPreview.getIfHTMLElementIsPartOfAnimation(targetElement)
-                        ? animationPreview.getBlockLocationByHTMLElement(targetElement)
-                        : undefined,
-                );
+                const elementIsPartOfAnimation = animationPreview.getIfHTMLElementIsPartOfAnimation(targetElement);
+
+                if (!elementIsPartOfAnimation) {
+                    throw new Error('element was clicked but it was not a part of animation');
+                }
+
+                const blockLocation = animationPreview.getBlockLocationByHTMLElement(targetElement);
+
+                if (blockLocation === undefined) {
+                    throw new Error('cannot find block location for element');
+                }
+
+                setEditedBlock(blockLocation);
             },
         );
 
         let startScalePosition: Scale;
         let startSquareSize: number;
-        this.clickElementDragListener = new DragListener(clickerElement, {
+        this.clickElementDragListener = new DragListener(scaleDragElement, {
             onStart: () => {
                 startScalePosition = { ...this.props.scale };
                 startSquareSize = scaleView.getSquareSize();
@@ -141,6 +157,11 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
         }
 
         clickElementDragListener.destroy();
+    }
+
+    private onScaleDragElementMouseDown = () => {
+        // TODO: we need other logic to remove focus form element
+        this.props.setEditedBlock(undefined);
     }
 }
 

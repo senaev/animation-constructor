@@ -16,6 +16,8 @@ export const setEditedBlockAction =
     createAction<BlockLocation | undefined>('setEditedBlockAction');
 
 export const setScaleFieldsAction = createAction<Partial<Scale>>('setScaleFieldsAction');
+export const zoomInAction = createAction('zoomInAction');
+export const zoomOutAction = createAction('zoomOutAction');
 
 export const setEditedBlockFieldsOnCurrentPositionAction =
     createAction<Partial<Block>>('setEditedBlockFieldsOnCurrentPositionAction');
