@@ -1,11 +1,14 @@
-import { Scale } from '../Scale';
+import { PointCoordinates } from '../../types/PointCoordinates';
+import { Size } from '../../types/Size';
 
 export function scaleToStyles({
                                   y,
                                   x,
+                              }: PointCoordinates,
+                              {
                                   width,
                                   height,
-                              }: Scale): {
+                              }: Size): {
     top: string;
     left: string;
     width: string;

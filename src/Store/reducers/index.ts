@@ -11,7 +11,7 @@ import {
     setEditedElementFieldsAction,
     setFieldsScriptActionPositionAction,
     setFieldsScriptActionValueAction,
-    setScaleFieldsAction,
+    setScaleCoordinatesAction,
     zoomInAction,
     zoomOutAction,
 } from '../actions';
@@ -24,7 +24,6 @@ import { setEditedAnimationElementScript } from '../utils/setEditedAnimationElem
 import { setEditedBlockFieldsOnCurrentPosition } from '../utils/setEditedBlockFieldsOnCurrentPosition';
 import { setFieldsScriptsActionPosition } from '../utils/setFieldsScriptsActionPosition';
 import { setFieldsScriptsActionValue } from '../utils/setFieldsScriptsActionValue';
-import { setScaleFields } from '../utils/setScaleFields';
 
 export const createConstructorReducer = (appState: ConstructorState) => createReducer<ConstructorState>({}, appState)
     .on(addStandardElementAction, (state, elementName): ConstructorState => {
@@ -153,28 +152,71 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             fieldsScript,
         });
     })
-    .on(setScaleFieldsAction, (state, scaleFields): ConstructorState => {
-        return setScaleFields(state, scaleFields);
+    .on(setScaleCoordinatesAction, (state, scaleCoordinates): ConstructorState => {
+        return {
+            ...state,
+            scaleCoordinates: scaleCoordinates,
+        };
     })
     .on(zoomInAction, (state): ConstructorState => {
-        const { scale } = state;
+        const {
+            scaleCoordinates,
+            zoom,
+        } = state;
+
+        const {
+            x,
+            y,
+            width,
+            height,
+        } = scaleRectangle({
+            ...scaleCoordinates,
+            ...zoom,
+        }, {
+            x: 50,
+            y: 50,
+        }, ZOOM_OUT_STEP);
 
         return {
             ...state,
-            scale: scaleRectangle(scale, {
-                x: 50,
-                y: 50,
-            }, ZOOM_OUT_STEP),
+            scaleCoordinates: {
+                x,
+                y,
+            },
+            zoom: {
+                width,
+                height,
+            },
         };
     })
     .on(zoomOutAction, (state): ConstructorState => {
-        const { scale } = state;
+        const {
+            scaleCoordinates,
+            zoom,
+        } = state;
+
+        const {
+            x,
+            y,
+            width,
+            height,
+        } = scaleRectangle({
+            ...scaleCoordinates,
+            ...zoom,
+        }, {
+            x: 50,
+            y: 50,
+        }, ZOOM_IN_STEP);
 
         return {
             ...state,
-            scale: scaleRectangle(scale, {
-                x: 50,
-                y: 50,
-            }, ZOOM_IN_STEP),
+            scaleCoordinates: {
+                x,
+                y,
+            },
+            zoom: {
+                width,
+                height,
+            },
         };
     });

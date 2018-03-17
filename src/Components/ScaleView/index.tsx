@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Scale } from '../../Scale/Scale';
 import { scaleToStyles } from '../../Scale/utils/scaleToStyles';
 import { ConstructorState } from '../../Store/State';
+import { PointCoordinates } from '../../types/PointCoordinates';
+import { Size } from '../../types/Size';
 import { FillCentralSquare } from '../FillCentralSquare';
 import * as c from './index.pcss';
 
@@ -13,7 +14,8 @@ export type ScaleViewOwnProps = {
 
 export type ScaleViewProps =
     & {
-        scale: Scale;
+        scaleCoordinates: PointCoordinates;
+        zoom: Size;
     }
     & ScaleViewOwnProps;
 
@@ -22,17 +24,18 @@ export class ScaleViewComponent extends React.Component<ScaleViewProps, {}> {
         const {
             width,
             height,
-            scale,
+            scaleCoordinates,
+            zoom,
         } = this.props;
 
         return <FillCentralSquare
-            width={width}
-            height={height}
+            width={ width }
+            height={ height }
             className={ c.ScaleView__fillCentralSquare }
         >
             <div
                 className={ c.ScaleView__scaleDiv }
-                style={ scaleToStyles(scale) }
+                style={ scaleToStyles(scaleCoordinates, zoom) }
             >
                 { this.props.children }
             </div>
@@ -42,13 +45,15 @@ export class ScaleViewComponent extends React.Component<ScaleViewProps, {}> {
 
 
 const mapStateToProps = ({
-                             scale,
+                             scaleCoordinates,
+                             zoom,
                          }: ConstructorState,
                          {
                              width,
                              height,
                          }: ScaleViewOwnProps): ScaleViewProps => ({
-    scale,
+    scaleCoordinates,
+    zoom,
     width,
     height,
 });

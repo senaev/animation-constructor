@@ -5,7 +5,7 @@ import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationE
 import { Block } from '../../Block/Block';
 import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
-import { Scale } from '../../Scale/Scale';
+import { PointCoordinates } from '../../types/PointCoordinates';
 import { ConstructorState } from '../State';
 import { ActionPosition } from '../types/ActionPosition';
 import { ActionValue } from '../types/ActionValue';
@@ -15,7 +15,7 @@ export const addStandardElementAction =
 export const setEditedBlockAction =
     createAction<BlockLocation | undefined>('setEditedBlockAction');
 
-export const setScaleFieldsAction = createAction<Partial<Scale>>('setScaleFieldsAction');
+export const setScaleCoordinatesAction = createAction<PointCoordinates>('setScaleCoordinatesAction');
 export const zoomInAction = createAction('zoomInAction');
 export const zoomOutAction = createAction('zoomOutAction');
 

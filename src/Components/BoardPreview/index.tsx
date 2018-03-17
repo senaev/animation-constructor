@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
-import { Scale } from '../../Scale/Scale';
-import { setEditedBlockAction, setScaleFieldsAction } from '../../Store/actions';
+import { setEditedBlockAction, setScaleCoordinatesAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
@@ -23,7 +22,8 @@ import * as c from './index.pcss';
 
 export type BoardPreviewStateProps = Pick<ConstructorState,
     | 'editParams'
-    | 'scale'
+    | 'scaleCoordinates'
+    | 'zoom'
     | 'animationScript'
     | 'animationPosition'>;
 
@@ -147,11 +147,11 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
             },
         );
 
-        let startScalePosition: Scale;
+        let startScalePosition: PointCoordinates;
         let startSquareSize: number;
         this.clickElementDragListener = new DragListener(scaleDragElement, {
             onStart: () => {
-                startScalePosition = { ...this.props.scale };
+                startScalePosition = { ...this.props.scaleCoordinates };
                 startSquareSize = this.getSquare().size;
             },
             onMove: ({
@@ -243,19 +243,23 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
             height: (square.size / (square.size + square.y * 2)) * 100,
         };
 
-        const { scale } = this.props;
+        const {
+            scaleCoordinates,
+            zoom,
+        } = this.props;
 
         return {
-            x: squareRelative.x + squareRelative.width * (scale.x / 100),
-            y: squareRelative.y + squareRelative.height * (scale.y / 100),
-            width: (squareRelative.width / 100) * scale.width,
-            height: (squareRelative.height / 100) * scale.height,
+            x: squareRelative.x + squareRelative.width * (scaleCoordinates.x / 100),
+            y: squareRelative.y + squareRelative.height * (scaleCoordinates.y / 100),
+            width: (squareRelative.width / 100) * zoom.width,
+            height: (squareRelative.height / 100) * zoom.height,
         };
     }
 
     private getAnimationRectangleAbsolute(): PointCoordinates & Size {
         const {
-            scale,
+            scaleCoordinates,
+            zoom,
         } = this.props;
 
         const square = getCentralSquareOfRectangle({
@@ -265,10 +269,10 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
             height: this.state.height,
         });
 
-        const x = square.x + scale.x * (square.size / 100);
-        const y = square.y + scale.y * (square.size / 100);
-        const width = scale.width * (square.size / 100);
-        const height = scale.height * (square.size / 100);
+        const x = square.x + scaleCoordinates.x * (square.size / 100);
+        const y = square.y + scaleCoordinates.y * (square.size / 100);
+        const width = zoom.width * (square.size / 100);
+        const height = zoom.height * (square.size / 100);
 
         return {
             x,
@@ -287,12 +291,14 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
 
 const mapStateToProps = ({
                              editParams,
-                             scale,
+                             scaleCoordinates,
+                             zoom,
                              animationScript,
                              animationPosition,
                          }: ConstructorState): BoardPreviewStateProps => ({
     editParams,
-    scale,
+    scaleCoordinates,
+    zoom,
     animationScript,
     animationPosition,
 });
@@ -302,7 +308,7 @@ const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): BoardPreview
         dispatch(setEditedBlockAction(blockLocation));
     },
     setScalePosition: (scalePositoin) => {
-        dispatch(setScaleFieldsAction(scalePositoin));
+        dispatch(setScaleCoordinatesAction(scalePositoin));
     },
 });
 
