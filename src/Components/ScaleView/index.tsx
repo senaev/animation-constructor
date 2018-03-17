@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { Scale } from '../../Scale/Scale';
 import { scaleToStyles } from '../../Scale/utils/scaleToStyles';
 import { ConstructorState } from '../../Store/State';
-import { Square } from '../../utils/Trigonometry/Types/Square';
 import { FillCentralSquare } from '../FillCentralSquare';
 import * as c from './index.pcss';
 
 export type ScaleViewOwnProps = {
-    rel?: (scaleView: ScaleViewComponent) => void;
+    width: number;
+    height: number;
 };
 
 export type ScaleViewProps =
@@ -18,17 +18,16 @@ export type ScaleViewProps =
     & ScaleViewOwnProps;
 
 export class ScaleViewComponent extends React.Component<ScaleViewProps, {}> {
-    private fillCentralSquare?: FillCentralSquare;
-
     public render() {
         const {
+            width,
+            height,
             scale,
         } = this.props;
 
         return <FillCentralSquare
-            rel={ (fillCentralSquare) => {
-                this.fillCentralSquare = fillCentralSquare;
-            } }
+            width={width}
+            height={height}
             className={ c.ScaleView__fillCentralSquare }
         >
             <div
@@ -39,28 +38,6 @@ export class ScaleViewComponent extends React.Component<ScaleViewProps, {}> {
             </div>
         </FillCentralSquare>;
     }
-
-    public componentDidMount() {
-        const { rel } = this.props;
-
-        if (typeof rel === 'function') {
-            rel(this);
-        }
-    }
-
-    // public getSquareCoordinates(): PointCoordinates {
-    //
-    // }
-
-    public getSquareState(): Square {
-        const { fillCentralSquare } = this;
-
-        if (!fillCentralSquare) {
-            throw new Error('FillCentralSquare has not been initialized in ScaleView');
-        }
-
-        return fillCentralSquare.getState();
-    }
 }
 
 
@@ -68,10 +45,12 @@ const mapStateToProps = ({
                              scale,
                          }: ConstructorState,
                          {
-                             rel,
+                             width,
+                             height,
                          }: ScaleViewOwnProps): ScaleViewProps => ({
     scale,
-    rel,
+    width,
+    height,
 });
 
 export const ScaleView = connect(mapStateToProps)(ScaleViewComponent);

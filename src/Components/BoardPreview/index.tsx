@@ -7,15 +7,16 @@ import { Scale } from '../../Scale/Scale';
 import { setEditedBlockAction, setScaleFieldsAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
 import { PointCoordinates } from '../../types/PointCoordinates';
-import { Size } from '../../types/Size';
 import { addElementEventListener } from '../../utils/addElementEventListener';
 import { DragListener } from '../../utils/DragListener';
 import { noop } from '../../utils/noop';
+import { ResizeSensor } from '../../utils/ResizeSensor';
+import { getCentralSquareOfRectangle } from '../../utils/Trigonometry/getCentralSquareOfRectangle';
 import { getRectangleCenterCoordinates } from '../../utils/Trigonometry/getRectangleCenterCoordinates';
+import { Square } from '../../utils/Trigonometry/Types/Square';
 import { AnimationPreview } from '../AnimationPreview';
 import { Drawing } from '../Drawing';
-import { DEFAULT_SQUARE } from '../FillCentralSquare';
-import { ScaleView, ScaleViewComponent } from '../ScaleView';
+import { ScaleView } from '../ScaleView';
 import { Zoom } from '../Zoom';
 import * as c from './index.pcss';
 
@@ -35,7 +36,8 @@ export type BoardPreviewProps =
     & BoardPreviewDispatchProps;
 
 export type BoardPreviewState = {
-    scaleAbsolutePosition: PointCoordinates & Size;
+    width: number;
+    height: number;
 };
 
 class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPreviewState> {
@@ -44,12 +46,25 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
     private animationPreview?: AnimationPreview | null;
 
     private clickElementDragListener?: DragListener;
-
-    private scaleView?: ScaleViewComponent;
+    private resizeSensor?: ResizeSensor;
 
     private removeElementClickListener = noop;
 
+    constructor(props: BoardPreviewProps) {
+        super(props);
+
+        this.state = {
+            width: 0,
+            height: 0,
+        };
+    }
+
     public render() {
+        const {
+            width,
+            height,
+        } = this.state;
+
         const {
             editParams,
             animationScript,
@@ -66,9 +81,10 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
                 onMouseDown={ this.onScaleDragElementMouseDown }
                 style={ this.getBackgroundStyle() }
             />
-            <ScaleView rel={ (scaleViewComponent) => {
-                this.scaleView = scaleViewComponent;
-            } }>
+            <ScaleView
+                width={ width }
+                height={ height }
+            >
                 <div ref={ (element) => {
                     this.clickElement = element;
                 } }>
@@ -97,10 +113,9 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
             scaleDragElement,
             clickElement,
             animationPreview,
-            scaleView,
         } = this;
 
-        if (!scaleDragElement || !animationPreview || !scaleView || !clickElement) {
+        if (!scaleDragElement || !animationPreview || !clickElement) {
             throw new Error('One of properties has not been initialized');
         }
 
@@ -136,7 +151,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
         this.clickElementDragListener = new DragListener(scaleDragElement, {
             onStart: () => {
                 startScalePosition = { ...this.props.scale };
-                startSquareSize = scaleView.getSquareState().size;
+                startSquareSize = this.getSquare().size;
             },
             onMove: ({
                          relativeX,
@@ -150,6 +165,12 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
                 setScalePosition(nextScalePosition);
             },
         });
+
+        this.resizeSensor = new ResizeSensor(scaleDragElement, (size) => {
+            this.setState(size);
+        });
+
+        this.setState(this.resizeSensor.getSize());
     }
 
     public componentWillUnmount() {
@@ -191,13 +212,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
     private getScaleCenter(): PointCoordinates {
         const { scale } = this.props;
 
-        const {
-            scaleView,
-        } = this;
-
-        const square = scaleView
-            ? scaleView.getSquareState()
-            : DEFAULT_SQUARE;
+        const square = this.getSquare();
 
         const squareRelative = {
             x: (square.x / square.size) * 100,
@@ -217,6 +232,15 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
             width,
             height,
         });
+    }
+
+    private getSquare(): Square {
+        const {
+            width,
+            height,
+        } = this.state;
+
+        return getCentralSquareOfRectangle(width, height);
     }
 }
 
