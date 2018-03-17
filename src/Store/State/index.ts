@@ -10,8 +10,8 @@ export type ConstructorState = {
         blockLocation: BlockLocation;
     } | undefined,
     scaleCoordinates: PointCoordinates;
-    // TODO: number
-    zoom: Size;
+    relation: Size,
+    zoom: number;
     animationScript: AnimationScript;
     animationPosition: number;
 };
@@ -19,9 +19,10 @@ export type ConstructorState = {
 export const defaultConstructorState: ConstructorState = {
     editParams: undefined,
     scaleCoordinates: DEFAULT_SCALE_POSITION,
-    zoom: {
-        width: DEFAULT_ZOOM * 100,
-        height: DEFAULT_ZOOM * 100,
+    zoom: DEFAULT_ZOOM,
+    relation: {
+        width: 9,
+        height: 16,
     },
     animationScript: [],
     animationPosition: 0,

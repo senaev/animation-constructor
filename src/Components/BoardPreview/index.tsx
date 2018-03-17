@@ -251,8 +251,8 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
         return {
             x: squareRelative.x + squareRelative.width * (scaleCoordinates.x / 100),
             y: squareRelative.y + squareRelative.height * (scaleCoordinates.y / 100),
-            width: (squareRelative.width / 100) * zoom.width,
-            height: (squareRelative.height / 100) * zoom.height,
+            width: squareRelative.width * zoom,
+            height: squareRelative.height * zoom,
         };
     }
 
@@ -271,8 +271,8 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
 
         const x = square.x + scaleCoordinates.x * (square.size / 100);
         const y = square.y + scaleCoordinates.y * (square.size / 100);
-        const width = zoom.width * (square.size / 100);
-        const height = zoom.height * (square.size / 100);
+        const width = zoom * square.size;
+        const height = zoom * square.size;
 
         return {
             x,

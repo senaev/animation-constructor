@@ -155,7 +155,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
     .on(setScaleCoordinatesAction, (state, scaleCoordinates): ConstructorState => {
         return {
             ...state,
-            scaleCoordinates: scaleCoordinates,
+            scaleCoordinates,
         };
     })
     .on(zoomInAction, (state): ConstructorState => {
@@ -168,10 +168,10 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             x,
             y,
             width,
-            height,
         } = scaleRectangle({
             ...scaleCoordinates,
-            ...zoom,
+            width: zoom * 100,
+            height: zoom * 100,
         }, {
             x: 50,
             y: 50,
@@ -183,10 +183,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
                 x,
                 y,
             },
-            zoom: {
-                width,
-                height,
-            },
+            zoom: width / 100,
         };
     })
     .on(zoomOutAction, (state): ConstructorState => {
@@ -199,10 +196,10 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             x,
             y,
             width,
-            height,
         } = scaleRectangle({
             ...scaleCoordinates,
-            ...zoom,
+            width: zoom * 100,
+            height: zoom * 100,
         }, {
             x: 50,
             y: 50,
@@ -214,9 +211,6 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
                 x,
                 y,
             },
-            zoom: {
-                width,
-                height,
-            },
+            zoom: width / 100,
         };
     });

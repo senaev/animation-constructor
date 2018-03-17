@@ -15,17 +15,19 @@ export type ScaleViewOwnProps = {
 export type ScaleViewProps =
     & {
         scaleCoordinates: PointCoordinates;
-        zoom: Size;
+        zoom: number;
+        relation: Size;
     }
     & ScaleViewOwnProps;
 
 export class ScaleViewComponent extends React.Component<ScaleViewProps, {}> {
     public render() {
         const {
-            width,
-            height,
             scaleCoordinates,
             zoom,
+            relation,
+            width,
+            height,
         } = this.props;
 
         return <FillCentralSquare
@@ -35,7 +37,7 @@ export class ScaleViewComponent extends React.Component<ScaleViewProps, {}> {
         >
             <div
                 className={ c.ScaleView__scaleDiv }
-                style={ scaleToStyles(scaleCoordinates, zoom) }
+                style={ scaleToStyles(scaleCoordinates, zoom, relation) }
             >
                 { this.props.children }
             </div>
@@ -47,6 +49,7 @@ export class ScaleViewComponent extends React.Component<ScaleViewProps, {}> {
 const mapStateToProps = ({
                              scaleCoordinates,
                              zoom,
+                             relation,
                          }: ConstructorState,
                          {
                              width,
@@ -54,6 +57,7 @@ const mapStateToProps = ({
                          }: ScaleViewOwnProps): ScaleViewProps => ({
     scaleCoordinates,
     zoom,
+    relation,
     width,
     height,
 });
