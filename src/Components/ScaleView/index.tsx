@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { scaleToStyles } from '../../Scale/utils/scaleToStyles';
+import { getRectangleByScale } from '../../Scale/utils/getRectangleByScale';
 import { ConstructorState } from '../../Store/State';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
+import { getCentralSquareOfRectangle } from '../../utils/Trigonometry/getCentralSquareOfRectangle';
 import { FillCentralSquare } from '../FillCentralSquare';
 import * as c from './index.pcss';
 
@@ -30,6 +31,9 @@ export class ScaleViewComponent extends React.Component<ScaleViewProps, {}> {
             height,
         } = this.props;
 
+        const rectangle = getRectangleByScale(scaleCoordinates, zoom, relation);
+        const square = getCentralSquareOfRectangle(rectangle);
+
         return <FillCentralSquare
             width={ width }
             height={ height }
@@ -37,7 +41,12 @@ export class ScaleViewComponent extends React.Component<ScaleViewProps, {}> {
         >
             <div
                 className={ c.ScaleView__scaleDiv }
-                style={ scaleToStyles(scaleCoordinates, zoom, relation) }
+                style={ {
+                    top: `${square.y}%`,
+                    left: `${square.x}%`,
+                    height: `${square.size}%`,
+                    width: `${square.size}%`,
+                } }
             >
                 { this.props.children }
             </div>

@@ -6,6 +6,11 @@ export function getRectangleByScale(scaleCoordinates: PointCoordinates,
                                     relation: Size): PointCoordinates & Size {
     const zoomPercent = zoom * 100;
 
+    const squareCoordinates = {
+        x: scaleCoordinates.x - zoomPercent / 2,
+        y: scaleCoordinates.y - zoomPercent / 2,
+    };
+
     const relationCoefficient = relation.width / relation.height;
     const isHorizontal = relationCoefficient > 1;
 
@@ -17,35 +22,17 @@ export function getRectangleByScale(scaleCoordinates: PointCoordinates,
         : (1 / relationCoefficient) * zoomPercent;
 
     const x = isHorizontal
-        ? scaleCoordinates.x - (width - zoomPercent) / 2
-        : scaleCoordinates.x;
+        ? squareCoordinates.x - (width - zoomPercent) / 2
+        : squareCoordinates.x;
 
     const y = isHorizontal
-        ? scaleCoordinates.y
-        : scaleCoordinates.y - (height - zoomPercent) / 2;
+        ? squareCoordinates.y
+        : squareCoordinates.y - (height - zoomPercent) / 2;
 
     return {
         x,
         y,
         width,
         height,
-    };
-}
-
-export function scaleToStyles(scaleCoorsinates: PointCoordinates,
-                              zoom: number,
-                              relation: Size): {
-    top: string;
-    left: string;
-    width: string;
-    height: string;
-} {
-    const rectangle = getRectangleByScale(scaleCoorsinates, zoom, relation);
-
-    return {
-        top: `${rectangle.y}%`,
-        left: `${rectangle.x}%`,
-        height: `${rectangle.height}%`,
-        width: `${rectangle.width}%`,
     };
 }

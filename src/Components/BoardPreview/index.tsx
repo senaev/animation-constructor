@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
+import { getRectangleByScale } from '../../Scale/utils/getRectangleByScale';
 import { setEditedBlockAction, setScaleCoordinatesAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
 import { PointCoordinates } from '../../types/PointCoordinates';
@@ -10,6 +11,7 @@ import { Size } from '../../types/Size';
 import { addElementEventListener } from '../../utils/addElementEventListener';
 import { DragListener } from '../../utils/DragListener';
 import { noop } from '../../utils/noop';
+import { rectangleToStyle } from '../../utils/rectangleToStyle';
 import { ResizeSensor } from '../../utils/ResizeSensor';
 import { getCentralSquareOfRectangle } from '../../utils/Trigonometry/getCentralSquareOfRectangle';
 import { getRectangleCenterCoordinates } from '../../utils/Trigonometry/getRectangleCenterCoordinates';
@@ -20,10 +22,14 @@ import { ScaleView } from '../ScaleView';
 import { Zoom } from '../Zoom';
 import * as c from './index.pcss';
 
+const BACKGROUNDS_IN_SQUARE = 20;
+const BACKGROUND_RELATION = 15;
+
 export type BoardPreviewStateProps = Pick<ConstructorState,
     | 'editParams'
     | 'scaleCoordinates'
     | 'zoom'
+    | 'relation'
     | 'animationScript'
     | 'animationPosition'>;
 
@@ -89,16 +95,18 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
                 <div ref={ (element) => {
                     this.clickElement = element;
                 } }>
-                    <div className={ c.BoardPreview__editContainer }>
-                        <AnimationPreview
-                            ref={ (element) => {
-                                this.animationPreview = element;
-                            } }
-                            animationScript={ animationScript }
-                            animationPosition={ animationPosition }
-                            setEditedBlock={ setEditedBlock }/>
-                    </div>
+                    <AnimationPreview
+                        ref={ (element) => {
+                            this.animationPreview = element;
+                        } }
+                        animationScript={ animationScript }
+                        animationPosition={ animationPosition }
+                        setEditedBlock={ setEditedBlock }/>
                 </div>
+                <div
+                    className={ c.BoardPreview__relationContainer }
+                    style={ this.getRelationContainerStyle() }
+                />
                 {
                     editParams === undefined
                         ? null
@@ -196,9 +204,6 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
         backgroundPosition: string,
         backgroundSize: string;
     } {
-        const BACKGROUNDS_IN_SQUARE = 30;
-        const BACKGROUND_RELATION = 15;
-
         const animationSquareSize = this.getAnimationSquareSize();
         const backgroundSizeRaw = animationSquareSize / (BACKGROUNDS_IN_SQUARE * BACKGROUND_RELATION);
 
@@ -287,18 +292,34 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
 
         return animationSquareAbsolute.size;
     }
+
+    private getRelationContainerStyle(): {
+        top: string;
+        left: string;
+        width: string;
+        height: string;
+    } {
+        const rectangle = getRectangleByScale({
+            x: 50,
+            y: 50,
+        }, 1, this.props.relation);
+
+        return rectangleToStyle(rectangle);
+    }
 }
 
 const mapStateToProps = ({
                              editParams,
                              scaleCoordinates,
                              zoom,
+                             relation,
                              animationScript,
                              animationPosition,
                          }: ConstructorState): BoardPreviewStateProps => ({
     editParams,
     scaleCoordinates,
     zoom,
+    relation,
     animationScript,
     animationPosition,
 });
