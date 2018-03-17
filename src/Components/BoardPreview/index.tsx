@@ -7,6 +7,7 @@ import { Scale } from '../../Scale/Scale';
 import { setEditedBlockAction, setScaleFieldsAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
 import { PointCoordinates } from '../../types/PointCoordinates';
+import { Size } from '../../types/Size';
 import { addElementEventListener } from '../../utils/addElementEventListener';
 import { DragListener } from '../../utils/DragListener';
 import { noop } from '../../utils/noop';
@@ -195,13 +196,18 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
         backgroundPosition: string,
         backgroundSize: string;
     } {
-        // TODO: calculate and change
-        const backgroundSize = 20;
+        const BACKGROUNDS_IN_SQUARE = 30;
+        const BACKGROUND_RELATION = 15;
+
+        const animationSquareSize = this.getAnimationSquareSize();
+        const backgroundSizeRaw = animationSquareSize / (BACKGROUNDS_IN_SQUARE * BACKGROUND_RELATION);
+
+        const backgroundSize = Math.ceil(backgroundSizeRaw * BACKGROUND_RELATION);
 
         const {
             x,
             y,
-        } = this.getScaleCenter();
+        } = this.getScaleCenterRelative();
 
         return {
             backgroundPosition: `calc(${x}% + ${backgroundSize * (x / 100)}px) calc(${y}% + ${backgroundSize * (y / 100)}px)`,
@@ -209,9 +215,25 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
         };
     }
 
-    private getScaleCenter(): PointCoordinates {
-        const { scale } = this.props;
+    private getScaleCenterRelative(): PointCoordinates {
+        return getRectangleCenterCoordinates(this.getAnimationRectangleRelative());
+    }
 
+    private getSquare(): Square {
+        const {
+            width,
+            height,
+        } = this.state;
+
+        return getCentralSquareOfRectangle({
+            x: 0,
+            y: 0,
+            width,
+            height,
+        });
+    }
+
+    private getAnimationRectangleRelative(): PointCoordinates & Size {
         const square = this.getSquare();
 
         const squareRelative = {
@@ -221,26 +243,45 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
             height: (square.size / (square.size + square.y * 2)) * 100,
         };
 
-        const x = squareRelative.x + squareRelative.width * (scale.x / 100);
-        const y = squareRelative.y + squareRelative.height * (scale.y / 100);
-        const width = (squareRelative.width / 100) * scale.width;
-        const height = (squareRelative.height / 100) * scale.height;
+        const { scale } = this.props;
 
-        return getRectangleCenterCoordinates({
+        return {
+            x: squareRelative.x + squareRelative.width * (scale.x / 100),
+            y: squareRelative.y + squareRelative.height * (scale.y / 100),
+            width: (squareRelative.width / 100) * scale.width,
+            height: (squareRelative.height / 100) * scale.height,
+        };
+    }
+
+    private getAnimationRectangleAbsolute(): PointCoordinates & Size {
+        const {
+            scale,
+        } = this.props;
+
+        const square = getCentralSquareOfRectangle({
+            x: 0,
+            y: 0,
+            width: this.state.width,
+            height: this.state.height,
+        });
+
+        const x = square.x + scale.x * (square.size / 100);
+        const y = square.y + scale.y * (square.size / 100);
+        const width = scale.width * (square.size / 100);
+        const height = scale.height * (square.size / 100);
+
+        return {
             x,
             y,
             width,
             height,
-        });
+        };
     }
 
-    private getSquare(): Square {
-        const {
-            width,
-            height,
-        } = this.state;
+    private getAnimationSquareSize(): number {
+        const animationSquareAbsolute = getCentralSquareOfRectangle(this.getAnimationRectangleAbsolute());
 
-        return getCentralSquareOfRectangle(width, height);
+        return animationSquareAbsolute.size;
     }
 }
 

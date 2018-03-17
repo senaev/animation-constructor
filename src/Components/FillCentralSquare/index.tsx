@@ -21,7 +21,12 @@ export class FillCentralSquare extends React.Component<FillCentralSquareProps, {
             size,
             x,
             y,
-        } = getCentralSquareOfRectangle(width, height);
+        } = getCentralSquareOfRectangle({
+            x: 0,
+            y: 0,
+            width,
+            height,
+        });
 
         return <div
             className={ cx(c.FillCentralSquare, className) }

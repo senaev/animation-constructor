@@ -15,7 +15,7 @@ import {
     zoomInAction,
     zoomOutAction,
 } from '../actions';
-import { ZOOM_IN_OUT_STEP } from '../const/ZOOM_IN_OUT_STEP';
+import { ZOOM_IN_STEP, ZOOM_OUT_STEP } from '../const/ZOOM_STEP';
 import { ConstructorState } from '../State';
 import { getDefaultFieldsScriptForAnimationElement } from '../utils/getDefaultFieldsScriptForAnimationElement';
 import { getEditedAnimationElementScript } from '../utils/getEditedAnimationElementScript';
@@ -164,7 +164,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             scale: scaleRectangle(scale, {
                 x: 50,
                 y: 50,
-            }, 1 + ZOOM_IN_OUT_STEP),
+            }, ZOOM_OUT_STEP),
         };
     })
     .on(zoomOutAction, (state): ConstructorState => {
@@ -175,6 +175,6 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             scale: scaleRectangle(scale, {
                 x: 50,
                 y: 50,
-            }, 1 - ZOOM_IN_OUT_STEP),
+            }, ZOOM_IN_STEP),
         };
     });
