@@ -57,8 +57,6 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
             setEditedBlock,
         } = this.props;
 
-        const scaleCenter = this.getScaleCenter();
-
         return <div className={ c.BoardPreview }>
             <div
                 className={ c.BoardPreview__scaleDragElement }
@@ -66,18 +64,8 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
                     this.scaleDragElement = element;
                 } }
                 onMouseDown={ this.onScaleDragElementMouseDown }
-                style={ {
-                    backgroundPosition: `${scaleCenter.x}% ${scaleCenter.y}%`,
-                } }
+                style={ this.getBackgroundStyle() }
             />
-            <div style={ {
-                backgroundColor: 'red',
-                width: '5px',
-                height: '5px',
-                position: 'absolute',
-                top: `calc(${scaleCenter.y}% - 2.5px)`,
-                left: `calc(${scaleCenter.x}% - 2.5px)`,
-            } }/>
             <ScaleView rel={ (scaleViewComponent) => {
                 this.scaleView = scaleViewComponent;
             } }>
@@ -180,6 +168,24 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
     private onScaleDragElementMouseDown = () => {
         // TODO: we need other logic to remove focus form animation element
         this.props.setEditedBlock(undefined);
+    }
+
+    private getBackgroundStyle(): {
+        backgroundPosition: string,
+        backgroundSize: string;
+    } {
+        // TODO: calculate and change
+        const backgroundSize = 20;
+
+        const {
+            x,
+            y,
+        } = this.getScaleCenter();
+
+        return {
+            backgroundPosition: `calc(${x}% + ${backgroundSize * (x / 100)}px) calc(${y}% + ${backgroundSize * (y / 100)}px)`,
+            backgroundSize: `${backgroundSize}px`,
+        };
     }
 
     private getScaleCenter(): PointCoordinates {
