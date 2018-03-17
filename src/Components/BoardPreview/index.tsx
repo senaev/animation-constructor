@@ -7,11 +7,14 @@ import { Scale } from '../../Scale/Scale';
 import { setEditedBlockAction, setScaleFieldsAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
 import { PointCoordinates } from '../../types/PointCoordinates';
+import { Size } from '../../types/Size';
 import { addElementEventListener } from '../../utils/addElementEventListener';
 import { DragListener } from '../../utils/DragListener';
 import { noop } from '../../utils/noop';
+import { getRectangleCenterCoordinates } from '../../utils/Trigonometry/getRectangleCenterCoordinates';
 import { AnimationPreview } from '../AnimationPreview';
 import { Drawing } from '../Drawing';
+import { DEFAULT_SQUARE } from '../FillCentralSquare';
 import { ScaleView, ScaleViewComponent } from '../ScaleView';
 import { Zoom } from '../Zoom';
 import * as c from './index.pcss';
@@ -31,7 +34,11 @@ export type BoardPreviewProps =
     & BoardPreviewStateProps
     & BoardPreviewDispatchProps;
 
-class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
+export type BoardPreviewState = {
+    scaleAbsolutePosition: PointCoordinates & Size;
+};
+
+class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPreviewState> {
     private scaleDragElement?: HTMLElement | null;
     private clickElement?: HTMLElement | null;
     private animationPreview?: AnimationPreview | null;
@@ -50,6 +57,8 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
             setEditedBlock,
         } = this.props;
 
+        const scaleCenter = this.getScaleCenter();
+
         return <div className={ c.BoardPreview }>
             <div
                 className={ c.BoardPreview__scaleDragElement }
@@ -57,9 +66,20 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
                     this.scaleDragElement = element;
                 } }
                 onMouseDown={ this.onScaleDragElementMouseDown }
+                style={ {
+                    backgroundPosition: `${scaleCenter.x}% ${scaleCenter.y}%`,
+                } }
             />
-            <ScaleView rel={ (scaleView) => {
-                this.scaleView = scaleView;
+            <div style={ {
+                backgroundColor: 'red',
+                width: '5px',
+                height: '5px',
+                position: 'absolute',
+                top: `calc(${scaleCenter.y}% - 2.5px)`,
+                left: `calc(${scaleCenter.x}% - 2.5px)`,
+            } }/>
+            <ScaleView rel={ (scaleViewComponent) => {
+                this.scaleView = scaleViewComponent;
             } }>
                 <div ref={ (element) => {
                     this.clickElement = element;
@@ -128,7 +148,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
         this.clickElementDragListener = new DragListener(scaleDragElement, {
             onStart: () => {
                 startScalePosition = { ...this.props.scale };
-                startSquareSize = scaleView.getSquareSize();
+                startSquareSize = scaleView.getSquareState().size;
             },
             onMove: ({
                          relativeX,
@@ -158,8 +178,39 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, {}> {
     }
 
     private onScaleDragElementMouseDown = () => {
-        // TODO: we need other logic to remove focus form element
+        // TODO: we need other logic to remove focus form animation element
         this.props.setEditedBlock(undefined);
+    }
+
+    private getScaleCenter(): PointCoordinates {
+        const { scale } = this.props;
+
+        const {
+            scaleView,
+        } = this;
+
+        const square = scaleView
+            ? scaleView.getSquareState()
+            : DEFAULT_SQUARE;
+
+        const squareRelative = {
+            x: (square.x / square.size) * 100,
+            y: (square.y / square.size) * 100,
+            width: (square.size / (square.size + square.x * 2)) * 100,
+            height: (square.size / (square.size + square.y * 2)) * 100,
+        };
+
+        const x = squareRelative.x + squareRelative.width * (scale.x / 100);
+        const y = squareRelative.y + squareRelative.height * (scale.y / 100);
+        const width = (squareRelative.width / 100) * scale.width;
+        const height = (squareRelative.height / 100) * scale.height;
+
+        return getRectangleCenterCoordinates({
+            x,
+            y,
+            width,
+            height,
+        });
     }
 }
 

@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Scale } from '../../Scale/Scale';
 import { scaleToStyles } from '../../Scale/utils/scaleToStyles';
 import { ConstructorState } from '../../Store/State';
-import { FillSizeBlock } from '../FillSizeBlock';
+import { Square } from '../../utils/Trigonometry/Types/Square';
+import { FillCentralSquare } from '../FillCentralSquare';
 import * as c from './index.pcss';
 
 export type ScaleViewOwnProps = {
@@ -17,20 +18,18 @@ export type ScaleViewProps =
     & ScaleViewOwnProps;
 
 export class ScaleViewComponent extends React.Component<ScaleViewProps, {}> {
-    private fillSizeBlock?: FillSizeBlock;
+    private fillCentralSquare?: FillCentralSquare;
 
     public render() {
         const {
             scale,
         } = this.props;
 
-        return <FillSizeBlock
-            rel={ (fillSizeBlock) => {
-                this.fillSizeBlock = fillSizeBlock;
+        return <FillCentralSquare
+            rel={ (fillCentralSquare) => {
+                this.fillCentralSquare = fillCentralSquare;
             } }
-            relationX={ 1 }
-            relationY={ 1 }
-            className={ c.ScaleView__fillSizeBlock }
+            className={ c.ScaleView__fillCentralSquare }
         >
             <div
                 className={ c.ScaleView__scaleDiv }
@@ -38,7 +37,7 @@ export class ScaleViewComponent extends React.Component<ScaleViewProps, {}> {
             >
                 { this.props.children }
             </div>
-        </FillSizeBlock>;
+        </FillCentralSquare>;
     }
 
     public componentDidMount() {
@@ -49,14 +48,18 @@ export class ScaleViewComponent extends React.Component<ScaleViewProps, {}> {
         }
     }
 
-    public getSquareSize(): number {
-        const { fillSizeBlock } = this;
+    // public getSquareCoordinates(): PointCoordinates {
+    //
+    // }
 
-        if (!fillSizeBlock) {
-            throw new Error('fillSizeBlock has not been initialized');
+    public getSquareState(): Square {
+        const { fillCentralSquare } = this;
+
+        if (!fillCentralSquare) {
+            throw new Error('FillCentralSquare has not been initialized in ScaleView');
         }
 
-        return fillSizeBlock.getSize().width;
+        return fillCentralSquare.getState();
     }
 }
 

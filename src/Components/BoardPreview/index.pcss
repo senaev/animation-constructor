@@ -6,10 +6,18 @@
     user-select: none;
     overflow: hidden;
 
-    background-color: #FFFFFF;
-    background-image: svg-load('../../assets/like-transparent.svg');
-    background-size: 20px;
-    background-position: -1px -3px;
+    &__scaleDragElement {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+
+        background-color: #FFFFFF;
+        background-image: svg-load('../../assets/like-transparent.svg');
+        background-size: 20px;
+        background-position: -1px -3px;
+    }
 
     &__editContainer {
         position: absolute;
@@ -19,14 +27,6 @@
         left: 0;
         outline: 1px dashed #000;
         box-shadow: 0 0 1px 50000px rgba(0, 0, 0, 0.2);
-    }
-
-    &__scaleDragElement {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
     }
 
     &__Zoom {
