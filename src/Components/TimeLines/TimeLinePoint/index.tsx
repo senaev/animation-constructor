@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Cursor } from '../../../Cursor/Cursor';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { clamp } from '../../../utils/clamp';
@@ -14,6 +13,11 @@ type TimeLinePointCallbacks = {
     onPositionChange: (position: number) => void;
     onPositionChangeEnd: (position: number) => void;
 };
+
+export type TimeLinePointRemovableParams = {
+    onRemove: () => void;
+};
+
 
 export type TimeLinePointMovableParams = {
     min: number;
@@ -31,8 +35,9 @@ export type TimeLinePointProps<T extends Unit> =
     & {
         position: number;
         containerWidth: UnitTypes[Unit.pixel];
-        movable?: TimeLinePointMovableParams;
-        changeable?: TimeLinePointChangeableParams<T>;
+        removable: TimeLinePointRemovableParams | undefined;
+        movable: TimeLinePointMovableParams | undefined;
+        changeable: TimeLinePointChangeableParams<T> | undefined;
     }
     & Partial<TimeLinePointCallbacks>;
 
@@ -68,7 +73,7 @@ export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePoint
 
         const {
             position,
-            movable,
+            removable,
             changeable,
         } = this.props;
 
@@ -79,21 +84,11 @@ export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePoint
             className={ c.TimeLinePoint }
             style={ {
                 left: `${position * 100}%`,
-                cursor: movable ?
-                    draggingStartPosition === undefined
-                        ? Cursor.grab
-                        : Cursor.grabbing
-                    : Cursor.default,
             } }
         >
             <div className={ c.TimeLinePoint__pointer }/>
             <div
                 className={ c.TimeLinePoint__hoverZone }
-                style={ {
-                    cursor: movable
-                        ? Cursor.grab
-                        : Cursor.default,
-                } }
                 ref={ (element) => {
                     this.dragElement = element;
                 } }
@@ -102,6 +97,7 @@ export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePoint
                 isHovered && draggingStartPosition === undefined || isChangeableDialogOpened
                     ? <TimeLinePointTooltip
                         changeable={ changeable }
+                        removable={ removable }
                         isChangeableDialogOpen={ isChangeableDialogOpened }
                         requestChangeableDialogOpened={ this.requestChangeableDialogOpened }
                     />

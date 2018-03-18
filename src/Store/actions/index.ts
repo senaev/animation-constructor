@@ -7,8 +7,9 @@ import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { ConstructorState } from '../State';
-import { ActionPosition } from '../types/ActionPosition';
-import { ActionValue } from '../types/ActionValue';
+import { ChangedAction } from '../types/ChangedAction';
+import { ChangedActionPosition } from '../types/ChangedActionPosition';
+import { ChangedActionValue } from '../types/ChangedActionValue';
 
 export const addStandardElementAction =
     createAction<AnimationElementName>('addStandardElementAction');
@@ -28,11 +29,16 @@ export const setAnimationPositionAction =
     createAction<ConstructorState['animationPosition']>('setAnimationPositionAction');
 
 export const setBlockScriptActionPositionAction =
-    createAction<ActionPosition<BlockFieldUnits>>('setBlockScriptActionPositionAction');
+    createAction<ChangedActionPosition<BlockFieldUnits>>('setBlockScriptActionPositionAction');
 export const setFieldsScriptActionPositionAction =
-    createAction<ActionPosition<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptActionPositionAction');
+    createAction<ChangedActionPosition<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptActionPositionAction');
 
 export const setBlockScriptActionValueAction =
-    createAction<ActionValue<BlockFieldUnits>>('setBlockScriptActionValueAction');
+    createAction<ChangedActionValue<BlockFieldUnits>>('setBlockScriptActionValueAction');
 export const setFieldsScriptActionValueAction =
-    createAction<ActionValue<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptActionValueAction');
+    createAction<ChangedActionValue<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptActionValueAction');
+
+export const removeBlockScriptActionAction =
+    createAction<ChangedAction<BlockFieldUnits>>('removeBlockScriptActionAction');
+export const removeFieldsScriptActionAction =
+    createAction<ChangedAction<AnimationElementsFieldsUnits[AnimationElementName]>>('removeFieldsScriptActionAction');

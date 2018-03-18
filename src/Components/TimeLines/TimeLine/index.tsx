@@ -8,15 +8,6 @@ export type TimeLineProps = {
 };
 
 export class TimeLine extends React.Component<TimeLineProps, {}> {
-    constructor(props: TimeLineProps) {
-        super(props);
-
-        this.state = {
-            isHovered: false,
-            isDraggedCursor: false,
-        };
-    }
-
     public render() {
         const {
             points,

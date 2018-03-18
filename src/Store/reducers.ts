@@ -2,6 +2,8 @@ import { createReducer } from 'redux-act';
 import { DefaultBlockScript } from '../Block/DefaultBlockScript';
 import {
     addStandardElementAction,
+    removeBlockScriptActionAction,
+    removeFieldsScriptActionAction,
     setAnimationPositionAction,
     setBlockScriptActionPositionAction,
     setBlockScriptActionValueAction,
@@ -18,6 +20,7 @@ import { ZOOM_IN_STEP, ZOOM_OUT_STEP } from './const/ZOOM_STEP';
 import { ConstructorState } from './State';
 import { getDefaultFieldsScriptForAnimationElement } from './utils/getDefaultFieldsScriptForAnimationElement';
 import { getEditedAnimationElementScript } from './utils/getEditedAnimationElementScript';
+import { removeFieldsScriptsAction } from './utils/removeFieldsScriptsAction';
 import { setAnimationElementFields } from './utils/setAnimationElementFields';
 import { setEditedAnimationElementScript } from './utils/setEditedAnimationElementScript';
 import { setEditedBlockFieldsOnCurrentPosition } from './utils/setEditedBlockFieldsOnCurrentPosition';
@@ -176,4 +179,39 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             ...state,
             zoom: zoom * ZOOM_IN_STEP,
         };
+    })
+    .on(removeBlockScriptActionAction, (state, {
+        fieldName,
+        actionIndex,
+    }): ConstructorState => {
+        console.log(actionIndex);
+        const animationElementScript = getEditedAnimationElementScript(state);
+
+        const blockScript = removeFieldsScriptsAction(
+            animationElementScript.blockScript,
+            fieldName,
+            actionIndex,
+        );
+
+        return setEditedAnimationElementScript(state, {
+            ...animationElementScript,
+            blockScript,
+        });
+    })
+    .on(removeFieldsScriptActionAction, (state, {
+        fieldName,
+        actionIndex,
+    }): ConstructorState => {
+        const animationElementScript = getEditedAnimationElementScript(state);
+
+        const fieldsScript = removeFieldsScriptsAction(
+            animationElementScript.fieldsScript,
+            fieldName,
+            actionIndex,
+        );
+
+        return setEditedAnimationElementScript(state, {
+            ...animationElementScript,
+            fieldsScript,
+        });
     });

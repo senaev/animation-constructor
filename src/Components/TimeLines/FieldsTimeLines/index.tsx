@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { FieldsScripts } from '../../../AnimationScript/index';
 import { getActionsParams } from '../../../AnimationScript/utils/getActionsParams';
-import { ActionPosition } from '../../../Store/types/ActionPosition';
-import { ActionValue } from '../../../Store/types/ActionValue';
+import { ChangedAction } from '../../../Store/types/ChangedAction';
+import { ChangedActionPosition } from '../../../Store/types/ChangedActionPosition';
+import { ChangedActionValue } from '../../../Store/types/ChangedActionValue';
 import { UnitTimelinePreviews } from '../../../TimelinePreviews/UnitTimelinePreviews';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
@@ -16,10 +17,11 @@ export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
     titlesDictionary: Record<keyof T, string>;
     containerWidth: UnitTypes[Unit.pixel];
     isChangingActionPosition: boolean;
-    onScriptActionPositionChangeStart: (actionPosition: ActionPosition<T>) => void;
-    onScriptActionPositionChange: (actionPosition: ActionPosition<T>) => void;
-    onScriptActionPositionChangeEnd: (actionPosition: ActionPosition<T>) => void;
-    onScriptActionValueChange: (actionValue: ActionValue<T>) => void;
+    onScriptActionPositionChangeStart: (actionPosition: ChangedActionPosition<T>) => void;
+    onScriptActionPositionChange: (actionPosition: ChangedActionPosition<T>) => void;
+    onScriptActionPositionChangeEnd: (actionPosition: ChangedActionPosition<T>) => void;
+    onScriptActionValueChange: (actionValue: ChangedActionValue<T>) => void;
+    onScriptActionRemove: (actionValue: ChangedAction<T>) => void;
 };
 
 export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Component<FieldsTimeLinesProps<T>, {}> {
@@ -33,6 +35,7 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
             onScriptActionPositionChange,
             onScriptActionPositionChangeEnd,
             onScriptActionValueChange,
+            onScriptActionRemove,
         } = this.props;
 
         return getObjectKeys(fieldsScripts).map((fieldName, i) => {
@@ -69,6 +72,16 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                 const point: TimeLinePointProps<Unit> = {
                     position,
                     movable,
+                    removable: actionIndex > 0
+                        ? {
+                            onRemove: () => {
+                                onScriptActionRemove({
+                                    fieldName,
+                                    actionIndex,
+                                });
+                            },
+                        }
+                        : undefined,
                     changeable: isChangingActionPosition
                         ? undefined
                         : {

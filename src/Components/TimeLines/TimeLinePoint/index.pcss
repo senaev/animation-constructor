@@ -1,31 +1,33 @@
 .TimeLinePoint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  &__pointer {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 0;
     height: 100%;
+    width: 2px;
+    left: -1px;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+  }
 
-    &__pointer {
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 2px;
-        left: -1px;
-        background-color: rgba(0, 0, 0, 0.5);
-        pointer-events: none;
-    }
+  &__hoverZone {
+    position: absolute;
+    top: 0;
+    left: -4px;
+    width: 8px;
+    height: 100%;
+  }
 
-    &__hoverZone {
-        position: absolute;
-        top: 0;
-        left: -4px;
-        width: 8px;
-        height: 100%;
-    }
-
-    &__tooltip {
-        cursor: default;
-        top: -5px !important;
-        left: -1px !important;
-    }
+  &__tooltip {
+    top: -5px !important;
+    left: -1px !important;
+  }
 }

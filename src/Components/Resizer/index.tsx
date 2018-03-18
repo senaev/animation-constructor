@@ -17,11 +17,7 @@ type ResizerProps = Block & {
     onMove: (newSize: PointCoordinates) => void;
 };
 
-type ResizerState = {
-    isMoving: boolean;
-};
-
-export class Resizer extends React.Component<ResizerProps, ResizerState> {
+export class Resizer extends React.Component<ResizerProps, {}> {
     private element?: HTMLDivElement | null;
     private moveElement?: HTMLDivElement | null;
     private resizeElement?: HTMLDivElement | null;
@@ -48,10 +44,6 @@ export class Resizer extends React.Component<ResizerProps, ResizerState> {
             rotation,
         } = this.props;
 
-        const {
-            isMoving,
-        } = this.state;
-
         const resizerStyles = blockToStyles({
             x,
             y,
@@ -61,9 +53,7 @@ export class Resizer extends React.Component<ResizerProps, ResizerState> {
         });
 
         return <div
-            className={ cx(c.Resizer, {
-                [c.Resizer_grabbing]: isMoving,
-            }) }
+            className={ c.Resizer }
             ref={ (element) => {
                 this.element = element;
             } }
