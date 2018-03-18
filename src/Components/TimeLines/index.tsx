@@ -1,3 +1,4 @@
+import { Slider } from 'material-ui';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
@@ -30,7 +31,6 @@ import { UnitTypes } from '../../Unit/UnitTypes';
 import { ResizeSensor } from '../../utils/ResizeSensor';
 import { FieldsTimeLines } from './FieldsTimeLines';
 import * as c from './index.pcss';
-import { TimeLine } from './TimeLine';
 
 export type TimeLinesState = {
     isChangingStepPosition: boolean;
@@ -95,23 +95,13 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                 this.containerElement = element;
             } }
         >
-            <TimeLine
-                points={ [{
-                    position: animationPosition,
-                    containerWidth,
-                    removable: undefined,
-                    changeable: undefined,
-                    movable: {
-                        min: 0,
-                        max: 1,
-                    },
-                    onPositionChangeStart: this.onScriptStepPositionChangeStart,
-                    onPositionChange: this.onPositionChange,
-                    onPositionChangeEnd: this.onScriptStepPositionChangeEnd,
-                }] }
-            >
-                <div className={ c.AnimationTimelines__positionTimeLine }/>
-            </TimeLine>
+            <Slider
+                value={ animationPosition }
+                onChange={ this.onPositionChange }
+                onDragStart={ this.onScriptStepPositionChangeStart }
+                onDragStop={ this.onScriptStepPositionChangeEnd }
+                step={ 0.0001 }
+            />
             {
                 animationElementScript === undefined
                     ? null
@@ -161,7 +151,7 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
         this.setState({ containerWidth: this.resizeSensor.getSize().width });
     }
 
-    private onPositionChange = (position: number) => {
+    private onPositionChange = (event: any, position: number) => {
         this.props.setAnimationPosition(position);
     }
 
