@@ -7,6 +7,7 @@ import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { ConstructorState } from '../State';
+import { AddedAction } from '../types/AddedAction';
 import { ChangedAction } from '../types/ChangedAction';
 import { ChangedActionPosition } from '../types/ChangedActionPosition';
 import { ChangedActionValue } from '../types/ChangedActionValue';
@@ -42,3 +43,8 @@ export const removeBlockScriptActionAction =
     createAction<ChangedAction<BlockFieldUnits>>('removeBlockScriptActionAction');
 export const removeFieldsScriptActionAction =
     createAction<ChangedAction<AnimationElementsFieldsUnits[AnimationElementName]>>('removeFieldsScriptActionAction');
+
+export const addBlockScriptActionAction =
+    createAction<AddedAction<BlockFieldUnits>>('addBlockScriptActionAction');
+export const addFieldsScriptActionAction =
+    createAction<AddedAction<AnimationElementsFieldsUnits[AnimationElementName]>>('addFieldsScriptActionAction');

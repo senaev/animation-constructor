@@ -1,6 +1,8 @@
 import { createReducer } from 'redux-act';
 import { DefaultBlockScript } from '../Block/DefaultBlockScript';
 import {
+    addBlockScriptActionAction,
+    addFieldsScriptActionAction,
     addStandardElementAction,
     removeBlockScriptActionAction,
     removeFieldsScriptActionAction,
@@ -15,9 +17,10 @@ import {
     setScaleCoordinatesAction,
     zoomInAction,
     zoomOutAction,
-} from './actions/index';
+} from './actions';
 import { ZOOM_IN_STEP, ZOOM_OUT_STEP } from './const/ZOOM_STEP';
 import { ConstructorState } from './State';
+import { addScriptActionOnPosition } from './utils/addScriptActionOnPosition';
 import { getDefaultFieldsScriptForAnimationElement } from './utils/getDefaultFieldsScriptForAnimationElement';
 import { getEditedAnimationElementScript } from './utils/getEditedAnimationElementScript';
 import { removeFieldsScriptsAction } from './utils/removeFieldsScriptsAction';
@@ -184,7 +187,6 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
         fieldName,
         actionIndex,
     }): ConstructorState => {
-        console.log(actionIndex);
         const animationElementScript = getEditedAnimationElementScript(state);
 
         const blockScript = removeFieldsScriptsAction(
@@ -209,6 +211,32 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             fieldName,
             actionIndex,
         );
+
+        return setEditedAnimationElementScript(state, {
+            ...animationElementScript,
+            fieldsScript,
+        });
+    })
+    .on(addBlockScriptActionAction, (state, {
+        fieldName,
+        position,
+    }): ConstructorState => {
+        const animationElementScript = getEditedAnimationElementScript(state);
+
+        const blockScript = addScriptActionOnPosition(animationElementScript.blockScript, fieldName, position);
+
+
+        return setEditedAnimationElementScript(state, {
+            ...animationElementScript,
+            blockScript,
+        });
+    }).on(addFieldsScriptActionAction, (state, {
+        fieldName,
+        position,
+    }): ConstructorState => {
+        const animationElementScript = getEditedAnimationElementScript(state);
+
+        const fieldsScript = addScriptActionOnPosition(animationElementScript.fieldsScript, fieldName, position);
 
         return setEditedAnimationElementScript(state, {
             ...animationElementScript,

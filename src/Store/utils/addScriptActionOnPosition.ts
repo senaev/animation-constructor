@@ -1,15 +1,12 @@
+import { getValueByPosition } from '../../Animation/util/getValueByPosition';
 import { FieldsScripts } from '../../AnimationScript';
 import { Unit } from '../../Unit/Unit';
 import { mapObjectValues } from '../../utils/mapObjectValues';
-import { removeAction } from './removeAction';
+import { addAction } from './addAction';
 
-export function removeFieldsScriptsAction<T extends Record<string, Unit>>(fieldsScript: FieldsScripts<T>,
+export function addScriptActionOnPosition<T extends Record<string, Unit>>(fieldsScript: FieldsScripts<T>,
                                                                           editedFieldName: keyof T,
-                                                                          actionIndex: number): FieldsScripts<T> {
-    if (actionIndex === 0) {
-        throw new Error('first action should not be removed');
-    }
-
+                                                                          position: number): FieldsScripts<T> {
     return mapObjectValues(
         fieldsScript,
         (unitScript, fieldName) => {
@@ -19,9 +16,11 @@ export function removeFieldsScriptsAction<T extends Record<string, Unit>>(fields
                     actions,
                 } = unitScript;
 
+                const value = getValueByPosition(position, unit, actions);
+
                 return {
                     unit,
-                    actions: removeAction(actions, actionIndex),
+                    actions: addAction(actions, position, value),
                 };
             } else {
                 return unitScript as any;

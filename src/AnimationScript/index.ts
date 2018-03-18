@@ -5,6 +5,7 @@ import { EasingName } from '../Easing/EasingName';
 import { Unit } from '../Unit/Unit';
 import { UnitTypes } from '../Unit/UnitTypes';
 
+// TODO: Step
 export type ScriptAction<T extends Unit> = {
     duration: number;
     value: UnitTypes[T];
