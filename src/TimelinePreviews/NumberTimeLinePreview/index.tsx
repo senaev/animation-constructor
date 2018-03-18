@@ -108,7 +108,7 @@ export class NumberTimeLinePreview extends React.Component<TimeLinePreviewProps<
             };
         });
 
-        context.fillStyle = 'rgba(0,255,232, 0.1)';
+        context.fillStyle = 'rgba(0, 0, 0, 0)';
         context.fillRect(0, 0, width, height);
 
         context.beginPath();

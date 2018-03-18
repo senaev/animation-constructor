@@ -1,8 +1,22 @@
-.AnimationTimelines {
+.TimeLines {
   position: relative;
 
   &__positionTimeLine {
     background-color: #9cc0de;
     height: 16px;
+  }
+
+  &__row {
+    display: flex;
+    flex-wrap: nowrap;
+
+    &__title {
+      padding-right: 18px;
+    }
+
+    &__timeline {
+      position: relative;
+      flex-grow: 1;
+    }
   }
 }

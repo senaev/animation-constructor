@@ -57,6 +57,8 @@ export type TimeLinesProps =
     & TimeLinesStateProps
     & TimeLinesDispatchProps;
 
+const AMIMATION_POSITION_TITLE = 'Позиция анимации';
+
 class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState> {
     private containerElement?: HTMLDivElement | null;
     private resizeSensor?: ResizeSensor;
@@ -90,18 +92,29 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
         } = this.state;
 
         return <div
-            className={ c.AnimationTimelines }
+            className={ c.TimeLines }
             ref={ (element) => {
                 this.containerElement = element;
             } }
         >
-            <Slider
-                value={ animationPosition }
-                onChange={ this.onPositionChange }
-                onDragStart={ this.onScriptStepPositionChangeStart }
-                onDragStop={ this.onScriptStepPositionChangeEnd }
-                step={ 0.0001 }
-            />
+            <div className={ c.TimeLines__row }>
+                <div className={ c.TimeLines__row__title }>
+                    { AMIMATION_POSITION_TITLE }
+                </div>
+                <div className={ c.TimeLines__row__timeline }>
+                    <Slider
+                        value={ animationPosition }
+                        onChange={ this.onPositionChange }
+                        onDragStart={ this.onScriptStepPositionChangeStart }
+                        onDragStop={ this.onScriptStepPositionChangeEnd }
+                        step={ 0.0001 }
+                        sliderStyle={ {
+                            marginTop: '0',
+                            marginBottom: '0',
+                        } }
+                    />
+                </div>
+            </div>
             {
                 animationElementScript === undefined
                     ? null
@@ -207,7 +220,6 @@ const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): TimeLinesDis
     },
     addFieldsScriptStep: (addedStep) => {
         dispatch(addFieldsScriptStepAction(addedStep));
-
     },
 });
 
