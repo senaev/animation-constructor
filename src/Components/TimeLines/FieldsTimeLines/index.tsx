@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { FieldsScripts } from '../../../AnimationScript';
-import { getActionsParams } from '../../../AnimationScript/utils/getActionsParams';
-import { AddedAction } from '../../../Store/types/AddedAction';
-import { ChangedAction } from '../../../Store/types/ChangedAction';
-import { ChangedActionPosition } from '../../../Store/types/ChangedActionPosition';
-import { ChangedActionValue } from '../../../Store/types/ChangedActionValue';
+import { getStepParams } from '../../../AnimationScript/utils/getStepParams';
+import { AdditionalStep } from '../../../Store/types/AdditionalStep';
+import { EditableStep } from '../../../Store/types/EditableStep';
+import { EditableStepPosition } from '../../../Store/types/EditableStepPosition';
+import { EditableStepValue } from '../../../Store/types/EditableStepValue';
 import { UnitTimelinePreviews } from '../../../TimelinePreviews/UnitTimelinePreviews';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
@@ -17,13 +17,13 @@ export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
     fieldsScripts: FieldsScripts<T>;
     titlesDictionary: Record<keyof T, string>;
     containerWidth: UnitTypes[Unit.pixel];
-    isChangingActionPosition: boolean;
-    onScriptActionPositionChangeStart: (actionPosition: ChangedActionPosition<T>) => void;
-    onScriptActionPositionChange: (actionPosition: ChangedActionPosition<T>) => void;
-    onScriptActionPositionChangeEnd: (actionPosition: ChangedActionPosition<T>) => void;
-    onScriptActionValueChange: (actionValue: ChangedActionValue<T>) => void;
-    onScriptActionRemove: (actionValue: ChangedAction<T>) => void;
-    onScriptActionAdd: (actionValue: AddedAction<T>) => void;
+    isChangingStepPosition: boolean;
+    onScriptStepPositionChangeStart: (stepPosition: EditableStepPosition<T>) => void;
+    onScriptStepPositionChange: (stepPosition: EditableStepPosition<T>) => void;
+    onScriptStepPositionChangeEnd: (stepPosition: EditableStepPosition<T>) => void;
+    onScriptStepValueChange: (stepPosition: EditableStepValue<T>) => void;
+    onScriptStepRemove: (stepPosition: EditableStep<T>) => void;
+    onScriptStepAdd: (stepPosition: AdditionalStep<T>) => void;
 };
 
 export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Component<FieldsTimeLinesProps<T>, {}> {
@@ -32,13 +32,13 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
             fieldsScripts,
             titlesDictionary,
             containerWidth,
-            isChangingActionPosition,
-            onScriptActionPositionChangeStart,
-            onScriptActionPositionChange,
-            onScriptActionPositionChangeEnd,
-            onScriptActionValueChange,
-            onScriptActionRemove,
-            onScriptActionAdd,
+            isChangingStepPosition,
+            onScriptStepPositionChangeStart,
+            onScriptStepPositionChange,
+            onScriptStepPositionChangeEnd,
+            onScriptStepValueChange,
+            onScriptStepRemove,
+            onScriptStepAdd,
         } = this.props;
 
         return getObjectKeys(fieldsScripts).map((fieldName, i) => {
@@ -47,77 +47,77 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
 
             const {
                 unit,
-                actions,
+                steps,
             } = unitScript;
-            const pointPositions = getActionsParams(actions);
+            const pointPositions = getStepParams(steps);
             const points: TimeLinePointProps<Unit>[] = pointPositions.map(({
-                                                                               previousActionPosition,
+                                                                               previousStepPosition,
                                                                                position,
-                                                                               nextActionPosition,
-                                                                           }, actionIndex) => {
+                                                                               nextStepPosition,
+                                                                           }, stepIndex) => {
                 let movable: TimeLinePointProps<Unit>['movable'];
 
-                if (actionIndex > 0) {
-                    if (previousActionPosition === undefined) {
+                if (stepIndex > 0) {
+                    if (previousStepPosition === undefined) {
                         throw new Error('PointParams without previousPosition value in not first point');
                     }
 
                     movable = {
-                        min: previousActionPosition,
-                        max: nextActionPosition === undefined
+                        min: previousStepPosition,
+                        max: nextStepPosition === undefined
                             ? 1
-                            : nextActionPosition,
+                            : nextStepPosition,
                     };
                 }
 
-                const { value } = actions[actionIndex];
+                const { value } = steps[stepIndex];
 
                 const point: TimeLinePointProps<Unit> = {
                     position,
                     movable,
-                    removable: actionIndex > 0
+                    removable: stepIndex > 0
                         ? {
                             onRemove: () => {
-                                onScriptActionRemove({
+                                onScriptStepRemove({
                                     fieldName,
-                                    actionIndex,
+                                    stepIndex,
                                 });
                             },
                         }
                         : undefined,
-                    changeable: isChangingActionPosition
+                    changeable: isChangingStepPosition
                         ? undefined
                         : {
                             unit,
                             title,
                             value,
                             onChange: (nextValue) => {
-                                onScriptActionValueChange({
+                                onScriptStepValueChange({
                                     fieldName,
-                                    actionIndex,
+                                    stepIndex,
                                     value: nextValue,
                                 });
                             },
                         },
                     containerWidth,
                     onPositionChangeStart: (nextPosition: number) => {
-                        onScriptActionPositionChangeStart({
+                        onScriptStepPositionChangeStart({
                             fieldName,
-                            actionIndex,
+                            stepIndex,
                             position: nextPosition,
                         });
                     },
                     onPositionChange: (nextPosition: number) => {
-                        onScriptActionPositionChange({
+                        onScriptStepPositionChange({
                             fieldName,
-                            actionIndex,
+                            stepIndex,
                             position: nextPosition,
                         });
                     },
                     onPositionChangeEnd: (nextPosition: number) => {
-                        onScriptActionPositionChangeEnd({
+                        onScriptStepPositionChangeEnd({
                             fieldName,
-                            actionIndex,
+                            stepIndex,
                             position: nextPosition,
                         });
                     },
@@ -146,7 +146,7 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
 
                             const position = (event.clientX - left) / width;
 
-                            onScriptActionAdd({
+                            onScriptStepAdd({
                                 fieldName,
                                 position,
                             });

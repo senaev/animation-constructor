@@ -1,30 +1,28 @@
 import { FieldsScripts } from '../../AnimationScript';
 import { Unit } from '../../Unit/Unit';
+import { UnitTypes } from '../../Unit/UnitTypes';
 import { mapObjectValues } from '../../utils/mapObjectValues';
-import { removeAction } from './removeAction';
+import { setStepValue } from './setStepValue';
 
-export function removeFieldsScriptsAction<T extends Record<string, Unit>>(fieldsScript: FieldsScripts<T>,
+export function setFieldsScriptsStepValue<T extends Record<string, Unit>>(fieldsScript: FieldsScripts<T>,
                                                                           editedFieldName: keyof T,
-                                                                          actionIndex: number): FieldsScripts<T> {
-    if (actionIndex === 0) {
-        throw new Error('first action should not be removed');
-    }
-
+                                                                          stepIndex: number,
+                                                                          value: UnitTypes[T[keyof T]]): FieldsScripts<T> {
     return mapObjectValues(
         fieldsScript,
         (unitScript, fieldName) => {
             if (fieldName === editedFieldName) {
                 const {
                     unit,
-                    actions,
+                    steps,
                 } = unitScript;
 
                 return {
                     unit,
-                    actions: removeAction(actions, actionIndex),
+                    steps: setStepValue(steps, stepIndex, value),
                 };
             } else {
-                return unitScript as any;
+                return unitScript;
             }
         },
     );

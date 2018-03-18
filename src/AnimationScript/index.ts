@@ -5,8 +5,7 @@ import { EasingName } from '../Easing/EasingName';
 import { Unit } from '../Unit/Unit';
 import { UnitTypes } from '../Unit/UnitTypes';
 
-// TODO: Step
-export type ScriptAction<T extends Unit> = {
+export type Step<T extends Unit> = {
     duration: number;
     value: UnitTypes[T];
     easing: EasingName | undefined;
@@ -14,7 +13,7 @@ export type ScriptAction<T extends Unit> = {
 
 export type UnitScript<T extends Unit> = {
     unit: T;
-    actions: ScriptAction<T>[];
+    steps: Step<T>[];
 };
 
 export type FieldsScripts<T extends Record<string, Unit>> = {

@@ -7,11 +7,11 @@ import { getValueByPosition } from '../getValueByPosition';
 export function getFieldsValuesByPosition<T extends Record<string, Unit>>
 (position: number,
  fieldsScripts: FieldsScripts<T>): UnitsToTypes<T> {
-    return mapObjectValues(fieldsScripts, ({ unit, actions }, fieldName) => {
-        if (actions.length === 0) {
-            throw new Error(`No actions in animation script [${fieldName}][${unit}]`);
+    return mapObjectValues(fieldsScripts, ({ unit, steps }, fieldName) => {
+        if (steps.length === 0) {
+            throw new Error(`No steps in animation script [${fieldName}][${unit}]`);
         } else {
-            return getValueByPosition(position, unit, actions);
+            return getValueByPosition(position, unit, steps);
         }
     });
 }

@@ -1,40 +1,40 @@
-import { ScriptAction } from '../../../AnimationScript';
+import { Step } from '../../../AnimationScript';
 import { AllEasings } from '../../../Easing/AllEasings';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { AllUnitTransitionFunctions } from '../../../UnitTransition/AllUnitTransitionFunctions';
-import { getActionByPosition } from '../getActionByPosition';
+import { getStepByPosition } from '../getStepByPosition';
 
 export function getValueByPosition<T extends Unit>(position: number,
                                                    unit: T,
-                                                   actions: ScriptAction<T>[]): UnitTypes[T] {
+                                                   steps: Step<T>[]): UnitTypes[T] {
     const {
-        action,
-        actionPosition,
-        index,
-    } = getActionByPosition(position, actions);
+        step,
+        stepPosition,
+        stepIndex,
+    } = getStepByPosition(position, steps);
 
     const {
         duration,
         value,
         easing,
-    } = action;
+    } = step;
 
-    if (index === actions.length - 1 || duration === 0 || easing === undefined) {
+    if (stepIndex === steps.length - 1 || duration === 0 || easing === undefined) {
         return value;
     } else {
-        const nextActionValue = actions[index + 1].value;
+        const nextStepValue = steps[stepIndex + 1].value;
 
         const transitionFunction = AllEasings[easing];
-        const positionInsideOfAction = (position - actionPosition) / duration;
+        const positionInsideOfStep = (position - stepPosition) / duration;
 
-        const positionConsideringTransitionFunction = transitionFunction(positionInsideOfAction);
+        const positionConsideringTransitionFunction = transitionFunction(positionInsideOfStep);
 
         const unitTransitionFunction = AllUnitTransitionFunctions[unit];
         return unitTransitionFunction(
             positionConsideringTransitionFunction,
             value,
-            nextActionValue,
+            nextStepValue,
         );
     }
 }

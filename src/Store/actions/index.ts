@@ -7,10 +7,10 @@ import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { ConstructorState } from '../State';
-import { AddedAction } from '../types/AddedAction';
-import { ChangedAction } from '../types/ChangedAction';
-import { ChangedActionPosition } from '../types/ChangedActionPosition';
-import { ChangedActionValue } from '../types/ChangedActionValue';
+import { AdditionalStep } from '../types/AdditionalStep';
+import { EditableStep } from '../types/EditableStep';
+import { EditableStepPosition } from '../types/EditableStepPosition';
+import { EditableStepValue } from '../types/EditableStepValue';
 
 export const addStandardElementAction =
     createAction<AnimationElementName>('addStandardElementAction');
@@ -29,22 +29,22 @@ export const setEditedElementFieldsAction =
 export const setAnimationPositionAction =
     createAction<ConstructorState['animationPosition']>('setAnimationPositionAction');
 
-export const setBlockScriptActionPositionAction =
-    createAction<ChangedActionPosition<BlockFieldUnits>>('setBlockScriptActionPositionAction');
-export const setFieldsScriptActionPositionAction =
-    createAction<ChangedActionPosition<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptActionPositionAction');
+export const setBlockScriptStepPositionAction =
+    createAction<EditableStepPosition<BlockFieldUnits>>('setBlockScriptStepPositionAction');
+export const setFieldsScriptStepPositionAction =
+    createAction<EditableStepPosition<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptStepPositionAction');
 
-export const setBlockScriptActionValueAction =
-    createAction<ChangedActionValue<BlockFieldUnits>>('setBlockScriptActionValueAction');
-export const setFieldsScriptActionValueAction =
-    createAction<ChangedActionValue<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptActionValueAction');
+export const setBlockScriptStepValueAction =
+    createAction<EditableStepValue<BlockFieldUnits>>('setBlockScriptStepValueAction');
+export const setFieldsScriptStepValueAction =
+    createAction<EditableStepValue<AnimationElementsFieldsUnits[AnimationElementName]>>('setFieldsScriptStepValueAction');
 
-export const removeBlockScriptActionAction =
-    createAction<ChangedAction<BlockFieldUnits>>('removeBlockScriptActionAction');
-export const removeFieldsScriptActionAction =
-    createAction<ChangedAction<AnimationElementsFieldsUnits[AnimationElementName]>>('removeFieldsScriptActionAction');
+export const removeBlockScriptStepAction =
+    createAction<EditableStep<BlockFieldUnits>>('removeBlockScriptStepAction');
+export const removeFieldsScriptStepAction =
+    createAction<EditableStep<AnimationElementsFieldsUnits[AnimationElementName]>>('removeFieldsScriptStepAction');
 
-export const addBlockScriptActionAction =
-    createAction<AddedAction<BlockFieldUnits>>('addBlockScriptActionAction');
-export const addFieldsScriptActionAction =
-    createAction<AddedAction<AnimationElementsFieldsUnits[AnimationElementName]>>('addFieldsScriptActionAction');
+export const addBlockScriptStepAction =
+    createAction<AdditionalStep<BlockFieldUnits>>('addBlockScriptStepAction');
+export const addFieldsScriptStepAction =
+    createAction<AdditionalStep<AnimationElementsFieldsUnits[AnimationElementName]>>('addFieldsScriptStepAction');

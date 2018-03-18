@@ -71,12 +71,12 @@ export class NumberTimelinePreview extends React.Component<TimelitePreviewProps<
         }
 
         const {
-            actions,
+            steps,
             unit,
         } = unitScript;
 
-        if (actions.length === 0) {
-            throw new Error('actions array cannot be zero-length');
+        if (steps.length === 0) {
+            throw new Error('steps array cannot be zero-length');
         }
 
         const context = canvas.getContext('2d')!;
@@ -89,7 +89,7 @@ export class NumberTimelinePreview extends React.Component<TimelitePreviewProps<
 
         context.clearRect(0, 0, width, height);
 
-        const values = actions.map(({ value }) => value);
+        const values = steps.map(({ value }) => value);
 
         const maxValue = Math.max(...values);
         const minValue = Math.min(...values);
@@ -99,11 +99,11 @@ export class NumberTimelinePreview extends React.Component<TimelitePreviewProps<
             ? 1
             : maxValue - minValue;
 
-        const canvasValues = actions.map((action) => {
-            const relativeValue = (1 - ((action.value - minValue) / dif));
+        const canvasValues = steps.map((step) => {
+            const relativeValue = (1 - ((step.value - minValue) / dif));
 
             return {
-                ...action,
+                ...step,
                 value: relativeValue * (NUMBER_TIMELINE_HEIGHT - NUMBER_TIMELINE_PADDING * 2) + NUMBER_TIMELINE_PADDING,
             };
         });

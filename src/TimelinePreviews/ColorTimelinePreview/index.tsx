@@ -67,12 +67,12 @@ export class ColorTimeLinePreview extends React.Component<TimelitePreviewProps<U
         }
 
         const {
-            actions,
+            steps,
             unit,
         } = unitScript;
 
-        if (actions.length === 0) {
-            throw new Error('actions array cannot be zero-length');
+        if (steps.length === 0) {
+            throw new Error('steps array cannot be zero-length');
         }
 
         const context = canvas.getContext('2d')!;
@@ -87,7 +87,7 @@ export class ColorTimeLinePreview extends React.Component<TimelitePreviewProps<U
 
         for (let i = 0; i < width; i++) {
             const position = i / width;
-            const value = getValueByPosition(position, unit, actions);
+            const value = getValueByPosition(position, unit, steps);
             context.fillStyle = colorToRGBAString(value);
             context.fillRect(i, 0, 1, height);
         }

@@ -9,21 +9,21 @@ import { AnimationElementScript } from '../../AnimationScript';
 import { BlockFieldTitles } from '../../Block/BlockFieldTitles';
 import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import {
-    addBlockScriptActionAction,
-    addFieldsScriptActionAction,
-    removeBlockScriptActionAction,
-    removeFieldsScriptActionAction,
+    addBlockScriptStepAction,
+    addFieldsScriptStepAction,
+    removeBlockScriptStepAction,
+    removeFieldsScriptStepAction,
     setAnimationPositionAction,
-    setBlockScriptActionPositionAction,
-    setBlockScriptActionValueAction,
-    setFieldsScriptActionPositionAction,
-    setFieldsScriptActionValueAction,
+    setBlockScriptStepPositionAction,
+    setBlockScriptStepValueAction,
+    setFieldsScriptStepPositionAction,
+    setFieldsScriptStepValueAction,
 } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
-import { AddedAction } from '../../Store/types/AddedAction';
-import { ChangedAction } from '../../Store/types/ChangedAction';
-import { ChangedActionPosition } from '../../Store/types/ChangedActionPosition';
-import { ChangedActionValue } from '../../Store/types/ChangedActionValue';
+import { AdditionalStep } from '../../Store/types/AdditionalStep';
+import { EditableStep } from '../../Store/types/EditableStep';
+import { EditableStepPosition } from '../../Store/types/EditableStepPosition';
+import { EditableStepValue } from '../../Store/types/EditableStepValue';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
@@ -33,7 +33,7 @@ import * as c from './index.pcss';
 import { TimeLine } from './TimeLine';
 
 export type TimeLinesState = {
-    isChangingActionPosition: boolean;
+    isChangingStepPosition: boolean;
     containerWidth: UnitTypes[Unit.pixel];
 };
 
@@ -43,14 +43,14 @@ export type TimeLinesStateProps = {
 };
 export type TimeLinesDispatchProps = {
     setAnimationPosition: (animationPosition: ConstructorState['animationPosition']) => void;
-    setBlockScriptActionPosition: (actionPosition: ChangedActionPosition<BlockFieldUnits>) => void;
-    setFieldsScriptActionPosition: (actionPosition: ChangedActionPosition<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
-    setBlockScriptActionValue: (actionValue: ChangedActionValue<BlockFieldUnits>) => void
-    setFieldsScriptActionValue: (actionValue: ChangedActionValue<AnimationElementsFieldsUnits[AnimationElementName]>) => void
-    removeBlockScriptAction: (changedAction: ChangedAction<BlockFieldUnits>) => void;
-    removeFieldsScriptAction: (changedAction: ChangedAction<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
-    addBlockScriptAction: (changedAction: AddedAction<BlockFieldUnits>) => void;
-    addFieldsScriptAction: (changedAction: AddedAction<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
+    setBlockScriptStepPosition: (stepPosition: EditableStepPosition<BlockFieldUnits>) => void;
+    setFieldsScriptStepPosition: (stepPosition: EditableStepPosition<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
+    setBlockScriptStepValue: (stepValue: EditableStepValue<BlockFieldUnits>) => void
+    setFieldsScriptStepValue: (stepValue: EditableStepValue<AnimationElementsFieldsUnits[AnimationElementName]>) => void
+    removeBlockScriptStep: (changedStep: EditableStep<BlockFieldUnits>) => void;
+    removeFieldsScriptStep: (changedStep: EditableStep<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
+    addBlockScriptStep: (changedStep: AdditionalStep<BlockFieldUnits>) => void;
+    addFieldsScriptStep: (changedStep: AdditionalStep<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
 };
 
 export type TimeLinesProps =
@@ -65,7 +65,7 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
         super(props);
 
         this.state = {
-            isChangingActionPosition: false,
+            isChangingStepPosition: false,
             containerWidth: 0,
         };
     }
@@ -74,18 +74,18 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
         const {
             animationPosition,
             animationElementScript,
-            setBlockScriptActionPosition,
-            setFieldsScriptActionPosition,
-            setBlockScriptActionValue,
-            setFieldsScriptActionValue,
-            removeBlockScriptAction,
-            removeFieldsScriptAction,
-            addBlockScriptAction,
-            addFieldsScriptAction,
+            setBlockScriptStepPosition,
+            setFieldsScriptStepPosition,
+            setBlockScriptStepValue,
+            setFieldsScriptStepValue,
+            removeBlockScriptStep,
+            removeFieldsScriptStep,
+            addBlockScriptStep,
+            addFieldsScriptStep,
         } = this.props;
 
         const {
-            isChangingActionPosition,
+            isChangingStepPosition,
             containerWidth,
         } = this.state;
 
@@ -105,9 +105,9 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                         min: 0,
                         max: 1,
                     },
-                    onPositionChangeStart: this.onScriptActionPositionChangeStart,
+                    onPositionChangeStart: this.onScriptStepPositionChangeStart,
                     onPositionChange: this.onPositionChange,
-                    onPositionChangeEnd: this.onScriptActionPositionChangeEnd,
+                    onPositionChangeEnd: this.onScriptStepPositionChangeEnd,
                 }] }
             >
                 <div className={ c.AnimationTimelines__positionTimeLine }/>
@@ -117,28 +117,28 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                     ? null
                     : <>
                         <FieldsTimeLines
-                            isChangingActionPosition={ isChangingActionPosition }
+                            isChangingStepPosition={ isChangingStepPosition }
                             fieldsScripts={ animationElementScript.blockScript }
                             titlesDictionary={ BlockFieldTitles }
                             containerWidth={ containerWidth }
-                            onScriptActionPositionChangeStart={ this.onScriptActionPositionChangeStart }
-                            onScriptActionPositionChange={ setBlockScriptActionPosition }
-                            onScriptActionPositionChangeEnd={ this.onScriptActionPositionChangeEnd }
-                            onScriptActionValueChange={ setBlockScriptActionValue }
-                            onScriptActionRemove={ removeBlockScriptAction }
-                            onScriptActionAdd={ addBlockScriptAction }
+                            onScriptStepPositionChangeStart={ this.onScriptStepPositionChangeStart }
+                            onScriptStepPositionChange={ setBlockScriptStepPosition }
+                            onScriptStepPositionChangeEnd={ this.onScriptStepPositionChangeEnd }
+                            onScriptStepValueChange={ setBlockScriptStepValue }
+                            onScriptStepRemove={ removeBlockScriptStep }
+                            onScriptStepAdd={ addBlockScriptStep }
                         />
                         <FieldsTimeLines
-                            isChangingActionPosition={ isChangingActionPosition }
+                            isChangingStepPosition={ isChangingStepPosition }
                             fieldsScripts={ animationElementScript.fieldsScript }
                             titlesDictionary={ AnimationElementFieldTitles[animationElementScript.elementName] }
                             containerWidth={ containerWidth }
-                            onScriptActionPositionChangeStart={ this.onScriptActionPositionChangeStart }
-                            onScriptActionPositionChange={ setFieldsScriptActionPosition }
-                            onScriptActionPositionChangeEnd={ this.onScriptActionPositionChangeEnd }
-                            onScriptActionValueChange={ setFieldsScriptActionValue }
-                            onScriptActionRemove={ removeFieldsScriptAction }
-                            onScriptActionAdd={ addFieldsScriptAction }
+                            onScriptStepPositionChangeStart={ this.onScriptStepPositionChangeStart }
+                            onScriptStepPositionChange={ setFieldsScriptStepPosition }
+                            onScriptStepPositionChangeEnd={ this.onScriptStepPositionChangeEnd }
+                            onScriptStepValueChange={ setFieldsScriptStepValue }
+                            onScriptStepRemove={ removeFieldsScriptStep }
+                            onScriptStepAdd={ addFieldsScriptStep }
                         />
                     </>
             }
@@ -165,12 +165,12 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
         this.props.setAnimationPosition(position);
     }
 
-    private onScriptActionPositionChangeStart = () => {
-        this.setState({ isChangingActionPosition: true });
+    private onScriptStepPositionChangeStart = () => {
+        this.setState({ isChangingStepPosition: true });
     }
 
-    private onScriptActionPositionChangeEnd = () => {
-        this.setState({ isChangingActionPosition: false });
+    private onScriptStepPositionChangeEnd = () => {
+        this.setState({ isChangingStepPosition: false });
     }
 }
 
@@ -194,29 +194,29 @@ const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): TimeLinesDis
     setAnimationPosition: (animationPosition) => {
         dispatch(setAnimationPositionAction(animationPosition));
     },
-    setBlockScriptActionPosition: (actionPosition) => {
-        dispatch(setBlockScriptActionPositionAction(actionPosition));
+    setBlockScriptStepPosition: (stepPosition) => {
+        dispatch(setBlockScriptStepPositionAction(stepPosition));
     },
-    setFieldsScriptActionPosition: (actionPosition) => {
-        dispatch(setFieldsScriptActionPositionAction(actionPosition));
+    setFieldsScriptStepPosition: (stepPosition) => {
+        dispatch(setFieldsScriptStepPositionAction(stepPosition));
     },
-    setBlockScriptActionValue: (actionValue) => {
-        dispatch(setBlockScriptActionValueAction(actionValue));
+    setBlockScriptStepValue: (stepValue) => {
+        dispatch(setBlockScriptStepValueAction(stepValue));
     },
-    setFieldsScriptActionValue: (actionValue) => {
-        dispatch(setFieldsScriptActionValueAction(actionValue));
+    setFieldsScriptStepValue: (stepValue) => {
+        dispatch(setFieldsScriptStepValueAction(stepValue));
     },
-    removeBlockScriptAction: (changedAction) => {
-        dispatch(removeBlockScriptActionAction(changedAction));
+    removeBlockScriptStep: (changedStep) => {
+        dispatch(removeBlockScriptStepAction(changedStep));
     },
-    removeFieldsScriptAction: (changedAction) => {
-        dispatch(removeFieldsScriptActionAction(changedAction));
+    removeFieldsScriptStep: (changedStep) => {
+        dispatch(removeFieldsScriptStepAction(changedStep));
     },
-    addBlockScriptAction: (addedAction) => {
-        dispatch(addBlockScriptActionAction(addedAction));
+    addBlockScriptStep: (addedStep) => {
+        dispatch(addBlockScriptStepAction(addedStep));
     },
-    addFieldsScriptAction: (addedAction) => {
-        dispatch(addFieldsScriptActionAction(addedAction));
+    addFieldsScriptStep: (addedStep) => {
+        dispatch(addFieldsScriptStepAction(addedStep));
 
     },
 });

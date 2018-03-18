@@ -1,13 +1,13 @@
-import { getActionByPosition } from '../../Animation/util/getActionByPosition';
+import { getStepByPosition } from '../../Animation/util/getStepByPosition';
 import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
 import { AnimationElementScript } from '../../AnimationScript';
 import { Block } from '../../Block/Block';
 import { mapObjectValues } from '../../utils/mapObjectValues';
 import { ConstructorState } from '../State';
-import { addAction } from './addAction';
+import { addStep } from './addStep';
 import { getEditedAnimationElementBlockLocation } from './getEditedAnimationElementBlockLocation';
 import { getEditedAnimationElementScript } from './getEditedAnimationElementScript';
-import { setActionValue } from './setActionValue';
+import { setStepValue } from './setStepValue';
 
 export function setEditedBlockFieldsOnCurrentPosition(state: ConstructorState,
                                                       blockFields: Partial<Block>): ConstructorState {
@@ -34,19 +34,19 @@ export function setEditedBlockFieldsOnCurrentPosition(state: ConstructorState,
         (value, blockFieldName) => {
             const {
                 unit,
-                actions,
+                steps,
             } = blockScript[blockFieldName];
 
             const {
-                actionPosition,
-                index,
-            } = getActionByPosition(animationPosition, actions);
+                stepPosition,
+                stepIndex,
+            } = getStepByPosition(animationPosition, steps);
 
             return {
                 unit,
-                actions: actionPosition === animationPosition
-                    ? setActionValue(actions, index, value!)
-                    : addAction(actions, animationPosition, value!),
+                steps: stepPosition === animationPosition
+                    ? setStepValue(steps, stepIndex, value!)
+                    : addStep(steps, animationPosition, value!),
             };
         },
     );

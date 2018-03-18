@@ -1,34 +1,34 @@
 import { createReducer } from 'redux-act';
 import { DefaultBlockScript } from '../Block/DefaultBlockScript';
 import {
-    addBlockScriptActionAction,
-    addFieldsScriptActionAction,
+    addBlockScriptStepAction,
+    addFieldsScriptStepAction,
     addStandardElementAction,
-    removeBlockScriptActionAction,
-    removeFieldsScriptActionAction,
+    removeBlockScriptStepAction,
+    removeFieldsScriptStepAction,
     setAnimationPositionAction,
-    setBlockScriptActionPositionAction,
-    setBlockScriptActionValueAction,
+    setBlockScriptStepPositionAction,
+    setBlockScriptStepValueAction,
     setEditedBlockAction,
     setEditedBlockFieldsOnCurrentPositionAction,
     setEditedElementFieldsAction,
-    setFieldsScriptActionPositionAction,
-    setFieldsScriptActionValueAction,
+    setFieldsScriptStepPositionAction,
+    setFieldsScriptStepValueAction,
     setScaleCoordinatesAction,
     zoomInAction,
     zoomOutAction,
 } from './actions';
 import { ZOOM_IN_STEP, ZOOM_OUT_STEP } from './const/ZOOM_STEP';
 import { ConstructorState } from './State';
-import { addScriptActionOnPosition } from './utils/addScriptActionOnPosition';
+import { addScriptStepOnPosition } from './utils/addScriptStepOnPosition';
 import { getDefaultFieldsScriptForAnimationElement } from './utils/getDefaultFieldsScriptForAnimationElement';
 import { getEditedAnimationElementScript } from './utils/getEditedAnimationElementScript';
-import { removeFieldsScriptsAction } from './utils/removeFieldsScriptsAction';
+import { removeFieldsScriptsStep } from './utils/removeFieldsScriptsStep';
 import { setAnimationElementFields } from './utils/setAnimationElementFields';
 import { setEditedAnimationElementScript } from './utils/setEditedAnimationElementScript';
 import { setEditedBlockFieldsOnCurrentPosition } from './utils/setEditedBlockFieldsOnCurrentPosition';
-import { setFieldsScriptsActionPosition } from './utils/setFieldsScriptsActionPosition';
-import { setFieldsScriptsActionValue } from './utils/setFieldsScriptsActionValue';
+import { setFieldsScriptsStepPosition } from './utils/setFieldsScriptsStepPosition';
+import { setFieldsScriptsStepValue } from './utils/setFieldsScriptsStepValue';
 
 export const createConstructorReducer = (appState: ConstructorState) => createReducer<ConstructorState>({}, appState)
     .on(addStandardElementAction, (state, elementName): ConstructorState => {
@@ -81,17 +81,17 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             animationPosition,
         };
     })
-    .on(setBlockScriptActionPositionAction, (state, {
+    .on(setBlockScriptStepPositionAction, (state, {
         fieldName,
-        actionIndex,
+        stepIndex,
         position,
     }): ConstructorState => {
         const animationElementScript = getEditedAnimationElementScript(state);
 
-        const blockScript = setFieldsScriptsActionPosition(
+        const blockScript = setFieldsScriptsStepPosition(
             animationElementScript.blockScript,
             fieldName,
-            actionIndex,
+            stepIndex,
             position,
         );
 
@@ -100,17 +100,17 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             blockScript,
         });
     })
-    .on(setFieldsScriptActionPositionAction, (state, {
+    .on(setFieldsScriptStepPositionAction, (state, {
         fieldName,
-        actionIndex,
+        stepIndex,
         position,
     }): ConstructorState => {
         const animationElementScript = getEditedAnimationElementScript(state);
 
-        const fieldsScript = setFieldsScriptsActionPosition(
+        const fieldsScript = setFieldsScriptsStepPosition(
             animationElementScript.fieldsScript,
             fieldName,
-            actionIndex,
+            stepIndex,
             position,
         );
 
@@ -119,17 +119,17 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             fieldsScript,
         });
     })
-    .on(setBlockScriptActionValueAction, (state, {
+    .on(setBlockScriptStepValueAction, (state, {
         fieldName,
-        actionIndex,
+        stepIndex,
         value,
     }): ConstructorState => {
         const animationElementScript = getEditedAnimationElementScript(state);
 
-        const blockScript = setFieldsScriptsActionValue(
+        const blockScript = setFieldsScriptsStepValue(
             animationElementScript.blockScript,
             fieldName,
-            actionIndex,
+            stepIndex,
             value,
         );
 
@@ -138,17 +138,17 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             blockScript,
         });
     })
-    .on(setFieldsScriptActionValueAction, (state, {
+    .on(setFieldsScriptStepValueAction, (state, {
         fieldName,
-        actionIndex,
+        stepIndex,
         value,
     }): ConstructorState => {
         const animationElementScript = getEditedAnimationElementScript(state);
 
-        const fieldsScript = setFieldsScriptsActionValue(
+        const fieldsScript = setFieldsScriptsStepValue(
             animationElementScript.fieldsScript,
             fieldName,
-            actionIndex,
+            stepIndex,
             value,
         );
 
@@ -183,16 +183,16 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             zoom: zoom * ZOOM_IN_STEP,
         };
     })
-    .on(removeBlockScriptActionAction, (state, {
+    .on(removeBlockScriptStepAction, (state, {
         fieldName,
-        actionIndex,
+        stepIndex,
     }): ConstructorState => {
         const animationElementScript = getEditedAnimationElementScript(state);
 
-        const blockScript = removeFieldsScriptsAction(
+        const blockScript = removeFieldsScriptsStep(
             animationElementScript.blockScript,
             fieldName,
-            actionIndex,
+            stepIndex,
         );
 
         return setEditedAnimationElementScript(state, {
@@ -200,16 +200,16 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             blockScript,
         });
     })
-    .on(removeFieldsScriptActionAction, (state, {
+    .on(removeFieldsScriptStepAction, (state, {
         fieldName,
-        actionIndex,
+        stepIndex,
     }): ConstructorState => {
         const animationElementScript = getEditedAnimationElementScript(state);
 
-        const fieldsScript = removeFieldsScriptsAction(
+        const fieldsScript = removeFieldsScriptsStep(
             animationElementScript.fieldsScript,
             fieldName,
-            actionIndex,
+            stepIndex,
         );
 
         return setEditedAnimationElementScript(state, {
@@ -217,26 +217,26 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             fieldsScript,
         });
     })
-    .on(addBlockScriptActionAction, (state, {
+    .on(addBlockScriptStepAction, (state, {
         fieldName,
         position,
     }): ConstructorState => {
         const animationElementScript = getEditedAnimationElementScript(state);
 
-        const blockScript = addScriptActionOnPosition(animationElementScript.blockScript, fieldName, position);
+        const blockScript = addScriptStepOnPosition(animationElementScript.blockScript, fieldName, position);
 
 
         return setEditedAnimationElementScript(state, {
             ...animationElementScript,
             blockScript,
         });
-    }).on(addFieldsScriptActionAction, (state, {
+    }).on(addFieldsScriptStepAction, (state, {
         fieldName,
         position,
     }): ConstructorState => {
         const animationElementScript = getEditedAnimationElementScript(state);
 
-        const fieldsScript = addScriptActionOnPosition(animationElementScript.fieldsScript, fieldName, position);
+        const fieldsScript = addScriptStepOnPosition(animationElementScript.fieldsScript, fieldName, position);
 
         return setEditedAnimationElementScript(state, {
             ...animationElementScript,

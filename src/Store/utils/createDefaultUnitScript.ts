@@ -6,7 +6,7 @@ import { UnitTypes } from '../../Unit/UnitTypes';
 export function createDefaultUnitScript<T extends Unit>(unit: T, value: UnitTypes[T]): UnitScript<T> {
     return {
         unit,
-        actions: [
+        steps: [
             {
                 duration: 0.3,
                 value,
