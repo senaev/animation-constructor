@@ -12,6 +12,7 @@ export type TimeLinePreviewProps<T extends Unit> = {
 export const UnitTimeLinePreviews: Record<Unit, React.ComponentClass<TimeLinePreviewProps<Unit>>> = {
     [Unit.degree]: NumberTimeLinePreview as React.ComponentClass<TimeLinePreviewProps<Unit>>,
     [Unit.percent]: NumberTimeLinePreview as React.ComponentClass<TimeLinePreviewProps<Unit>>,
+    [Unit.percentZeroToInfinity]: NumberTimeLinePreview as React.ComponentClass<TimeLinePreviewProps<Unit>>,
     [Unit.pixel]: NumberTimeLinePreview as React.ComponentClass<TimeLinePreviewProps<Unit>>,
     [Unit.color]: ColorTimeLinePreview as React.ComponentClass<TimeLinePreviewProps<Unit>>,
     [Unit.boolean]: BooleanTimeLinePreview as React.ComponentClass<TimeLinePreviewProps<Unit>>,

@@ -16,6 +16,7 @@ const returnStartValue = <T>(position: T, startValue: T): T => startValue;
 export const AllUnitTransitionFunctions: Record<Unit, UnitTransitionFunction<Unit>> = {
     [Unit.degree]: proceedNumber as UnitTransitionFunction<Unit>,
     [Unit.percent]: proceedNumber as UnitTransitionFunction<Unit>,
+    [Unit.percentZeroToInfinity]: proceedNumber as UnitTransitionFunction<Unit>,
     [Unit.pixel]: proceedNumber as UnitTransitionFunction<Unit>,
     [Unit.color]: ((position, startValue: Color, endValue: Color) => {
         return mapArrayValuesToObject(ALL_COLOR_PROPERTIES, (colorPropertyName) => {

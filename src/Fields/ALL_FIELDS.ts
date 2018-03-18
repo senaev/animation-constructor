@@ -4,6 +4,7 @@ import { ColorField } from './ColorField';
 import { DegreeField } from './DegreeField';
 import { FieldClass } from './Field';
 import { PercentField } from './PercentField';
+import { PercentZeroToInfinityField } from './PercentZeroToInfinityField';
 import { PixelField } from './PixelField';
 
 export const ALL_FIELDS: {
@@ -11,6 +12,7 @@ export const ALL_FIELDS: {
 } = {
     [Unit.color]: ColorField as FieldClass<Unit.color>,
     [Unit.percent]: PercentField as FieldClass<Unit.percent>,
+    [Unit.percentZeroToInfinity]: PercentZeroToInfinityField as FieldClass<Unit.percentZeroToInfinity>,
     [Unit.degree]: DegreeField as FieldClass<Unit.degree>,
     [Unit.pixel]: PixelField as FieldClass<Unit.pixel>,
     [Unit.boolean]: BooleanField as FieldClass<Unit.boolean>,
