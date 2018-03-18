@@ -7,6 +7,7 @@ import { FieldClass } from '../../../Fields/Field';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { TimeLinePointChangeableParams } from '../TimeLinePoint';
+import * as c from './index.pcss';
 
 type TimeLinePointChangableProps<T extends Unit> =
     & TimeLinePointChangeableParams<T>
@@ -40,6 +41,7 @@ export class TimeLinePointChangable<T extends Unit> extends React.Component<Time
                 modal={ false }
                 open={ isDialogOpen }
                 onRequestClose={ this.closeDialog }
+                overlayClassName={c.TimeLinePointChangable__Dialog__overlay}
             >
                 <UnitFieldClass
                     value={value}
