@@ -1,18 +1,23 @@
 import { Step } from '../';
 import { Unit } from '../../Unit/Unit';
+import { UnitTypes } from '../../Unit/UnitTypes';
 
-export type StepParams = {
+export type StepParams<T extends Unit> = {
     previousStepPosition: number | undefined;
     position: number;
     nextStepPosition: number | undefined;
     duration: number;
+    value: UnitTypes[T];
 };
 
-export function getStepParams(steps: Step<Unit>[]): StepParams[] {
+export function getStepParams<T extends Unit>(steps: Step<T>[]): StepParams<T>[] {
 
     let durationSum = 0;
 
-    return steps.map(({ duration }, i) => {
+    return steps.map(({
+                          duration,
+                          value,
+                      }, i) => {
         const position = durationSum;
         durationSum += duration;
 
@@ -25,6 +30,7 @@ export function getStepParams(steps: Step<Unit>[]): StepParams[] {
                 ? undefined
                 : durationSum,
             duration,
+            value,
         };
     });
 }

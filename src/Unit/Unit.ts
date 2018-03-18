@@ -3,4 +3,5 @@ export enum Unit {
     percent = 'percent',
     pixel = 'pixel',
     color = 'color',
+    boolean = 'boolean',
 }

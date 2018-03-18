@@ -5,4 +5,5 @@ export const UnitTitles: Record<Unit, string> = {
     [Unit.percent]: 'проценты',
     [Unit.pixel]: 'пиксели',
     [Unit.color]: 'цвета',
+    [Unit.boolean]: 'истинность',
 };

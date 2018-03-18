@@ -9,7 +9,6 @@ const UNIT = Unit.degree;
 type UNIT = typeof UNIT;
 
 export class DegreeField extends Field<UNIT> {
-    public static isSupportsEasing = true;
     public static unit = UNIT;
     public static Preview = ({ value }: FieldPreviewProps<UNIT>) => {
         return <div className={ c.DegreeField__preview }>

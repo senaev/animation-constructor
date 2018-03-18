@@ -38,6 +38,7 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
             height,
             width,
             rotation,
+            existence,
         } = block;
 
         return <div className={ c.Drawing }>
@@ -47,6 +48,7 @@ class DrawingComponent extends React.Component<DrawingProps, {}> {
                 height={ height }
                 width={ width }
                 rotation={ rotation }
+                existence={ existence }
                 onResize={ this.onResize }
                 onRotate={ this.onRotate }
                 onMove={ this.onMove }

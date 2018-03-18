@@ -9,7 +9,6 @@ const UNIT = Unit.percent;
 type UNIT = typeof UNIT;
 
 export class PercentField extends Field<UNIT> {
-    public static isSupportsEasing = true;
     public static unit = UNIT;
     public static Preview = ({ value }: FieldPreviewProps<UNIT>) => {
         return <div className={ c.PercentField__preview }>

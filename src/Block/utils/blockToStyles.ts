@@ -6,6 +6,7 @@ export function blockToStyles({
                                   height,
                                   width,
                                   rotation,
+                                  existence,
                               }: Block): {
     top: string;
     left: string;
@@ -13,6 +14,7 @@ export function blockToStyles({
     width: string;
     transform: string;
     transformOrigin: string;
+    display: 'block' | 'none',
 } {
     return {
         top: `${y}%`,
@@ -21,5 +23,6 @@ export function blockToStyles({
         width: `${width}%`,
         transform: `rotate(${rotation}deg)`,
         transformOrigin: '0 0',
+        display: existence ? 'block' : 'none',
     };
 }

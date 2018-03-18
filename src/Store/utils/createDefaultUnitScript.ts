@@ -14,32 +14,44 @@ export function createDefaultUnitScript<T extends Unit>(unit: T, value: UnitType
             },
             {
                 duration: 0.3,
-                value: typeof value === 'number' ? 10 : {
-                    r: 255,
-                    g: 0,
-                    b: 0,
-                    a: 1,
-                },
+                value: typeof value === 'number'
+                    ? 10
+                    : typeof value === 'boolean'
+                        ? true
+                        : {
+                            r: 255,
+                            g: 0,
+                            b: 0,
+                            a: 1,
+                        },
                 easing: Easing.easeInOut,
             },
             {
                 duration: 0.3,
-                value: typeof value === 'number' ? 30 : {
-                    r: 0,
-                    g: 255,
-                    b: 0,
-                    a: 0.2,
-                },
+                value: typeof value === 'number'
+                    ? 30
+                    : typeof value === 'boolean'
+                        ? false
+                        : {
+                            r: 0,
+                            g: 255,
+                            b: 0,
+                            a: 0.2,
+                        },
                 easing: Easing.easeInOut,
             },
             {
                 duration: 0.1,
-                value: typeof value === 'number' ? 10 : {
-                    r: 0,
-                    g: 0,
-                    b: 255,
-                    a: 1,
-                },
+                value: typeof value === 'number'
+                    ? 10
+                    : typeof value === 'boolean'
+                        ? true
+                        : {
+                            r: 0,
+                            g: 0,
+                            b: 255,
+                            a: 1,
+                        },
                 easing: Easing.easeInOut,
             },
         ],

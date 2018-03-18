@@ -6,4 +6,5 @@ export const DefaultBlock: Block = {
     height: 25,
     width: 25,
     rotation: 0,
+    existence: true,
 };

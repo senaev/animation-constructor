@@ -36,21 +36,10 @@ export class Resizer extends React.Component<ResizerProps, {}> {
     }
 
     public render() {
-        const {
-            x,
-            y,
-            width,
-            height,
-            rotation,
-        } = this.props;
-
-        const resizerStyles = blockToStyles({
-            x,
-            y,
-            width,
-            height,
-            rotation,
-        });
+        const resizerStyles = {
+            ...blockToStyles(this.props),
+            display: 'block',
+        };
 
         return <div
             className={ c.Resizer }

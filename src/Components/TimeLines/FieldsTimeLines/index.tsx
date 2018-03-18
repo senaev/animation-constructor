@@ -5,7 +5,7 @@ import { AdditionalStep } from '../../../Store/types/AdditionalStep';
 import { EditableStep } from '../../../Store/types/EditableStep';
 import { EditableStepPosition } from '../../../Store/types/EditableStepPosition';
 import { EditableStepValue } from '../../../Store/types/EditableStepValue';
-import { UnitTimelinePreviews } from '../../../TimelinePreviews/UnitTimelinePreviews';
+import { UnitTimeLinePreviews } from '../../../TimelinePreviews/UnitTimeLinePreviews';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { getObjectKeys } from '../../../utils/getObjectKeys';
@@ -126,7 +126,7 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                 return point;
             });
 
-            const TimeLinePreviewClass = UnitTimelinePreviews[unit];
+            const TimeLinePreviewClass = UnitTimeLinePreviews[unit];
 
             return <div
                 key={ i }

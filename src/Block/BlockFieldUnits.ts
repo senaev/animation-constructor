@@ -6,5 +6,6 @@ export const BlockFieldUnits = {
     height: Unit.percent as Unit.percent,
     width: Unit.percent as Unit.percent,
     rotation: Unit.degree as Unit.degree,
+    existence: Unit.boolean as Unit.boolean,
 };
 export type BlockFieldUnits = typeof BlockFieldUnits;

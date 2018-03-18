@@ -6,4 +6,5 @@ export const BlockFieldTitles: Record<BlockFieldName, string> = {
     height: 'Высота',
     width: 'Ширина',
     rotation: 'Наклон',
+    existence: 'Существование',
 };

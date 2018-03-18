@@ -11,6 +11,8 @@ const proceedNumber = (position: number,
     return startValue + diff;
 };
 
+const returnStartValue = <T>(position: T, startValue: T): T => startValue;
+
 export const AllUnitTransitionFunctions: Record<Unit, UnitTransitionFunction<Unit>> = {
     [Unit.degree]: proceedNumber as UnitTransitionFunction<Unit>,
     [Unit.percent]: proceedNumber as UnitTransitionFunction<Unit>,
@@ -20,4 +22,5 @@ export const AllUnitTransitionFunctions: Record<Unit, UnitTransitionFunction<Uni
             return proceedNumber(position, startValue[colorPropertyName], endValue[colorPropertyName]);
         });
     }) as UnitTransitionFunction<Unit>,
+    [Unit.boolean]: returnStartValue,
 };

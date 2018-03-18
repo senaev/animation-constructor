@@ -13,7 +13,6 @@ const UNIT = Unit.color;
 type UNIT = typeof UNIT;
 
 export class ColorField extends Field<UNIT> {
-    public static isSupportsEasing = true;
     public static unit = UNIT;
     public static Preview = ({ value }: FieldPreviewProps<UNIT>) => {
         return <div className={ c.ColorField__preview }>

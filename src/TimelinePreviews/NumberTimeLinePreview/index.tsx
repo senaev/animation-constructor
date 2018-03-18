@@ -4,7 +4,7 @@ import { UnitScript } from '../../AnimationScript';
 import { Unit } from '../../Unit/Unit';
 import { UnitShortTitles } from '../../Unit/UnitShortTitles';
 import { ResizeSensor } from '../../utils/ResizeSensor';
-import { TimelitePreviewProps } from '../UnitTimelinePreviews';
+import { TimeLinePreviewProps } from '../UnitTimeLinePreviews';
 import * as c from './index.pcss';
 import { NUMBER_TIMELINE_FONT_SIZE } from './NUMBER_TIMELINE_FONT_SIZE';
 import { NUMBER_TIMELINE_HEIGHT } from './NUMBER_TIMELINE_HEIGHT';
@@ -12,7 +12,7 @@ import { NUMBER_TIMELINE_PADDING } from './NUMBER_TIMELINE_PADDING';
 
 type UNIT = Unit.percent | Unit.pixel | Unit.degree;
 
-export class NumberTimelinePreview extends React.Component<TimelitePreviewProps<UNIT>> {
+export class NumberTimeLinePreview extends React.Component<TimeLinePreviewProps<UNIT>> {
     private resizeSensor?: ResizeSensor;
     private containerElement?: HTMLDivElement | null;
 
@@ -20,14 +20,14 @@ export class NumberTimelinePreview extends React.Component<TimelitePreviewProps<
 
     public render() {
         return <div
-            className={ c.NumberTimelinePreview }
+            className={ c.NumberTimeLinePreview }
             style={ { height: `${NUMBER_TIMELINE_HEIGHT}px` } }
             ref={ (element) => {
                 this.containerElement = element;
             } }
         >
             <canvas
-                className={ c.NumberTimelinePreview__canvas }
+                className={ c.NumberTimeLinePreview__canvas }
                 ref={ (element) => {
                     this.canvas = element;
                 } }
@@ -49,7 +49,7 @@ export class NumberTimelinePreview extends React.Component<TimelitePreviewProps<
         this.redrawCanvas(this.props.unitScript);
     }
 
-    public componentWillReceiveProps({ unitScript }: TimelitePreviewProps<UNIT>) {
+    public componentWillReceiveProps({ unitScript }: TimeLinePreviewProps<UNIT>) {
         this.redrawCanvas(unitScript);
     }
 

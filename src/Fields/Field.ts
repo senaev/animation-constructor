@@ -13,7 +13,6 @@ export abstract class Field<T extends Unit> extends React.Component<FieldProps<T
 }
 
 export interface FieldClass<T extends Unit> {
-    isSupportsEasing: boolean;
     unit: T;
     Preview: React.SFC<FieldPreviewProps<T>>;
 

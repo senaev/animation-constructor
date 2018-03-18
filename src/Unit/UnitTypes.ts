@@ -6,4 +6,5 @@ export type UnitTypes = {
     [Unit.percent]: number;
     [Unit.pixel]: number;
     [Unit.color]: Color;
+    [Unit.boolean]: boolean;
 };

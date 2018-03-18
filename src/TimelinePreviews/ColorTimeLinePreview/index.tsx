@@ -4,11 +4,11 @@ import { UnitScript } from '../../AnimationScript';
 import { Unit } from '../../Unit/Unit';
 import { colorToRGBAString } from '../../utils/colorToRGBAString';
 import { ResizeSensor } from '../../utils/ResizeSensor';
-import { TimelitePreviewProps } from '../UnitTimelinePreviews';
+import { TimeLinePreviewProps } from '../UnitTimeLinePreviews';
 import { COLOR_TIMELINE_HEIGHT } from './COLOR_TIMELINE_HEIGHT';
 import * as c from './index.pcss';
 
-export class ColorTimeLinePreview extends React.Component<TimelitePreviewProps<Unit.color>> {
+export class ColorTimeLinePreview extends React.Component<TimeLinePreviewProps<Unit.color>> {
     private resizeSensor?: ResizeSensor;
     private containerElement?: HTMLDivElement | null;
 
@@ -45,7 +45,7 @@ export class ColorTimeLinePreview extends React.Component<TimelitePreviewProps<U
         this.redrawCanvas(this.props.unitScript);
     }
 
-    public componentWillReceiveProps({ unitScript }: TimelitePreviewProps<Unit.color>) {
+    public componentWillReceiveProps({ unitScript }: TimeLinePreviewProps<Unit.color>) {
         this.redrawCanvas(unitScript);
     }
 
