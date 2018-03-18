@@ -9,6 +9,7 @@ import { UnitTimeLinePreviews } from '../../../TimelinePreviews/UnitTimeLinePrev
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { getObjectKeys } from '../../../utils/getObjectKeys';
+import * as mainClasses from '../index.pcss';
 import { TimeLine } from '../TimeLine';
 import { TimeLinePointProps } from '../TimeLinePoint';
 import * as c from './index.pcss';
@@ -130,29 +131,33 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
 
             return <div
                 key={ i }
-                className={ c.FieldsTimeLines }
+                className={ mainClasses.TimeLines__row }
             >
-                <div className={ c.FieldsTimeLines__title }>{ title }</div>
-                <TimeLine points={ points }>
-                    <TimeLinePreviewClass unitScript={ unitScript }/>
-                    <div
-                        className={ c.FieldsTimeLines__clicker }
-                        onClick={ (event) => {
-                            const clickerElement = event.target as HTMLElement;
-                            const {
-                                left,
-                                width,
-                            } = clickerElement.getBoundingClientRect();
+                <div className={ mainClasses.TimeLines__row__title }>
+                    { title }
+                </div>
+                <div className={ mainClasses.TimeLines__row__timeline }>
+                    <TimeLine points={ points }>
+                        <TimeLinePreviewClass unitScript={ unitScript }/>
+                        <div
+                            className={ c.FieldsTimeLines__clicker }
+                            onClick={ (event) => {
+                                const clickerElement = event.target as HTMLElement;
+                                const {
+                                    left,
+                                    width,
+                                } = clickerElement.getBoundingClientRect();
 
-                            const position = (event.clientX - left) / width;
+                                const position = (event.clientX - left) / width;
 
-                            onScriptStepAdd({
-                                fieldName,
-                                position,
-                            });
-                        } }
-                    />
-                </TimeLine>
+                                onScriptStepAdd({
+                                    fieldName,
+                                    position,
+                                });
+                            } }
+                        />
+                    </TimeLine>
+                </div>
             </div>;
         });
     }
