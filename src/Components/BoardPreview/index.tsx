@@ -17,7 +17,7 @@ import { getCentralSquareOfRectangle } from '../../utils/Trigonometry/getCentral
 import { getRectangleCenterCoordinates } from '../../utils/Trigonometry/getRectangleCenterCoordinates';
 import { Square } from '../../utils/Trigonometry/Types/Square';
 import { AnimationPreview } from '../AnimationPreview';
-import { Drawing } from '../Drawing';
+import { Resizer } from '../Resizer';
 import { ScaleView } from '../ScaleView';
 import { Zoom } from '../Zoom';
 import * as c from './index.pcss';
@@ -110,7 +110,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
                 {
                     editParams === undefined
                         ? null
-                        : <Drawing/>
+                        : <Resizer/>
                 }
             </ScaleView>
             <Zoom className={ c.BoardPreview__Zoom }/>
@@ -135,7 +135,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
 
         this.removeElementClickListener = addElementEventListener(
             clickElement,
-            'click',
+            'mousedown',
             (event) => {
                 const targetElement = event.target as HTMLElement;
 

@@ -41,6 +41,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
         return {
             ...state,
             editParams: {
+                isMoving: false,
                 blockLocation: [length],
             },
             animationScript: [
@@ -59,6 +60,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             editParams: blockLocation === undefined
                 ? undefined
                 : {
+                    isMoving: true,
                     blockLocation,
                 },
         };

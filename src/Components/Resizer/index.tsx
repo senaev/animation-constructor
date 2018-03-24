@@ -1,7 +1,14 @@
 import * as cx from 'classnames';
 import * as React from 'react';
+import { connect } from 'react-redux';
+import * as Redux from 'redux';
+import { Action } from 'redux-act';
+import { getFieldsValuesByPosition } from '../../Animation/util/getFieldsValuesByPosition';
 import { Block } from '../../Block/Block';
 import { blockToStyles } from '../../Block/utils/blockToStyles';
+import { setEditedBlockFieldsOnCurrentPositionAction } from '../../Store/actions';
+import { ConstructorState } from '../../Store/State';
+import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
 import { Unit } from '../../Unit/Unit';
@@ -11,13 +18,19 @@ import { getAngleRelativeToOrigin } from '../../utils/Trigonometry/getAngleRelat
 import { getRectangleSizeByPointAndAngle } from '../../utils/Trigonometry/getRectangleSizeByPointAndAngle';
 import * as c from './index.pcss';
 
-type ResizerProps = Block & {
-    onResize: (newSize: Size) => void;
-    onRotate: (rotation: number) => void;
-    onMove: (newSize: PointCoordinates) => void;
+export type ResizerStateProps = {
+    block: Block;
 };
 
-export class Resizer extends React.Component<ResizerProps, {}> {
+export type ResizerDispatchProps = {
+    setEditedBlockFieldsOnCurrentPosition: (blockFields: Partial<Block>) => void;
+};
+
+export type ResizerProps =
+    & ResizerStateProps
+    & ResizerDispatchProps;
+
+class ResizerComponent extends React.Component<ResizerProps, {}> {
     private element?: HTMLDivElement | null;
     private moveElement?: HTMLDivElement | null;
     private resizeElement?: HTMLDivElement | null;
@@ -27,43 +40,37 @@ export class Resizer extends React.Component<ResizerProps, {}> {
     private dragListenerForRotation?: DragListener;
     private dragListenerForMove?: DragListener;
 
-    constructor(props: ResizerProps) {
-        super(props);
-
-        this.state = {
-            isMoving: false,
-        };
-    }
-
     public render() {
         const resizerStyles = {
-            ...blockToStyles(this.props),
+            ...blockToStyles(this.props.block),
             display: 'block',
         };
 
-        return <div
-            className={ c.Resizer }
-            ref={ (element) => {
-                this.element = element;
-            } }
-            style={ resizerStyles }>
-            <div className={ cx(c.Resizer__dottedLine, c.Resizer__dottedLine_white) }/>
-            <div className={ c.Resizer__dottedLine }/>
+        return <div className={ c.Resizer__container }>
             <div
-                className={ c.Resizer__mover }
+                className={ c.Resizer }
                 ref={ (element) => {
-                    this.moveElement = element;
-                } }/>
-            <div
-                className={ c.Resizer__resizeSlider }
-                ref={ (element) => {
-                    this.resizeElement = element;
-                } }/>
-            <div
-                className={ c.Resizer__rotationSlider }
-                ref={ (element) => {
-                    this.rotationElement = element;
-                } }/>
+                    this.element = element;
+                } }
+                style={ resizerStyles }>
+                <div className={ cx(c.Resizer__dottedLine, c.Resizer__dottedLine_white) }/>
+                <div className={ c.Resizer__dottedLine }/>
+                <div
+                    className={ c.Resizer__mover }
+                    ref={ (element) => {
+                        this.moveElement = element;
+                    } }/>
+                <div
+                    className={ c.Resizer__resizeSlider }
+                    ref={ (element) => {
+                        this.resizeElement = element;
+                    } }/>
+                <div
+                    className={ c.Resizer__rotationSlider }
+                    ref={ (element) => {
+                        this.rotationElement = element;
+                    } }/>
+            </div>
         </div>;
     }
 
@@ -82,8 +89,8 @@ export class Resizer extends React.Component<ResizerProps, {}> {
         this.dragListenerForMove = new DragListener(moveElement, {
             onStart: () => {
                 startBlock = {
-                    x: this.props.x,
-                    y: this.props.y,
+                    x: this.props.block.x,
+                    y: this.props.block.y,
                 };
 
                 this.setState({
@@ -93,7 +100,7 @@ export class Resizer extends React.Component<ResizerProps, {}> {
             onMove: ({ relativeX, relativeY }) => {
                 const percentageInPixel = this.getPercentageInPixel();
 
-                this.props.onMove({
+                this.onMove({
                     x: startBlock.x + relativeX * percentageInPixel,
                     y: startBlock.y + relativeY * percentageInPixel,
                 });
@@ -118,11 +125,11 @@ export class Resizer extends React.Component<ResizerProps, {}> {
 
                 const { width, height } = getRectangleSizeByPointAndAngle(
                     dragPositionRelativeToBlockOrigin,
-                    this.props.rotation,
+                    this.props.block.rotation,
                 );
 
                 const pixelsInPercent = this.getPixelsInPercent();
-                this.props.onResize({
+                this.onResize({
                     width: Math.max(0, width) / pixelsInPercent,
                     height: Math.max(0, height) / pixelsInPercent,
                 });
@@ -133,14 +140,14 @@ export class Resizer extends React.Component<ResizerProps, {}> {
         this.dragListenerForRotation = new DragListener(rotationElement, {
             onStart: (dragPosition) => {
                 const startSliderRotationPosition = this.getCursorAngleRelativeToBlockOrigin(dragPosition);
-                const startBlockRotationPosition = this.props.rotation;
+                const startBlockRotationPosition = this.props.block.rotation;
 
                 startRotationPosition = startBlockRotationPosition - startSliderRotationPosition;
             },
             onMove: (dragPosition) => {
                 const cursorAngle = this.getCursorAngleRelativeToBlockOrigin(dragPosition);
 
-                this.props.onRotate(cursorAngle + startRotationPosition);
+                this.onRotate(cursorAngle + startRotationPosition);
             },
         });
     }
@@ -166,8 +173,8 @@ export class Resizer extends React.Component<ResizerProps, {}> {
 
         const pixelsInPercent = this.getPixelsInPercent();
         return {
-            x: this.props.x * pixelsInPercent + parentRect.left,
-            y: this.props.y * pixelsInPercent + parentRect.top,
+            x: this.props.block.x * pixelsInPercent + parentRect.left,
+            y: this.props.block.y * pixelsInPercent + parentRect.top,
         };
     }
 
@@ -203,4 +210,37 @@ export class Resizer extends React.Component<ResizerProps, {}> {
     private getPixelsInPercent(): number {
         return this.getParentBlockRect().width / 100;
     }
+
+    private onResize = (blockSize: Size) => {
+        this.props.setEditedBlockFieldsOnCurrentPosition(blockSize);
+    }
+
+    private onRotate = (rotation: UnitTypes[Unit.degree]) => {
+        this.props.setEditedBlockFieldsOnCurrentPosition({ rotation });
+    }
+
+    private onMove = (pointCoordinates: PointCoordinates) => {
+        this.props.setEditedBlockFieldsOnCurrentPosition(pointCoordinates);
+    }
 }
+
+
+const mapStateToProps = (state: ConstructorState): ResizerStateProps => {
+    const {
+        blockScript,
+    } = getEditedAnimationElementScript(state);
+
+    const block = getFieldsValuesByPosition(state.animationPosition, blockScript);
+
+    return {
+        block,
+    };
+};
+
+const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): ResizerDispatchProps => ({
+    setEditedBlockFieldsOnCurrentPosition: (blockFields) => {
+        dispatch(setEditedBlockFieldsOnCurrentPositionAction(blockFields));
+    },
+});
+
+export const Resizer = connect(mapStateToProps, mapDispatchToProps)(ResizerComponent);

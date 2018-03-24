@@ -1,16 +1,16 @@
 import { createAction } from 'redux-act';
-import { AnimationElementFieldsTypes } from '../../AnimationElements/AnimationElementFieldsTypes';
-import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
-import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementsFieldsUnits';
-import { Block } from '../../Block/Block';
-import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
-import { BlockLocation } from '../../BlockLocation/BlockLocation';
-import { PointCoordinates } from '../../types/PointCoordinates';
-import { ConstructorState } from '../State';
-import { AdditionalStep } from '../types/AdditionalStep';
-import { EditableStep } from '../types/EditableStep';
-import { EditableStepPosition } from '../types/EditableStepPosition';
-import { EditableStepValue } from '../types/EditableStepValue';
+import { AnimationElementFieldsTypes } from '../AnimationElements/AnimationElementFieldsTypes';
+import { AnimationElementName } from '../AnimationElements/AnimationElementName';
+import { AnimationElementsFieldsUnits } from '../AnimationElements/AnimationElementsFieldsUnits';
+import { Block } from '../Block/Block';
+import { BlockFieldUnits } from '../Block/BlockFieldUnits';
+import { BlockLocation } from '../BlockLocation/BlockLocation';
+import { PointCoordinates } from '../types/PointCoordinates';
+import { ConstructorState } from './State';
+import { AdditionalStep } from './types/AdditionalStep';
+import { EditableStep } from './types/EditableStep';
+import { EditableStepPosition } from './types/EditableStepPosition';
+import { EditableStepValue } from './types/EditableStepValue';
 
 export const addStandardElementAction =
     createAction<AnimationElementName>('addStandardElementAction');
