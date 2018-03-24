@@ -4,6 +4,7 @@ import { AnimationElementName } from '../AnimationElements/AnimationElementName'
 import { AnimationElementsFieldsUnits } from '../AnimationElements/AnimationElementsFieldsUnits';
 import { Block } from '../Block/Block';
 import { BlockFieldUnits } from '../Block/BlockFieldUnits';
+import { BlockLocation } from '../BlockLocation/BlockLocation';
 import { PointCoordinates } from '../types/PointCoordinates';
 import { ConstructorState } from './State';
 import { AdditionalStep } from './types/AdditionalStep';
@@ -13,8 +14,16 @@ import { EditableStepValue } from './types/EditableStepValue';
 
 export const addStandardElementAction =
     createAction<AnimationElementName>('addStandardElementAction');
-export const setEditedParamsAction =
-    createAction<ConstructorState['editParams']>('setEditedParamsAction');
+
+export const selectBlockAction =
+    createAction<BlockLocation | undefined>('selectBlockAction');
+
+export const setEditedBlockMovingAction =
+    createAction<boolean>('setEditedBlockMovingAction');
+export const setEditedBlockResizingAction =
+    createAction<boolean>('setEditedBlockResizingAction');
+export const setEditedBlockRotatingAction =
+    createAction<boolean>('setEditedBlockRotatingAction');
 
 export const setScaleCoordinatesAction = createAction<PointCoordinates>('setScaleCoordinatesAction');
 export const zoomInAction = createAction('zoomInAction');

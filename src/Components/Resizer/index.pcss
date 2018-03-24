@@ -1,60 +1,73 @@
+:root {
+  --resizer-size: 16px;
+  --rotator-size: 18px;
+  --resize-offset: 4px;
+  --rotation-offset: 10px;
+}
+
 .Resizer {
+  position: absolute;
+  pointer-events: auto;
+
+  &__container {
     position: absolute;
-    pointer-events: auto;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
 
-    &__container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
+  &__mover {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  &__dottedLine {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    bottom: -2px;
+    left: -2px;
+
+    border: 1px dashed #3e3e3e;
+    &_white {
+      border: 1px solid #ffffff;
     }
 
-    &__mover {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
+    pointer-events: none;
+  }
+
+  &__controlsContainer {
+    &_hidden {
+      display: none;
     }
+  }
 
-    &__dottedLine {
-        position: absolute;
-        top: -2px;
-        right: -2px;
-        bottom: -2px;
-        left: -2px;
+  &__resizeSlider {
+    position: absolute;
 
-        border: 1px dashed #3e3e3e;
-        &_white {
-            border: 1px solid #ffffff;
-        }
+    height: var(--resizer-size);
+    width: var(--resizer-size);
+    right: calc(-1 * (var(--resizer-size) + var(--resize-offset)));
+    bottom: calc(-1 * (var(--resizer-size) + var(--resize-offset)));
 
-        pointer-events: none;
-    }
+    background-size: 100%;
+    background-image: svg-load('./assets/resize.svg');
+  }
 
-    &__resizeSlider {
-        position: absolute;
-        height: 16px;
-        width: 16px;
-        right: -9px;
-        bottom: -9px;
-        background-color: #636fff;
-        border-radius: 10px;
-        border: 1px solid #292f6b;
-        opacity: 0.8;
-    }
+  &__rotationSlider {
+    position: absolute;
 
-    &__rotationSlider {
-        position: absolute;
-        height: 14px;
-        width: 14px;
-        right: -22px;
-        bottom: -22px;
-        background-color: #9dff8b;
-        border-radius: 10px;
-        border: 1px solid #292f6b;
-        opacity: 0.8;
-    }
+    height: var(--rotator-size);
+    width: var(--rotator-size);
+    right: calc(-1 * (var(--rotator-size) + var(--rotation-offset)));
+    top: calc(50% - var(--rotator-size) / 2);
+
+    background-size: 100%;
+    background-image: svg-load('./assets/rotate.svg');
+  }
 }

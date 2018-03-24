@@ -2,16 +2,26 @@ import { addElementEventListener } from '../addElementEventListener';
 import { noop } from '../noop';
 import { removeSelection } from '../removeSelection';
 
+/**
+ * Current dragging position
+ */
 type Position = {
     x: number;
     y: number;
 };
 
+
+/**
+ * Dragging position on start dragging
+ */
 type StartPosition = {
     startX: number;
     startY: number;
 };
 
+/**
+ * Current dragging position relative to start dragging position
+ */
 type RelativePosition = {
     relativeX: number;
     relativeY: number;
@@ -28,27 +38,21 @@ export type DragListenerCallbacks = {
     onEnd: (dragPosition: DragPosition) => void;
 };
 
-export type DragListenerParams = {
-    draggingOnStart: boolean;
-};
-
+/**
+ * Для корректной работы на элементе должен быть установлен стиль `user-select: none;`
+ */
 export class DragListener {
     private readonly callbacks: DragListenerCallbacks;
 
     private draggingStartRelativePosition: RelativePosition | undefined;
     private readonly onDestroyFunctions: Array<() => void> = [];
 
-    constructor(// Для корректной работы на элементе должен быть установлен стиль
-        // user-select: none;
-        element: HTMLElement,
-        {
-            onStart = noop,
-            onMove = noop,
-            onEnd = noop,
-        }: Partial<DragListenerCallbacks>,
-        {
-            draggingOnStart = false,
-        }: Partial<DragListenerParams> = {}) {
+    constructor(private readonly element: HTMLElement,
+                {
+                    onStart = noop,
+                    onMove = noop,
+                    onEnd = noop,
+                }: Partial<DragListenerCallbacks>) {
         const { documentElement } = element.ownerDocument;
 
         this.callbacks = {
@@ -56,31 +60,6 @@ export class DragListener {
             onMove,
             onEnd,
         };
-
-        if (draggingOnStart) {
-            const unsubscribeFirstMouseMove = addElementEventListener(
-                documentElement,
-                'mousemove',
-                this.startDragging,
-                {
-                    once: true,
-                },
-            );
-
-            const unsubscribeFirstMouseUp = addElementEventListener(
-                documentElement,
-                'mouseup',
-                unsubscribeFirstMouseMove,
-                {
-                    once: true,
-                },
-            );
-
-            this.onDestroyFunctions.push(
-                unsubscribeFirstMouseMove,
-                unsubscribeFirstMouseUp,
-            );
-        }
 
         const unsubscribeMouseDown = addElementEventListener(
             element,
@@ -102,6 +81,67 @@ export class DragListener {
             unsubscribeMouseDown,
             unsubscribeMouseMove,
             unsubscribeMouseUp,
+        );
+    }
+
+    /**
+     * Possibility to start dragging manually
+     */
+    public start() {
+        if (this.draggingStartRelativePosition !== undefined) {
+            throw new Error('DragListener is already started');
+        }
+
+        const {
+            documentElement,
+        } = this.element.ownerDocument;
+
+        let wasMoved = false;
+
+        const unsubscribeFirstMouseMove = addElementEventListener(
+            documentElement,
+            'mousemove',
+            (event) => {
+                wasMoved = true;
+                this.startDragging(event);
+            },
+            {
+                once: true,
+            },
+        );
+
+        const unsubscribeFirstMouseUp = addElementEventListener(
+            documentElement,
+            'mouseup',
+            ({
+                 clientX,
+                 clientY,
+             }) => {
+                unsubscribeFirstMouseMove();
+
+                if (!wasMoved) {
+                    removeSelection();
+
+                    this.callbacks.onEnd({
+                        x: clientX,
+                        y: clientY,
+                        startX: clientX,
+                        startY: clientY,
+                        relativeX: 0,
+                        relativeY: 0,
+                    });
+
+                    this.draggingStartRelativePosition = undefined;
+                }
+            },
+            {
+                once: true,
+            },
+        );
+
+        this.onDestroyFunctions.push(
+            unsubscribeFirstMouseMove,
+            unsubscribeFirstMouseUp,
         );
     }
 

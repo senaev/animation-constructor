@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { clamp } from '../../../utils/clamp';
-import { DragListener, DragPosition } from '../../../utils/DragListener';
+import { DragListener, DragPosition } from '../../../utils/DragListener/DragListener';
 import { noop } from '../../../utils/noop';
 import { subscribeHoverChange } from '../../../utils/subscribeHoverChange';
 import { TimeLinePointTooltip } from '../TimeLinePointTooltip';

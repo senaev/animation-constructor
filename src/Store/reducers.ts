@@ -6,12 +6,15 @@ import {
     addStandardElementAction,
     removeBlockScriptStepAction,
     removeFieldsScriptStepAction,
+    selectBlockAction,
     setAnimationPositionAction,
     setBlockScriptStepPositionAction,
     setBlockScriptStepValueAction,
     setEditedBlockFieldsOnCurrentPositionAction,
+    setEditedBlockMovingAction,
+    setEditedBlockResizingAction,
+    setEditedBlockRotatingAction,
     setEditedElementFieldsAction,
-    setEditedParamsAction,
     setFieldsScriptStepPositionAction,
     setFieldsScriptStepValueAction,
     setScaleCoordinatesAction,
@@ -42,6 +45,8 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             ...state,
             editParams: {
                 isMoving: false,
+                isResizing: false,
+                isRotating: false,
                 blockLocation: [length],
             },
             animationScript: [
@@ -54,10 +59,68 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             ],
         };
     })
-    .on(setEditedParamsAction, (state, editParams): ConstructorState => {
+    .on(selectBlockAction, (state, blockLocation): ConstructorState => {
         return {
             ...state,
+            editParams: blockLocation === undefined
+                ? undefined
+                : {
+                    isMoving: true,
+                    isResizing: false,
+                    isRotating: false,
+                    blockLocation,
+                },
+        };
+    })
+    .on(setEditedBlockMovingAction, (state, isMoving): ConstructorState => {
+        const {
             editParams,
+        } = state;
+
+        if (editParams === undefined) {
+            throw new Error('editParams should not be undefined on setEditedBlockMovingAction dispatch');
+        }
+
+        return {
+            ...state,
+            editParams: {
+                ...editParams,
+                isMoving,
+            },
+        };
+    })
+    .on(setEditedBlockResizingAction, (state, isResizing): ConstructorState => {
+        const {
+            editParams,
+        } = state;
+
+        if (editParams === undefined) {
+            throw new Error('editParams should not be undefined on setEditedBlockMovingAction dispatch');
+        }
+
+        return {
+            ...state,
+            editParams: {
+                ...editParams,
+                isResizing,
+            },
+        };
+    })
+    .on(setEditedBlockRotatingAction, (state, isRotating): ConstructorState => {
+        const {
+            editParams,
+        } = state;
+
+        if (editParams === undefined) {
+            throw new Error('editParams should not be undefined on setEditedBlockMovingAction dispatch');
+        }
+
+        return {
+            ...state,
+            editParams: {
+                ...editParams,
+                isRotating,
+            },
         };
     })
     .on(setEditedElementFieldsAction, (state, fieldsValues): ConstructorState => {

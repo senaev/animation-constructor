@@ -9,6 +9,8 @@ import { Size } from '../types/Size';
 export type ConstructorState = {
     editParams: {
         isMoving: boolean;
+        isResizing: boolean;
+        isRotating: boolean;
         blockLocation: BlockLocation;
     } | undefined,
     scaleCoordinates: PointCoordinates;

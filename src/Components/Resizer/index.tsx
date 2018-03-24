@@ -6,24 +6,36 @@ import { Action } from 'redux-act';
 import { getFieldsValuesByPosition } from '../../Animation/util/getFieldsValuesByPosition';
 import { Block } from '../../Block/Block';
 import { blockToStyles } from '../../Block/utils/blockToStyles';
-import { setEditedBlockFieldsOnCurrentPositionAction } from '../../Store/actions';
+import { BlockLocation } from '../../BlockLocation/BlockLocation';
+import {
+    setEditedBlockFieldsOnCurrentPositionAction,
+    setEditedBlockMovingAction,
+    setEditedBlockResizingAction,
+    setEditedBlockRotatingAction,
+} from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { PointCoordinates } from '../../types/PointCoordinates';
-import { Size } from '../../types/Size';
 import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
-import { DragListener } from '../../utils/DragListener';
+import { areArraysEqual } from '../../utils/areArraysEqual/areArraysEqual';
+import { DragListener } from '../../utils/DragListener/DragListener';
 import { getAngleRelativeToOrigin } from '../../utils/Trigonometry/getAngleRelativeToOrigin';
 import { getRectangleSizeByPointAndAngle } from '../../utils/Trigonometry/getRectangleSizeByPointAndAngle';
 import * as c from './index.pcss';
 
 export type ResizerStateProps = {
     isMoving: boolean;
+    isResizing: boolean;
+    isRotating: boolean;
+    blockLocation: BlockLocation;
     block: Block;
 };
 
 export type ResizerDispatchProps = {
+    setEditedBlockMoving: (isMoving: boolean) => void;
+    setEditedBlockResizing: (isResizing: boolean) => void;
+    setEditedBlockRotating: (isRotating: boolean) => void;
     setEditedBlockFieldsOnCurrentPosition: (blockFields: Partial<Block>) => void;
 };
 
@@ -42,10 +54,17 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
     private dragListenerForMove?: DragListener;
 
     public render() {
-        const resizerStyles = {
-            ...blockToStyles(this.props.block),
-            display: 'block',
-        };
+        const {
+            isMoving,
+            isResizing,
+            isRotating,
+            block,
+        } = this.props;
+
+        const resizerStyles = blockToStyles({
+            ...block,
+            existence: true,
+        });
 
         return <div className={ c.Resizer__container }>
             <div
@@ -61,111 +80,47 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
                     ref={ (element) => {
                         this.moveElement = element;
                     } }/>
-                <div
-                    className={ c.Resizer__resizeSlider }
-                    ref={ (element) => {
-                        this.resizeElement = element;
-                    } }/>
-                <div
-                    className={ c.Resizer__rotationSlider }
-                    ref={ (element) => {
-                        this.rotationElement = element;
-                    } }/>
+                <div className={ cx({
+                    [c.Resizer__controlsContainer_hidden]: isMoving || isResizing || isRotating,
+                }) }>
+                    <div
+                        className={ c.Resizer__resizeSlider }
+                        ref={ (element) => {
+                            this.resizeElement = element;
+                        } }/>
+                    <div
+                        className={ c.Resizer__rotationSlider }
+                        ref={ (element) => {
+                            this.rotationElement = element;
+                        } }/>
+                </div>
             </div>
         </div>;
     }
 
-    public componentDidMount() {
-        const {
-            moveElement,
-            resizeElement,
-            rotationElement,
-        } = this;
-
-        if (!moveElement || !resizeElement || !rotationElement) {
-            throw new Error('One of elements has not been initialized');
+    public componentWillReceiveProps({
+                                         isMoving,
+                                         blockLocation,
+                                     }: ResizerProps) {
+        if (!isMoving || areArraysEqual(blockLocation, this.props.blockLocation)) {
+            return;
         }
 
         const {
-            isMoving,
-        } = this.props;
+            dragListenerForMove,
+        } = this;
 
-        let startBlock: Readonly<PointCoordinates>;
-        this.dragListenerForMove = new DragListener(
-            moveElement,
-            {
-                onStart: () => {
-                    const {
-                        x,
-                        y,
-                    } = this.props.block;
+        if (!dragListenerForMove) {
+            throw new Error('dragListenerForResize should be set before other block selecting');
+        }
 
-                    startBlock = {
-                        x,
-                        y,
-                    };
+        dragListenerForMove.start();
+    }
 
-                    this.setState({
-                        isMoving: true,
-                    });
-                },
-                onMove: ({ relativeX, relativeY }) => {
-                    const percentageInPixel = this.getPercentageInPixel();
-
-                    this.onMove({
-                        x: startBlock.x + relativeX * percentageInPixel,
-                        y: startBlock.y + relativeY * percentageInPixel,
-                    });
-                },
-                onEnd: () => {
-                    this.setState({
-                        isMoving: false,
-                    });
-                },
-            },
-            {
-                draggingOnStart: isMoving,
-            },
-        );
-
-        let blockOriginAbsoluteCoordinates: Readonly<PointCoordinates>;
-        this.dragListenerForResize = new DragListener(resizeElement, {
-            onStart: () => {
-                blockOriginAbsoluteCoordinates = this.getBlockOriginAbsoluteCoordinates();
-            },
-            onMove: (dragPosition) => {
-                const dragPositionRelativeToBlockOrigin: PointCoordinates = {
-                    x: dragPosition.x - blockOriginAbsoluteCoordinates.x,
-                    y: dragPosition.y - blockOriginAbsoluteCoordinates.y,
-                };
-
-                const { width, height } = getRectangleSizeByPointAndAngle(
-                    dragPositionRelativeToBlockOrigin,
-                    this.props.block.rotation,
-                );
-
-                const pixelsInPercent = this.getPixelsInPercent();
-                this.onResize({
-                    width: Math.max(0, width) / pixelsInPercent,
-                    height: Math.max(0, height) / pixelsInPercent,
-                });
-            },
-        });
-
-        let startRotationPosition: number;
-        this.dragListenerForRotation = new DragListener(rotationElement, {
-            onStart: (dragPosition) => {
-                const startSliderRotationPosition = this.getCursorAngleRelativeToBlockOrigin(dragPosition);
-                const startBlockRotationPosition = this.props.block.rotation;
-
-                startRotationPosition = startBlockRotationPosition - startSliderRotationPosition;
-            },
-            onMove: (dragPosition) => {
-                const cursorAngle = this.getCursorAngleRelativeToBlockOrigin(dragPosition);
-
-                this.onRotate(cursorAngle + startRotationPosition);
-            },
-        });
+    public componentDidMount() {
+        this.initMover();
+        this.initResizer();
+        this.initRotator();
     }
 
     public componentWillUnmount() {
@@ -182,6 +137,134 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
         dragListenerForResize.destroy();
         dragListenerForRotation.destroy();
         dragListenerForMove.destroy();
+    }
+
+    private initMover() {
+        const {
+            moveElement,
+        } = this;
+
+        if (!moveElement) {
+            throw new Error('moveElement has not been initialized');
+        }
+
+        const {
+            isMoving,
+            setEditedBlockMoving,
+            setEditedBlockFieldsOnCurrentPosition,
+        } = this.props;
+
+        let startBlock: Readonly<PointCoordinates>;
+        this.dragListenerForMove = new DragListener(moveElement, {
+            onStart: () => {
+                const {
+                    x,
+                    y,
+                } = this.props.block;
+
+                startBlock = {
+                    x,
+                    y,
+                };
+
+                setEditedBlockMoving(true);
+            },
+            onMove: ({ relativeX, relativeY }) => {
+                const percentageInPixel = this.getPercentageInPixel();
+
+                setEditedBlockFieldsOnCurrentPosition({
+                    x: startBlock.x + relativeX * percentageInPixel,
+                    y: startBlock.y + relativeY * percentageInPixel,
+                });
+            },
+            onEnd: () => {
+                setEditedBlockMoving(false);
+            },
+        });
+
+        if (isMoving) {
+            this.dragListenerForMove.start();
+        }
+    }
+
+    private initResizer() {
+        const {
+            resizeElement,
+        } = this;
+
+        if (!resizeElement) {
+            throw new Error('resizeElement has not been initialized');
+        }
+
+        const {
+            setEditedBlockResizing,
+            setEditedBlockFieldsOnCurrentPosition,
+        } = this.props;
+
+        let blockOriginAbsoluteCoordinates: Readonly<PointCoordinates>;
+        this.dragListenerForResize = new DragListener(resizeElement, {
+            onStart: () => {
+                setEditedBlockResizing(true);
+                blockOriginAbsoluteCoordinates = this.getBlockOriginAbsoluteCoordinates();
+            },
+            onMove: (dragPosition) => {
+                const dragPositionRelativeToBlockOrigin: PointCoordinates = {
+                    x: dragPosition.x - blockOriginAbsoluteCoordinates.x,
+                    y: dragPosition.y - blockOriginAbsoluteCoordinates.y,
+                };
+
+                const { width, height } = getRectangleSizeByPointAndAngle(
+                    dragPositionRelativeToBlockOrigin,
+                    this.props.block.rotation,
+                );
+
+                const pixelsInPercent = this.getPixelsInPercent();
+                setEditedBlockFieldsOnCurrentPosition({
+                    width: Math.max(0, width) / pixelsInPercent,
+                    height: Math.max(0, height) / pixelsInPercent,
+                });
+            },
+            onEnd: () => {
+                setEditedBlockResizing(false);
+            },
+        });
+    }
+
+    private initRotator() {
+        const {
+            rotationElement,
+        } = this;
+
+        if (!rotationElement) {
+            throw new Error('rotationElement has not been initialized');
+        }
+
+        const {
+            setEditedBlockRotating,
+            setEditedBlockFieldsOnCurrentPosition,
+        } = this.props;
+
+        let startRotationPosition: number;
+        this.dragListenerForRotation = new DragListener(rotationElement, {
+            onStart: (dragPosition) => {
+                setEditedBlockRotating(true);
+
+                const startSliderRotationPosition = this.getCursorAngleRelativeToBlockOrigin(dragPosition);
+                const startBlockRotationPosition = this.props.block.rotation;
+
+                startRotationPosition = startBlockRotationPosition - startSliderRotationPosition;
+            },
+            onMove: (dragPosition) => {
+                const cursorAngle = this.getCursorAngleRelativeToBlockOrigin(dragPosition);
+
+                setEditedBlockFieldsOnCurrentPosition({
+                    rotation: cursorAngle + startRotationPosition,
+                });
+            },
+            onEnd: () => {
+                setEditedBlockRotating(false);
+            },
+        });
     }
 
     private getBlockOriginAbsoluteCoordinates(): PointCoordinates {
@@ -231,18 +314,6 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
     private getPixelsInPercent(): number {
         return this.getParentBlockRect().width / 100;
     }
-
-    private onResize = (blockSize: Size) => {
-        this.props.setEditedBlockFieldsOnCurrentPosition(blockSize);
-    }
-
-    private onRotate = (rotation: UnitTypes[Unit.degree]) => {
-        this.props.setEditedBlockFieldsOnCurrentPosition({ rotation });
-    }
-
-    private onMove = (pointCoordinates: PointCoordinates) => {
-        this.props.setEditedBlockFieldsOnCurrentPosition(pointCoordinates);
-    }
 }
 
 
@@ -259,6 +330,9 @@ const mapStateToProps = (state: ConstructorState): ResizerStateProps => {
 
     const {
         isMoving,
+        isResizing,
+        isRotating,
+        blockLocation,
     } = editParams;
 
     const {
@@ -269,11 +343,23 @@ const mapStateToProps = (state: ConstructorState): ResizerStateProps => {
 
     return {
         isMoving,
+        isResizing,
+        isRotating,
+        blockLocation,
         block,
     };
 };
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): ResizerDispatchProps => ({
+    setEditedBlockMoving: (isMoving) => {
+        dispatch(setEditedBlockMovingAction(isMoving));
+    },
+    setEditedBlockResizing: (isResizing) => {
+        dispatch(setEditedBlockResizingAction(isResizing));
+    },
+    setEditedBlockRotating: (isRotating) => {
+        dispatch(setEditedBlockRotatingAction(isRotating));
+    },
     setEditedBlockFieldsOnCurrentPosition: (blockFields) => {
         dispatch(setEditedBlockFieldsOnCurrentPositionAction(blockFields));
     },

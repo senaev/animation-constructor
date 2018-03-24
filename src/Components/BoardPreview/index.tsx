@@ -2,13 +2,14 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
+import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { getRectangleByScale } from '../../Scale/utils/getRectangleByScale';
-import { setEditedParamsAction, setScaleCoordinatesAction } from '../../Store/actions';
+import { selectBlockAction, setScaleCoordinatesAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
 import { addElementEventListener } from '../../utils/addElementEventListener';
-import { DragListener } from '../../utils/DragListener';
+import { DragListener } from '../../utils/DragListener/DragListener';
 import { noop } from '../../utils/noop';
 import { rectangleToStyle } from '../../utils/rectangleToStyle';
 import { ResizeSensor } from '../../utils/ResizeSensor';
@@ -33,7 +34,7 @@ export type BoardPreviewStateProps = Pick<ConstructorState,
     | 'animationPosition'>;
 
 export type BoardPreviewDispatchProps = {
-    setEditParams: (editParams: ConstructorState['editParams']) => void;
+    selectBlock: (blockLocation: BlockLocation | undefined) => void;
     setScalePosition: (scalePosition: PointCoordinates) => void;
 };
 
@@ -54,7 +55,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
     private clickElementDragListener?: DragListener;
     private resizeSensor?: ResizeSensor;
 
-    private removeElementClickListener = noop;
+    private removeElementSelectListener = noop;
 
     constructor(props: BoardPreviewProps) {
         super(props);
@@ -127,11 +128,11 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
         }
 
         const {
-            setEditParams,
+            selectBlock,
             setScalePosition,
         } = this.props;
 
-        this.removeElementClickListener = addElementEventListener(
+        this.removeElementSelectListener = addElementEventListener(
             clickElement,
             'mousedown',
             (event) => {
@@ -149,10 +150,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
                     throw new Error('cannot find block location for element');
                 }
 
-                setEditParams({
-                    isMoving: true,
-                    blockLocation,
-                });
+                selectBlock(blockLocation);
             },
         );
 
@@ -184,7 +182,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
     }
 
     public componentWillUnmount() {
-        this.removeElementClickListener();
+        this.removeElementSelectListener();
 
         const {
             clickElementDragListener,
@@ -198,7 +196,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
 
     private onScaleDragElementMouseDown = () => {
         // TODO: we need other logic to remove focus form animation element
-        this.props.setEditParams(undefined);
+        this.props.selectBlock(undefined);
     }
 
     private getBackgroundStyle(): {
@@ -326,8 +324,8 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): BoardPreviewDispatchProps => ({
-    setEditParams: (editParams) => {
-        dispatch(setEditedParamsAction(editParams));
+    selectBlock: (blockLocation) => {
+        dispatch(selectBlockAction(blockLocation));
     },
     setScalePosition: (scalePositoin) => {
         dispatch(setScaleCoordinatesAction(scalePositoin));
