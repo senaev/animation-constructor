@@ -10,7 +10,6 @@ type EventListener<K extends HTMLElementEventName> = (this: EventTarget,
                                                       event: EventMap[K]) => any;
 
 let isSupportsOnceOption = false;
-let isSupportsPassiveOption = false;
 let isSupportsCaptureOption = false;
 
 const div = document.createElement('div');
@@ -18,9 +17,6 @@ const optionsCheckObject: AddEventListenerOptions = {};
 
 Object.defineProperty(optionsCheckObject, 'once', {
     get: () => isSupportsOnceOption = true,
-});
-Object.defineProperty(optionsCheckObject, 'passive', {
-    get: () => isSupportsPassiveOption = true,
 });
 Object.defineProperty(optionsCheckObject, 'capture', {
     get: () => isSupportsCaptureOption = true,
@@ -30,11 +26,18 @@ div.addEventListener('click', noop, optionsCheckObject as any);
 export function addElementEventListener<K extends HTMLElementEventName>(element: EventTarget,
                                                                         eventName: K,
                                                                         listener: EventListener<K>,
-                                                                        options: AddEventListenerOptions
-                                                                            = {}): () => void {
+                                                                        {
+                                                                            capture,
+                                                                            passive = true,
+                                                                            once,
+                                                                        }: AddEventListenerOptions = {}): () => void {
     const finalOptions: AddEventListenerOptions | boolean = isSupportsCaptureOption
-        ? options
-        : Boolean(options.capture);
+        ? {
+            capture,
+            passive,
+            once,
+        }
+        : Boolean(capture);
 
     const onceFallback: EventListener<K> = function (event) {
         removeListener();
@@ -42,7 +45,7 @@ export function addElementEventListener<K extends HTMLElementEventName>(element:
         listener.call(this, event);
     };
 
-    const finalListener: EventListener<K> = options.once === true && !isSupportsOnceOption
+    const finalListener: EventListener<K> = once === true && !isSupportsOnceOption
         ? onceFallback
         : listener;
 

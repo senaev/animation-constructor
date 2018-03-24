@@ -19,6 +19,7 @@ import { getRectangleSizeByPointAndAngle } from '../../utils/Trigonometry/getRec
 import * as c from './index.pcss';
 
 export type ResizerStateProps = {
+    isMoving: boolean;
     block: Block;
 };
 
@@ -85,32 +86,47 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
             throw new Error('One of elements has not been initialized');
         }
 
+        const {
+            isMoving,
+        } = this.props;
+
         let startBlock: Readonly<PointCoordinates>;
-        this.dragListenerForMove = new DragListener(moveElement, {
-            onStart: () => {
-                startBlock = {
-                    x: this.props.block.x,
-                    y: this.props.block.y,
-                };
+        this.dragListenerForMove = new DragListener(
+            moveElement,
+            {
+                onStart: () => {
+                    const {
+                        x,
+                        y,
+                    } = this.props.block;
 
-                this.setState({
-                    isMoving: true,
-                });
-            },
-            onMove: ({ relativeX, relativeY }) => {
-                const percentageInPixel = this.getPercentageInPixel();
+                    startBlock = {
+                        x,
+                        y,
+                    };
 
-                this.onMove({
-                    x: startBlock.x + relativeX * percentageInPixel,
-                    y: startBlock.y + relativeY * percentageInPixel,
-                });
+                    this.setState({
+                        isMoving: true,
+                    });
+                },
+                onMove: ({ relativeX, relativeY }) => {
+                    const percentageInPixel = this.getPercentageInPixel();
+
+                    this.onMove({
+                        x: startBlock.x + relativeX * percentageInPixel,
+                        y: startBlock.y + relativeY * percentageInPixel,
+                    });
+                },
+                onEnd: () => {
+                    this.setState({
+                        isMoving: false,
+                    });
+                },
             },
-            onEnd: () => {
-                this.setState({
-                    isMoving: false,
-                });
+            {
+                draggingOnStart: isMoving,
             },
-        });
+        );
 
         let blockOriginAbsoluteCoordinates: Readonly<PointCoordinates>;
         this.dragListenerForResize = new DragListener(resizeElement, {
@@ -172,9 +188,14 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
         const parentRect = this.getParentBlockRect();
 
         const pixelsInPercent = this.getPixelsInPercent();
+        const {
+            x,
+            y,
+        } = this.props.block;
+
         return {
-            x: this.props.block.x * pixelsInPercent + parentRect.left,
-            y: this.props.block.y * pixelsInPercent + parentRect.top,
+            x: x * pixelsInPercent + parentRect.left,
+            y: y * pixelsInPercent + parentRect.top,
         };
     }
 
@@ -226,13 +247,28 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
 
 
 const mapStateToProps = (state: ConstructorState): ResizerStateProps => {
+
+    const {
+        editParams,
+        animationPosition,
+    } = state;
+
+    if (editParams === undefined) {
+        throw new Error('editParams should not be undefined on Resizer initialize');
+    }
+
+    const {
+        isMoving,
+    } = editParams;
+
     const {
         blockScript,
     } = getEditedAnimationElementScript(state);
 
-    const block = getFieldsValuesByPosition(state.animationPosition, blockScript);
+    const block = getFieldsValuesByPosition(animationPosition, blockScript);
 
     return {
+        isMoving,
         block,
     };
 };

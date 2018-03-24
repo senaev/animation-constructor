@@ -28,18 +28,27 @@ export type DragListenerCallbacks = {
     onEnd: (dragPosition: DragPosition) => void;
 };
 
+export type DragListenerParams = {
+    draggingOnStart: boolean;
+};
+
 export class DragListener {
     private readonly callbacks: DragListenerCallbacks;
 
-    private activityStartPosition: RelativePosition | undefined;
+    private draggingStartRelativePosition: RelativePosition | undefined;
     private readonly onDestroyFunctions: Array<() => void> = [];
 
-    constructor(element: HTMLElement,
-                {
-                    onStart = noop,
-                    onMove = noop,
-                    onEnd = noop,
-                }: Partial<DragListenerCallbacks>) {
+    constructor(// Для корректной работы на элементе должен быть установлен стиль
+        // user-select: none;
+        element: HTMLElement,
+        {
+            onStart = noop,
+            onMove = noop,
+            onEnd = noop,
+        }: Partial<DragListenerCallbacks>,
+        {
+            draggingOnStart = false,
+        }: Partial<DragListenerParams> = {}) {
         const { documentElement } = element.ownerDocument;
 
         this.callbacks = {
@@ -48,70 +57,45 @@ export class DragListener {
             onEnd,
         };
 
-        const unsubscribeMouseDown = addElementEventListener(element, 'mousedown', (mouseDownEvent) => {
-            if (this.activityStartPosition === undefined) {
-                removeSelection();
+        if (draggingOnStart) {
+            const unsubscribeFirstMouseMove = addElementEventListener(
+                documentElement,
+                'mousemove',
+                this.startDragging,
+                {
+                    once: true,
+                },
+            );
 
-                this.activityStartPosition = {
-                    relativeX: mouseDownEvent.clientX,
-                    relativeY: mouseDownEvent.clientY,
-                };
+            const unsubscribeFirstMouseUp = addElementEventListener(
+                documentElement,
+                'mouseup',
+                unsubscribeFirstMouseMove,
+                {
+                    once: true,
+                },
+            );
 
-                this.callbacks.onStart({
-                    x: mouseDownEvent.clientX,
-                    y: mouseDownEvent.clientY,
-                    startX: mouseDownEvent.clientX,
-                    startY: mouseDownEvent.clientY,
-                    relativeX: 0,
-                    relativeY: 0,
-                });
-            }
-        }, { passive: true });
+            this.onDestroyFunctions.push(
+                unsubscribeFirstMouseMove,
+                unsubscribeFirstMouseUp,
+            );
+        }
 
-        const unsubscribeMouseMove = addElementEventListener(documentElement, 'mousemove', (mouseMoveEvent) => {
-            if (this.activityStartPosition !== undefined) {
-                removeSelection();
-
-                const {
-                    relativeX: startX,
-                    relativeY: startY,
-                } = this.activityStartPosition;
-
-                this.callbacks.onMove({
-                    x: mouseMoveEvent.clientX,
-                    y: mouseMoveEvent.clientY,
-                    startX,
-                    startY,
-                    relativeX: mouseMoveEvent.clientX - startX,
-                    relativeY: mouseMoveEvent.clientY - startY,
-                });
-            }
-        }, { passive: true });
-
-        // Для корректной работы на элементе должен быть навешан стиль
-        // user-select: none;
-        const unsubscribeMouseUp = addElementEventListener(documentElement, 'mouseup', (mouseUpEvent) => {
-                if (this.activityStartPosition !== undefined) {
-                    removeSelection();
-
-                    const {
-                        relativeX: startX,
-                        relativeY: startY,
-                    } = this.activityStartPosition;
-
-                    this.callbacks.onEnd({
-                        x: mouseUpEvent.clientX,
-                        y: mouseUpEvent.clientY,
-                        startX,
-                        startY,
-                        relativeX: mouseUpEvent.clientX - startX,
-                        relativeY: mouseUpEvent.clientY - startY,
-                    });
-
-                    this.activityStartPosition = undefined;
-                }
-            },
-            { passive: true }
+        const unsubscribeMouseDown = addElementEventListener(
+            element,
+            'mousedown',
+            this.startDragging
+        );
+        const unsubscribeMouseMove = addElementEventListener(
+            documentElement,
+            'mousemove',
+            this.moveDragging
+        );
+        const unsubscribeMouseUp = addElementEventListener(
+            documentElement,
+            'mouseup',
+            this.endDragging
         );
 
         this.onDestroyFunctions.push(
@@ -123,5 +107,73 @@ export class DragListener {
 
     public destroy(): void {
         this.onDestroyFunctions.forEach((fn) => fn());
+    }
+
+    private startDragging = (mouseDownEvent: MouseEvent) => {
+        if (this.draggingStartRelativePosition !== undefined) {
+            return;
+        }
+
+        removeSelection();
+
+        this.draggingStartRelativePosition = {
+            relativeX: mouseDownEvent.clientX,
+            relativeY: mouseDownEvent.clientY,
+        };
+
+        this.callbacks.onStart({
+            x: mouseDownEvent.clientX,
+            y: mouseDownEvent.clientY,
+            startX: mouseDownEvent.clientX,
+            startY: mouseDownEvent.clientY,
+            relativeX: 0,
+            relativeY: 0,
+        });
+    }
+
+    private moveDragging = (mouseMoveEvent: MouseEvent) => {
+        if (this.draggingStartRelativePosition === undefined) {
+            return;
+        }
+
+        removeSelection();
+
+        const {
+            relativeX: startX,
+            relativeY: startY,
+        } = this.draggingStartRelativePosition;
+
+        this.callbacks.onMove({
+            x: mouseMoveEvent.clientX,
+            y: mouseMoveEvent.clientY,
+            startX,
+            startY,
+            relativeX: mouseMoveEvent.clientX - startX,
+            relativeY: mouseMoveEvent.clientY - startY,
+        });
+    }
+
+    private endDragging = (mouseUpEvent: MouseEvent) => {
+        if (this.draggingStartRelativePosition === undefined) {
+            return;
+        }
+
+        removeSelection();
+
+        const {
+            relativeX: startX,
+            relativeY: startY,
+        } = this.draggingStartRelativePosition;
+
+        this.callbacks.onEnd({
+            x: mouseUpEvent.clientX,
+            y: mouseUpEvent.clientY,
+            startX,
+            startY,
+            relativeX: mouseUpEvent.clientX - startX,
+            relativeY: mouseUpEvent.clientY - startY,
+        });
+
+        this.draggingStartRelativePosition = undefined;
     }
 }
