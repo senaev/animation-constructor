@@ -9,9 +9,9 @@ import {
     setAnimationPositionAction,
     setBlockScriptStepPositionAction,
     setBlockScriptStepValueAction,
-    setEditedBlockAction,
     setEditedBlockFieldsOnCurrentPositionAction,
     setEditedElementFieldsAction,
+    setEditedParamsAction,
     setFieldsScriptStepPositionAction,
     setFieldsScriptStepValueAction,
     setScaleCoordinatesAction,
@@ -54,15 +54,10 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             ],
         };
     })
-    .on(setEditedBlockAction, (state, blockLocation): ConstructorState => {
+    .on(setEditedParamsAction, (state, editParams): ConstructorState => {
         return {
             ...state,
-            editParams: blockLocation === undefined
-                ? undefined
-                : {
-                    isMoving: true,
-                    blockLocation,
-                },
+            editParams,
         };
     })
     .on(setEditedElementFieldsAction, (state, fieldsValues): ConstructorState => {

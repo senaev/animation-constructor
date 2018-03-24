@@ -2,9 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { getRectangleByScale } from '../../Scale/utils/getRectangleByScale';
-import { setEditedBlockAction, setScaleCoordinatesAction } from '../../Store/actions';
+import { setEditedParamsAction, setScaleCoordinatesAction } from '../../Store/actions';
 import { ConstructorState } from '../../Store/State';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
@@ -34,7 +33,7 @@ export type BoardPreviewStateProps = Pick<ConstructorState,
     | 'animationPosition'>;
 
 export type BoardPreviewDispatchProps = {
-    setEditedBlock: (blockLocation: BlockLocation | undefined) => void;
+    setEditParams: (editParams: ConstructorState['editParams']) => void;
     setScalePosition: (scalePosition: PointCoordinates) => void;
 };
 
@@ -76,7 +75,6 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
             editParams,
             animationScript,
             animationPosition,
-            setEditedBlock,
         } = this.props;
 
         return <div className={ c.BoardPreview }>
@@ -101,7 +99,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
                         } }
                         animationScript={ animationScript }
                         animationPosition={ animationPosition }
-                        setEditedBlock={ setEditedBlock }/>
+                    />
                 </div>
                 <div
                     className={ c.BoardPreview__relationContainer }
@@ -129,7 +127,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
         }
 
         const {
-            setEditedBlock,
+            setEditParams,
             setScalePosition,
         } = this.props;
 
@@ -151,7 +149,10 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
                     throw new Error('cannot find block location for element');
                 }
 
-                setEditedBlock(blockLocation);
+                setEditParams({
+                    isMoving: true,
+                    blockLocation,
+                });
             },
         );
 
@@ -197,7 +198,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
 
     private onScaleDragElementMouseDown = () => {
         // TODO: we need other logic to remove focus form animation element
-        this.props.setEditedBlock(undefined);
+        this.props.setEditParams(undefined);
     }
 
     private getBackgroundStyle(): {
@@ -325,8 +326,8 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): BoardPreviewDispatchProps => ({
-    setEditedBlock: (blockLocation) => {
-        dispatch(setEditedBlockAction(blockLocation));
+    setEditParams: (editParams) => {
+        dispatch(setEditedParamsAction(editParams));
     },
     setScalePosition: (scalePositoin) => {
         dispatch(setScaleCoordinatesAction(scalePositoin));

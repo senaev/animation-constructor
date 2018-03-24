@@ -12,9 +12,7 @@ import * as c from './index.pcss';
 
 export type AnimationPreviewProps = Pick<ConstructorState,
     | 'animationScript'
-    | 'animationPosition'> & {
-    setEditedBlock: (blockLocation: BlockLocation | undefined) => void;
-};
+    | 'animationPosition'>;
 
 export class AnimationPreview extends React.Component<AnimationPreviewProps, {}> {
     private container?: HTMLDivElement | null;
