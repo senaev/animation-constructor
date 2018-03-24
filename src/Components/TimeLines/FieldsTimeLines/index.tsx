@@ -132,9 +132,12 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                 key={ i }
                 className={ c.TimeLines__row }
             >
-                <div className={ c.TimeLines__row__title }>
+                <span
+                    title={ title }
+                    className={ c.TimeLines__row__title }
+                >
                     { title }
-                </div>
+                </span>
                 <div className={ c.TimeLines__row__timeline }>
                     <TimeLine points={ points }>
                         <TimeLinePreviewClass

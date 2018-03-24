@@ -93,9 +93,12 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
 
         return <div className={ c.TimeLines }>
             <div className={ c.TimeLines__row }>
-                <div className={ c.TimeLines__row__title }>
+                <span
+                    title={ AMIMATION_POSITION_TITLE }
+                    className={ c.TimeLines__row__title }
+                >
                     { AMIMATION_POSITION_TITLE }
-                </div>
+                </span>
                 <div
                     className={ c.TimeLines__row__timeline }
                     ref={ (element) => {
