@@ -45,8 +45,8 @@ export type TimeLinesDispatchProps = {
     setAnimationPosition: (animationPosition: ConstructorState['animationPosition']) => void;
     setBlockScriptStepPosition: (stepPosition: EditableStepPosition<BlockFieldUnits>) => void;
     setFieldsScriptStepPosition: (stepPosition: EditableStepPosition<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
-    setBlockScriptStepValue: (stepValue: EditableStepValue<BlockFieldUnits>) => void
-    setFieldsScriptStepValue: (stepValue: EditableStepValue<AnimationElementsFieldsUnits[AnimationElementName]>) => void
+    setBlockScriptStepValue: (stepValue: EditableStepValue<BlockFieldUnits>) => void;
+    setFieldsScriptStepValue: (stepValue: EditableStepValue<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
     removeBlockScriptStep: (changedStep: EditableStep<BlockFieldUnits>) => void;
     removeFieldsScriptStep: (changedStep: EditableStep<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
     addBlockScriptStep: (changedStep: AdditionalStep<BlockFieldUnits>) => void;
@@ -60,7 +60,7 @@ export type TimeLinesProps =
 const AMIMATION_POSITION_TITLE = 'Позиция анимации';
 
 class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState> {
-    private containerElement?: HTMLDivElement | null;
+    private sliderContainerElement?: HTMLDivElement | null;
     private resizeSensor?: ResizeSensor;
 
     constructor(props: TimeLinesProps) {
@@ -91,17 +91,17 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
             containerWidth,
         } = this.state;
 
-        return <div
-            className={ c.TimeLines }
-            ref={ (element) => {
-                this.containerElement = element;
-            } }
-        >
+        return <div className={ c.TimeLines }>
             <div className={ c.TimeLines__row }>
                 <div className={ c.TimeLines__row__title }>
                     { AMIMATION_POSITION_TITLE }
                 </div>
-                <div className={ c.TimeLines__row__timeline }>
+                <div
+                    className={ c.TimeLines__row__timeline }
+                    ref={ (element) => {
+                        this.sliderContainerElement = element;
+                    } }
+                >
                     <Slider
                         value={ animationPosition }
                         onChange={ this.onPositionChange }
@@ -150,14 +150,14 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
 
     public componentDidMount() {
         const {
-            containerElement,
+            sliderContainerElement,
         } = this;
 
-        if (!containerElement) {
+        if (!sliderContainerElement) {
             throw new Error('Container element has not been initialized');
         }
 
-        this.resizeSensor = new ResizeSensor(containerElement, ({ width }) => {
+        this.resizeSensor = new ResizeSensor(sliderContainerElement, ({ width }) => {
             this.setState({ containerWidth: width });
         });
 

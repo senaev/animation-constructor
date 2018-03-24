@@ -3,7 +3,7 @@ import { getValueByPosition } from '../../Animation/util/getValueByPosition';
 import { UnitScript } from '../../AnimationScript';
 import { Unit } from '../../Unit/Unit';
 import { UnitShortTitles } from '../../Unit/UnitShortTitles';
-import { ResizeSensor } from '../../utils/ResizeSensor';
+import { UnitTypes } from '../../Unit/UnitTypes';
 import { TimeLinePreviewProps } from '../UnitTimeLinePreviews';
 import * as c from './index.pcss';
 import { NUMBER_TIMELINE_FONT_SIZE } from './NUMBER_TIMELINE_FONT_SIZE';
@@ -13,18 +13,12 @@ import { NUMBER_TIMELINE_PADDING } from './NUMBER_TIMELINE_PADDING';
 type UNIT = Unit.percent | Unit.pixel | Unit.degree;
 
 export class NumberTimeLinePreview extends React.Component<TimeLinePreviewProps<UNIT>> {
-    private resizeSensor?: ResizeSensor;
-    private containerElement?: HTMLDivElement | null;
-
     private canvas?: HTMLCanvasElement | null;
 
     public render() {
         return <div
             className={ c.NumberTimeLinePreview }
             style={ { height: `${NUMBER_TIMELINE_HEIGHT}px` } }
-            ref={ (element) => {
-                this.containerElement = element;
-            } }
         >
             <canvas
                 className={ c.NumberTimeLinePreview__canvas }
@@ -36,34 +30,21 @@ export class NumberTimeLinePreview extends React.Component<TimeLinePreviewProps<
     }
 
     public componentDidMount() {
-        const { containerElement } = this;
-
-        if (!containerElement) {
-            throw new Error('Container element has not been initialized');
-        }
-
-        this.resizeSensor = new ResizeSensor(containerElement, () => {
-            this.redrawCanvas(this.props.unitScript);
-        });
-
-        this.redrawCanvas(this.props.unitScript);
+        const {
+            size,
+            unitScript,
+        } = this.props;
+        this.redrawCanvas(size, unitScript);
     }
 
-    public componentWillReceiveProps({ unitScript }: TimeLinePreviewProps<UNIT>) {
-        this.redrawCanvas(unitScript);
+    public componentWillReceiveProps({
+                                         size,
+                                         unitScript,
+                                     }: TimeLinePreviewProps<UNIT>) {
+        this.redrawCanvas(size, unitScript);
     }
 
-    public componentWillUnmount() {
-        const { resizeSensor } = this;
-
-        if (!resizeSensor) {
-            throw new Error('ResizeSensor has not been initialized');
-        }
-
-        resizeSensor.destroy();
-    }
-
-    private redrawCanvas(unitScript: UnitScript<UNIT>) {
+    private redrawCanvas(size: UnitTypes[Unit.pixel], unitScript: UnitScript<UNIT>) {
         const { canvas } = this;
 
         if (!canvas) {
@@ -80,14 +61,12 @@ export class NumberTimeLinePreview extends React.Component<TimeLinePreviewProps<
         }
 
         const context = canvas.getContext('2d')!;
-
-        const width = canvas.getBoundingClientRect().width;
         const height = NUMBER_TIMELINE_HEIGHT;
 
-        canvas.width = width;
+        canvas.width = size;
         canvas.height = height;
 
-        context.clearRect(0, 0, width, height);
+        context.clearRect(0, 0, size, height);
 
         const values = steps.map(({ value }) => value);
 
@@ -109,13 +88,13 @@ export class NumberTimeLinePreview extends React.Component<TimeLinePreviewProps<
         });
 
         context.fillStyle = 'rgba(0, 0, 0, 0)';
-        context.fillRect(0, 0, width, height);
+        context.fillRect(0, 0, size, height);
 
         context.beginPath();
         context.moveTo(0, canvasValues[0].value);
 
-        for (let i = 0; i < width; i++) {
-            const position = i / width;
+        for (let i = 0; i < size; i++) {
+            const position = i / size;
             const value = getValueByPosition(position, unit, canvasValues);
             context.lineTo(i, value);
         }

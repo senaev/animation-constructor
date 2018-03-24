@@ -9,10 +9,9 @@ import { UnitTimeLinePreviews } from '../../../TimelinePreviews/UnitTimeLinePrev
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { getObjectKeys } from '../../../utils/getObjectKeys';
-import * as mainClasses from '../index.pcss';
+import * as c from '../index.pcss';
 import { TimeLine } from '../TimeLine';
 import { TimeLinePointProps } from '../TimeLinePoint';
-import * as c from './index.pcss';
 
 export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
     fieldsScripts: FieldsScripts<T>;
@@ -131,16 +130,18 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
 
             return <div
                 key={ i }
-                className={ mainClasses.TimeLines__row }
+                className={ c.TimeLines__row }
             >
-                <div className={ mainClasses.TimeLines__row__title }>
+                <div className={ c.TimeLines__row__title }>
                     { title }
                 </div>
-                <div className={ mainClasses.TimeLines__row__timeline }>
+                <div className={ c.TimeLines__row__timeline }>
                     <TimeLine points={ points }>
-                        <TimeLinePreviewClass unitScript={ unitScript }/>
+                        <TimeLinePreviewClass
+                            size={ containerWidth }
+                            unitScript={ unitScript }/>
                         <div
-                            className={ c.FieldsTimeLines__clicker }
+                            className={ c.TimeLines__row__timeline__clicker }
                             onClick={ (event) => {
                                 const clickerElement = event.target as HTMLElement;
                                 const {

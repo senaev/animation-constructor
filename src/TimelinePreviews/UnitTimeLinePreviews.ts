@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { UnitScript } from '../AnimationScript';
 import { Unit } from '../Unit/Unit';
+import { UnitTypes } from '../Unit/UnitTypes';
 import { BooleanTimeLinePreview } from './BooleanTimeLinePreview';
 import { ColorTimeLinePreview } from './ColorTimeLinePreview';
 import { NumberTimeLinePreview } from './NumberTimeLinePreview';
 
 export type TimeLinePreviewProps<T extends Unit> = {
+    size: UnitTypes[Unit.pixel];
     unitScript: UnitScript<T>;
 };
 
