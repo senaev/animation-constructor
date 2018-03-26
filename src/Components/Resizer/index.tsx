@@ -44,7 +44,7 @@ export type ResizerProps =
     & ResizerDispatchProps;
 
 class ResizerComponent extends React.Component<ResizerProps, {}> {
-    private element?: HTMLDivElement | null;
+    private containerElement?: HTMLDivElement | null;
     private moveElement?: HTMLDivElement | null;
     private resizeElement?: HTMLDivElement | null;
     private rotationElement?: HTMLDivElement | null;
@@ -66,12 +66,14 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
             existence: true,
         });
 
-        return <div className={ c.Resizer__container }>
+        return <div
+            className={ c.Resizer__container }
+            ref={ (element) => {
+                this.containerElement = element;
+            } }
+        >
             <div
                 className={ c.Resizer }
-                ref={ (element) => {
-                    this.element = element;
-                } }
                 style={ resizerStyles }>
                 <div className={ cx(c.Resizer__dottedLine, c.Resizer__dottedLine_white) }/>
                 <div className={ c.Resizer__dottedLine }/>
@@ -268,7 +270,7 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
     }
 
     private getBlockOriginAbsoluteCoordinates(): PointCoordinates {
-        const parentRect = this.getParentBlockRect();
+        const parentRect = this.getContainerBlockRect();
 
         const pixelsInPercent = this.getPixelsInPercent();
         const {
@@ -291,28 +293,24 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
         });
     }
 
-    private getParentBlockRect(): ClientRect {
-        const { element } = this;
+    private getContainerBlockRect(): ClientRect {
+        const {
+            containerElement,
+        } = this;
 
-        if (!element) {
-            throw new Error('Element is not defined');
+        if (!containerElement) {
+            throw new Error('containerElement is not defined');
         }
 
-        const { parentElement } = element;
-
-        if (!parentElement) {
-            throw new Error('Element has no parent');
-        }
-
-        return parentElement.getBoundingClientRect();
+        return containerElement.getBoundingClientRect();
     }
 
     private getPercentageInPixel(): UnitTypes[Unit.percent] {
-        return 100 / this.getParentBlockRect().width;
+        return 100 / this.getContainerBlockRect().width;
     }
 
     private getPixelsInPercent(): number {
-        return this.getParentBlockRect().width / 100;
+        return this.getContainerBlockRect().width / 100;
     }
 }
 

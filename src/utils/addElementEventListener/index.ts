@@ -28,7 +28,7 @@ export function addElementEventListener<K extends HTMLElementEventName>(element:
                                                                         listener: EventListener<K>,
                                                                         {
                                                                             capture,
-                                                                            passive = true,
+                                                                            passive,
                                                                             once,
                                                                         }: AddEventListenerOptions = {}): () => void {
     const finalOptions: AddEventListenerOptions | boolean = isSupportsCaptureOption
