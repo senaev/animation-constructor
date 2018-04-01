@@ -5,7 +5,7 @@ import { Action } from 'redux-act';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { getRectangleByScale } from '../../Scale/utils/getRectangleByScale';
 import { selectBlockAction, setScaleCoordinatesAction } from '../../Store/actions';
-import { ConstructorState } from '../../Store/State';
+import { ConstructorStore } from '../../Store/State';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
 import { addElementEventListener } from '../../utils/addElementEventListener';
@@ -25,7 +25,7 @@ import * as c from './index.pcss';
 const BACKGROUNDS_IN_SQUARE = 20;
 const BACKGROUND_RELATION = 15;
 
-export type BoardPreviewStateProps = Pick<ConstructorState,
+export type BoardPreviewStateProps = Pick<ConstructorStore,
     | 'editParams'
     | 'scaleCoordinates'
     | 'zoom'
@@ -314,7 +314,7 @@ const mapStateToProps = ({
                              relation,
                              animationScript,
                              animationPosition,
-                         }: ConstructorState): BoardPreviewStateProps => ({
+                         }: ConstructorStore): BoardPreviewStateProps => ({
     editParams,
     scaleCoordinates,
     zoom,

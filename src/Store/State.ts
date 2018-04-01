@@ -16,7 +16,7 @@ export type ChangingPositionStep<T extends Record<string, Unit>> = {
     stepIndex: number;
 };
 
-export type ConstructorState = {
+export type ConstructorStore = {
     editParams: {
         isMoving: boolean;
         isResizing: boolean;
@@ -34,7 +34,7 @@ export type ConstructorState = {
     animationPosition: number;
 };
 
-export const defaultConstructorState: ConstructorState = {
+export const defaultConstructorState: ConstructorStore = {
     editParams: undefined,
     scaleCoordinates: DEFAULT_SCALE_COORDINATES,
     zoom: DEFAULT_ZOOM,

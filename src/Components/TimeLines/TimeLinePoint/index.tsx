@@ -1,10 +1,16 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import * as Redux from 'redux';
+import { Action } from 'redux-act';
+import { makeStepChangingPositionSelector } from '../../../Store/selectors/makeStepChangingPositionSelector';
+import { ConstructorStore } from '../../../Store/State';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { clamp } from '../../../utils/clamp';
 import { DragListener, DragPosition } from '../../../utils/DragListener/DragListener';
 import { noop } from '../../../utils/noop';
 import { subscribeHoverChange } from '../../../utils/subscribeHoverChange';
+import { ZoomDispatchProps } from '../../Zoom';
 import { TimeLinePointTooltip } from '../TimeLinePointTooltip';
 import * as c from './index.pcss';
 
@@ -28,7 +34,14 @@ export type TimeLinePointChangeableParams<T extends Unit> = {
     onChange: (value: UnitTypes[T]) => void;
 };
 
-export type TimeLinePointProps<T extends Unit> = {
+export type TimeLinePointStoreProps = {
+    isChangingPosition: boolean;
+};
+
+export type TimeLinePointOwnProps<T extends Unit> = {
+    // TODO: do normal typing
+    fieldName: string;
+    stepIndex: number;
     position: number;
     containerWidth: UnitTypes[Unit.pixel];
     removable: TimeLinePointRemovableParams | undefined;
@@ -36,12 +49,22 @@ export type TimeLinePointProps<T extends Unit> = {
     changeable: TimeLinePointChangeableParams<T> | undefined;
 };
 
+export type TimeLinePointDispatchProps = {
+    // TODO
+};
+
+type TimeLinePointProps<T extends Unit> =
+    & TimeLinePointStoreProps
+    & TimeLinePointOwnProps<T>
+    & TimeLinePointDispatchProps;
+
+
 export type TimeLinePointState = {
     isHovered: boolean;
     isChangeableDialogOpened: boolean;
 };
 
-export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePointProps<T>, TimeLinePointState> {
+class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePointProps<T>, TimeLinePointState> {
     private containerElement?: HTMLDivElement | null;
     private dragElement?: HTMLDivElement | null;
 
@@ -60,7 +83,7 @@ export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePoint
         };
     }
 
-    public shouldComponentUpdate(props: TimeLinePointProps<T>, state: TimeLinePointState) {
+    public shouldComponentUpdate(props: TimeLinePointOwnProps<T>, state: TimeLinePointState) {
         return state.isHovered !== this.state.isHovered;
     }
 
@@ -188,3 +211,33 @@ export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePoint
         this.setState({ isChangeableDialogOpened: opened });
     }
 }
+
+
+function makeMapStoreToProps<T extends Unit> (initialStore: ConstructorStore,
+                                              initialOwnProps: TimeLinePointProps<T>) {
+    makeStepChangingPositionSelector(initialOwnProps.fieldName)
+
+    return (store: ConstructorStore, {
+        stepIndex,
+        position,
+        containerWidth,
+        removable,
+        movable,
+        changeable,
+    }: TimeLinePointOwnProps<T>): TimeLinePointProps<T> => {
+        return {
+            stepIndex,
+            position,
+            containerWidth,
+            removable,
+            movable,
+            changeable,
+        };
+    };
+}
+
+const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): ZoomDispatchProps => ({
+    // TODO
+});
+
+export const TimeLinePointConnected = connect(makeMapStoreToProps, mapDispatchToProps)(TimeLinePoint);

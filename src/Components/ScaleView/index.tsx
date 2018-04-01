@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { getRectangleByScale } from '../../Scale/utils/getRectangleByScale';
-import { ConstructorState } from '../../Store/State';
+import { ConstructorStore } from '../../Store/State';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
 import { getCentralSquareOfRectangle } from '../../utils/Trigonometry/getCentralSquareOfRectangle';
@@ -59,7 +59,7 @@ const mapStateToProps = ({
                              scaleCoordinates,
                              zoom,
                              relation,
-                         }: ConstructorState,
+                         }: ConstructorStore,
                          {
                              width,
                              height,

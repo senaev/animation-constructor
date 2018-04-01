@@ -11,7 +11,7 @@ import { UnitTypes } from '../../../Unit/UnitTypes';
 import { getObjectKeys } from '../../../utils/getObjectKeys';
 import * as c from '../index.pcss';
 import { TimeLine } from '../TimeLine';
-import { TimeLinePointProps } from '../TimeLinePoint';
+import { TimeLinePointOwnProps } from '../TimeLinePoint';
 
 export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
     fieldsScripts: FieldsScripts<T>;
@@ -44,12 +44,12 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                 steps,
             } = unitScript;
             const pointPositions = getStepParams(steps);
-            const points: TimeLinePointProps<Unit>[] = pointPositions.map(({
+            const points: TimeLinePointOwnProps<Unit>[] = pointPositions.map(({
                                                                                previousStepPosition,
                                                                                position,
                                                                                nextStepPosition,
                                                                            }, stepIndex) => {
-                let movable: TimeLinePointProps<Unit>['movable'];
+                let movable: TimeLinePointOwnProps<Unit>['movable'];
 
                 if (stepIndex > 0) {
                     if (previousStepPosition === undefined) {
@@ -86,7 +86,8 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
 
                 const { value } = steps[stepIndex];
 
-                const point: TimeLinePointProps<Unit> = {
+                const point: TimeLinePointOwnProps<Unit> = {
+                    stepIndex,
                     position,
                     movable,
                     removable: stepIndex > 0

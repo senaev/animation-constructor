@@ -6,7 +6,7 @@ import { Block } from '../Block/Block';
 import { BlockFieldUnits } from '../Block/BlockFieldUnits';
 import { BlockLocation } from '../BlockLocation/BlockLocation';
 import { PointCoordinates } from '../types/PointCoordinates';
-import { ConstructorState } from './State';
+import { ConstructorStore } from './State';
 import { AdditionalStep } from './types/AdditionalStep';
 import { EditableStep } from './types/EditableStep';
 import { EditableStepPosition } from './types/EditableStepPosition';
@@ -35,7 +35,7 @@ export const setEditedElementFieldsAction =
     createAction<Partial<AnimationElementFieldsTypes<AnimationElements>>>('setEditedElementFieldsAction');
 
 export const setAnimationPositionAction =
-    createAction<ConstructorState['animationPosition']>('setAnimationPositionAction');
+    createAction<ConstructorStore['animationPosition']>('setAnimationPositionAction');
 
 export const setBlockScriptStepPositionAction =
     createAction<EditableStepPosition<BlockFieldUnits>>('setBlockScriptStepPositionAction');

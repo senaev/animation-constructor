@@ -1,7 +1,7 @@
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
-import { ConstructorState } from '../State';
+import { ConstructorStore } from '../State';
 
-export function getEditedAnimationElementBlockLocation(state: ConstructorState): BlockLocation {
+export function getEditedAnimationElementBlockLocation(state: ConstructorStore): BlockLocation {
     const {
         editParams,
     } = state;

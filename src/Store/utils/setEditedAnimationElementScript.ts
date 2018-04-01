@@ -1,11 +1,11 @@
 import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementScript } from '../../AnimationScript';
-import { ConstructorState } from '../State';
+import { ConstructorStore } from '../State';
 import { getEditedAnimationElementBlockLocation } from './getEditedAnimationElementBlockLocation';
 
 export function setEditedAnimationElementScript<T extends AnimationElements>
-(state: ConstructorState,
- animationElementScript: AnimationElementScript<T>): ConstructorState {
+(state: ConstructorStore,
+ animationElementScript: AnimationElementScript<T>): ConstructorStore {
     const { animationScript } = state;
 
     const blockLocation = getEditedAnimationElementBlockLocation(state);

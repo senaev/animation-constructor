@@ -13,7 +13,7 @@ import {
     setEditedBlockResizingAction,
     setEditedBlockRotatingAction,
 } from '../../Store/actions';
-import { ConstructorState } from '../../Store/State';
+import { ConstructorStore } from '../../Store/State';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Unit } from '../../Unit/Unit';
@@ -343,7 +343,7 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
 }
 
 
-const mapStateToProps = (state: ConstructorState): ResizerStateProps => {
+const mapStateToProps = (state: ConstructorStore): ResizerStateProps => {
 
     const {
         editParams,

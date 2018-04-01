@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
 import { zoomInAction, zoomOutAction } from '../../Store/actions';
-import { ConstructorState } from '../../Store/State';
+import { ConstructorStore } from '../../Store/State';
 import * as c from './index.pcss';
 
 export type ZoomOwnProps = {
@@ -48,7 +48,7 @@ class ZoomComponent extends React.Component<ZoomProps, {}> {
     }
 }
 
-const mapStateToProps = (state: ConstructorState, {}: ZoomOwnProps): ZoomStateProps => {
+const mapStateToProps = (state: ConstructorStore, {}: ZoomOwnProps): ZoomStateProps => {
     return {};
 };
 

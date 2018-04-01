@@ -3,14 +3,14 @@ import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementScript } from '../../AnimationScript';
 import { Block } from '../../Block/Block';
 import { mapObjectValues } from '../../utils/mapObjectValues';
-import { ConstructorState } from '../State';
+import { ConstructorStore } from '../State';
 import { addStep } from './addStep';
 import { getEditedAnimationElementBlockLocation } from './getEditedAnimationElementBlockLocation';
 import { getEditedAnimationElementScript } from './getEditedAnimationElementScript';
 import { setStepValue } from './setStepValue';
 
-export function setEditedBlockFieldsOnCurrentPosition(state: ConstructorState,
-                                                      blockFields: Partial<Block>): ConstructorState {
+export function setEditedBlockFieldsOnCurrentPosition(state: ConstructorStore,
+                                                      blockFields: Partial<Block>): ConstructorStore {
 
     const {
         animationPosition,

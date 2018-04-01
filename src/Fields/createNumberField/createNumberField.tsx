@@ -36,7 +36,6 @@ export function createNumberField<T extends Unit>({
             return <input
                 className={ c.NumberField }
                 ref={ (element) => {
-                    console.log(1);
                     this.inputElement = element;
                 } }
                 value={ String(this.props.value) }

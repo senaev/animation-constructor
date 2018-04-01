@@ -5,13 +5,13 @@ import { AnimationElementScript } from '../../AnimationScript';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { Unit } from '../../Unit/Unit';
 import { mapObjectValues } from '../../utils/mapObjectValues';
-import { ConstructorState } from '../State';
+import { ConstructorStore } from '../State';
 import { createDefaultUnitScript } from './createDefaultUnitScript';
 
 export function setAnimationElementFields<T extends AnimationElements>
-(state: ConstructorState,
+(state: ConstructorStore,
  blockLocation: BlockLocation,
- animationElementFields: Partial<AnimationElementFieldsTypes<T>>): ConstructorState {
+ animationElementFields: Partial<AnimationElementFieldsTypes<T>>): ConstructorStore {
 
     const {
         animationScript,
