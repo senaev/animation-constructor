@@ -28,12 +28,12 @@ import { EditableStepValue } from '../../Store/types/EditableStepValue';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
+import { noop } from '../../utils/noop';
 import { ResizeSensor } from '../../utils/ResizeSensor';
 import { FieldsTimeLines } from './FieldsTimeLines';
 import * as c from './index.pcss';
 
 export type TimeLinesState = {
-    isChangingStepPosition: boolean;
     containerWidth: UnitTypes[Unit.pixel];
 };
 
@@ -67,7 +67,6 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
         super(props);
 
         this.state = {
-            isChangingStepPosition: false,
             containerWidth: 0,
         };
     }
@@ -87,7 +86,6 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
         } = this.props;
 
         const {
-            isChangingStepPosition,
             containerWidth,
         } = this.state;
 
@@ -108,8 +106,8 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                     <Slider
                         value={ animationPosition }
                         onChange={ this.onPositionChange }
-                        onDragStart={ this.onScriptStepPositionChangeStart }
-                        onDragStop={ this.onScriptStepPositionChangeEnd }
+                        onDragStart={ noop }
+                        onDragStop={ noop }
                         step={ 0.0001 }
                         sliderStyle={ {
                             marginTop: '0',
@@ -123,25 +121,19 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                     ? null
                     : <>
                         <FieldsTimeLines
-                            isChangingStepPosition={ isChangingStepPosition }
                             fieldsScripts={ animationElementScript.blockScript }
                             titlesDictionary={ BlockFieldTitles }
                             containerWidth={ containerWidth }
-                            onScriptStepPositionChangeStart={ this.onScriptStepPositionChangeStart }
                             onScriptStepPositionChange={ setBlockScriptStepPosition }
-                            onScriptStepPositionChangeEnd={ this.onScriptStepPositionChangeEnd }
                             onScriptStepValueChange={ setBlockScriptStepValue }
                             onScriptStepRemove={ removeBlockScriptStep }
                             onScriptStepAdd={ addBlockScriptStep }
                         />
                         <FieldsTimeLines
-                            isChangingStepPosition={ isChangingStepPosition }
                             fieldsScripts={ animationElementScript.fieldsScript }
                             titlesDictionary={ AnimationElementFieldTitles[animationElementScript.elementName] }
                             containerWidth={ containerWidth }
-                            onScriptStepPositionChangeStart={ this.onScriptStepPositionChangeStart }
                             onScriptStepPositionChange={ setFieldsScriptStepPosition }
-                            onScriptStepPositionChangeEnd={ this.onScriptStepPositionChangeEnd }
                             onScriptStepValueChange={ setFieldsScriptStepValue }
                             onScriptStepRemove={ removeFieldsScriptStep }
                             onScriptStepAdd={ addFieldsScriptStep }
@@ -169,14 +161,6 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
 
     private onPositionChange = (event: any, position: number) => {
         this.props.setAnimationPosition(position);
-    }
-
-    private onScriptStepPositionChangeStart = () => {
-        this.setState({ isChangingStepPosition: true });
-    }
-
-    private onScriptStepPositionChangeEnd = () => {
-        this.setState({ isChangingStepPosition: false });
     }
 }
 

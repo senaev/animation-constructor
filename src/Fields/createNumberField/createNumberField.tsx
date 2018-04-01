@@ -1,4 +1,3 @@
-import NumberInput from 'material-ui-number-input';
 import * as React from 'react';
 import { Unit } from '../../Unit/Unit';
 import { UnitShortTitles } from '../../Unit/UnitShortTitles';
@@ -19,21 +18,42 @@ export function createNumberField<T extends Unit>({
                                                   }: NumberFieldProperties<T>): FieldClass<T> {
     return class NumberField extends Field<T> {
         public static unit = unit;
+
+        private inputElement?: HTMLInputElement | null;
+
         public static Preview = ({ value }: FieldPreviewProps<T>) => {
-            return <div className={ c.NumberField__preview }>
-            { `${(value as number).toFixed(2)}${UnitShortTitles[unit]}` }
+            return <div className={ c.NumberField__Preview }>
+                { `${(value as number).toFixed(2)}${UnitShortTitles[unit]}` }
             </div>;
         }
 
         public render() {
-            return <NumberInput
-                id={ 'degree-input-field' }
-            value={ String(this.props.value) }
-            onChange={ this.onChange }/>;
+            const {
+                onChangeStart,
+                onChangeEnd,
+            } = this.props;
+
+            return <input
+                className={ c.NumberField }
+                ref={ (element) => {
+                    console.log(1);
+                    this.inputElement = element;
+                } }
+                value={ String(this.props.value) }
+                onChange={ this.onChange }
+                onFocus={ onChangeStart }
+                onBlur={ onChangeEnd }
+            />;
         }
 
-        private onChange = (event: React.FormEvent<HTMLInputElement>, value: string) => {
-            this.props.onChange(clamp(Number(value), min, max));
+        private onChange = () => {
+            const { inputElement } = this;
+
+            if (!inputElement) {
+                throw new Error('NumberField error: inputElement has not been initialized');
+            }
+
+            this.props.onChange(clamp(Number(inputElement.value), min, max));
         }
     };
 }

@@ -17,10 +17,7 @@ export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
     fieldsScripts: FieldsScripts<T>;
     titlesDictionary: Record<keyof T, string>;
     containerWidth: UnitTypes[Unit.pixel];
-    isChangingStepPosition: boolean;
-    onScriptStepPositionChangeStart: (stepPosition: EditableStepPosition<T>) => void;
     onScriptStepPositionChange: (stepPosition: EditableStepPosition<T>) => void;
-    onScriptStepPositionChangeEnd: (stepPosition: EditableStepPosition<T>) => void;
     onScriptStepValueChange: (stepPosition: EditableStepValue<T>) => void;
     onScriptStepRemove: (stepPosition: EditableStep<T>) => void;
     onScriptStepAdd: (stepPosition: AdditionalStep<T>) => void;
@@ -32,10 +29,7 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
             fieldsScripts,
             titlesDictionary,
             containerWidth,
-            isChangingStepPosition,
-            onScriptStepPositionChangeStart,
             onScriptStepPositionChange,
-            onScriptStepPositionChangeEnd,
             onScriptStepValueChange,
             onScriptStepRemove,
             onScriptStepAdd,
@@ -67,6 +61,26 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                         max: nextStepPosition === undefined
                             ? 1
                             : nextStepPosition,
+                        onPositionChangeStart: (nextPosition: number) => {
+                            this.setState({
+                                changingPositionStep: {
+                                    fieldName,
+                                    stepIndex,
+                                },
+                            });
+                        },
+                        onPositionChange: (nextPosition: number) => {
+                            onScriptStepPositionChange({
+                                fieldName,
+                                stepIndex,
+                                position: nextPosition,
+                            });
+                        },
+                        onPositionChangeEnd: (nextPosition: number) => {
+                            this.setState({
+                                changingPositionStep: undefined,
+                            });
+                        },
                     };
                 }
 
@@ -85,42 +99,19 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                             },
                         }
                         : undefined,
-                    changeable: isChangingStepPosition
-                        ? undefined
-                        : {
-                            unit,
-                            title,
-                            value,
-                            onChange: (nextValue) => {
-                                onScriptStepValueChange({
-                                    fieldName,
-                                    stepIndex,
-                                    value: nextValue,
-                                });
-                            },
+                    changeable: {
+                        unit,
+                        title,
+                        value,
+                        onChange: (nextValue) => {
+                            onScriptStepValueChange({
+                                fieldName,
+                                stepIndex,
+                                value: nextValue,
+                            });
                         },
+                    },
                     containerWidth,
-                    onPositionChangeStart: (nextPosition: number) => {
-                        onScriptStepPositionChangeStart({
-                            fieldName,
-                            stepIndex,
-                            position: nextPosition,
-                        });
-                    },
-                    onPositionChange: (nextPosition: number) => {
-                        onScriptStepPositionChange({
-                            fieldName,
-                            stepIndex,
-                            position: nextPosition,
-                        });
-                    },
-                    onPositionChangeEnd: (nextPosition: number) => {
-                        onScriptStepPositionChangeEnd({
-                            fieldName,
-                            stepIndex,
-                            position: nextPosition,
-                        });
-                    },
                 };
 
                 return point;

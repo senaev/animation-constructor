@@ -6,6 +6,7 @@ import { ALL_FIELDS } from '../../../Fields/ALL_FIELDS';
 import { FieldClass } from '../../../Fields/Field';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
+import { noop } from '../../../utils/noop';
 import { TimeLinePointChangeableParams } from '../TimeLinePoint';
 import * as c from './index.pcss';
 
@@ -41,13 +42,15 @@ export class TimeLinePointChangable<T extends Unit> extends React.Component<Time
                 modal={ false }
                 open={ isDialogOpen }
                 onRequestClose={ this.closeDialog }
-                overlayClassName={c.TimeLinePointChangable__Dialog__overlay}
+                overlayClassName={ c.TimeLinePointChangable__Dialog__overlay }
             >
                 <UnitFieldClass
-                    value={value}
-                    onChange={(nextValue: UnitTypes[T]) => {
+                    value={ value }
+                    onChangeStart={ noop }
+                    onChange={ (nextValue: UnitTypes[T]) => {
                         onChange(nextValue);
-                    }}
+                    } }
+                    onChangeEnd={ noop }
                 />
             </Dialog>
         </div>;

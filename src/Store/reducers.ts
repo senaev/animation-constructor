@@ -47,6 +47,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
                 isMoving: false,
                 isResizing: false,
                 isRotating: false,
+                changingPositionStep: undefined,
                 blockLocation: [length],
             },
             animationScript: [
@@ -68,6 +69,7 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
                     isMoving: true,
                     isResizing: false,
                     isRotating: false,
+                    changingPositionStep: undefined,
                     blockLocation,
                 },
         };

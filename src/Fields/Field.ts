@@ -6,7 +6,9 @@ export type FieldPreviewProps<T extends Unit> = Pick<FieldProps<T>, 'value'>;
 
 export type FieldProps<T extends Unit> = {
     value: UnitTypes[T];
+    onChangeStart: () => void;
     onChange: (value: UnitTypes[T]) => void;
+    onChangeEnd: () => void;
 };
 
 export abstract class Field<T extends Unit> extends React.Component<FieldProps<T>> {

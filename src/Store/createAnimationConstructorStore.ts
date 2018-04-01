@@ -1,16 +1,16 @@
-import { createStore } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import { createConstructorReducer } from './reducers';
 import { ConstructorState } from './State';
 
-const win: {
-    /**
-     * [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension)
-     */
-    __REDUX_DEVTOOLS_EXTENSION__: () => ConstructorState;
-} = window as any;
-
 export function createAnimationConstructorStore(initialState: ConstructorState) {
+    const sagaMiddleware = createSagaMiddleware();
+    const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    const enhancer = composeEnhancers(
+        applyMiddleware(sagaMiddleware)
+    );
+
     const playerReducer = createConstructorReducer(initialState);
 
-    return createStore(playerReducer, win.__REDUX_DEVTOOLS_EXTENSION__ && win.__REDUX_DEVTOOLS_EXTENSION__());
+    return createStore(playerReducer, enhancer);
 }

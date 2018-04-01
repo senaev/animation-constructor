@@ -8,12 +8,6 @@ import { subscribeHoverChange } from '../../../utils/subscribeHoverChange';
 import { TimeLinePointTooltip } from '../TimeLinePointTooltip';
 import * as c from './index.pcss';
 
-type TimeLinePointCallbacks = {
-    onPositionChangeStart: (position: number) => void;
-    onPositionChange: (position: number) => void;
-    onPositionChangeEnd: (position: number) => void;
-};
-
 export type TimeLinePointRemovableParams = {
     onRemove: () => void;
 };
@@ -22,6 +16,9 @@ export type TimeLinePointRemovableParams = {
 export type TimeLinePointMovableParams = {
     min: number;
     max: number;
+    onPositionChangeStart: (position: number) => void;
+    onPositionChange: (position: number) => void;
+    onPositionChangeEnd: (position: number) => void;
 };
 
 export type TimeLinePointChangeableParams<T extends Unit> = {
@@ -31,20 +28,17 @@ export type TimeLinePointChangeableParams<T extends Unit> = {
     onChange: (value: UnitTypes[T]) => void;
 };
 
-export type TimeLinePointProps<T extends Unit> =
-    & {
-        position: number;
-        containerWidth: UnitTypes[Unit.pixel];
-        removable: TimeLinePointRemovableParams | undefined;
-        movable: TimeLinePointMovableParams | undefined;
-        changeable: TimeLinePointChangeableParams<T> | undefined;
-    }
-    & Partial<TimeLinePointCallbacks>;
+export type TimeLinePointProps<T extends Unit> = {
+    position: number;
+    containerWidth: UnitTypes[Unit.pixel];
+    removable: TimeLinePointRemovableParams | undefined;
+    movable: TimeLinePointMovableParams | undefined;
+    changeable: TimeLinePointChangeableParams<T> | undefined;
+};
 
 export type TimeLinePointState = {
     isHovered: boolean;
     isChangeableDialogOpened: boolean;
-    draggingStartPosition: number | undefined;
 };
 
 export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePointProps<T>, TimeLinePointState> {
@@ -54,26 +48,32 @@ export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePoint
     private unsubscribeHoverChange = noop;
     private cursorDragListener?: DragListener;
 
+    private draggingStartPosition: number | undefined;
+
+
     constructor(props: TimeLinePointProps<T>) {
         super(props);
 
         this.state = {
             isHovered: false,
             isChangeableDialogOpened: false,
-            draggingStartPosition: undefined,
         };
+    }
+
+    public shouldComponentUpdate(props: TimeLinePointProps<T>, state: TimeLinePointState) {
+        return state.isHovered !== this.state.isHovered;
     }
 
     public render() {
         const {
             isHovered,
             isChangeableDialogOpened,
-            draggingStartPosition,
         } = this.state;
 
         const {
             position,
             removable,
+            movable,
             changeable,
         } = this.props;
 
@@ -94,10 +94,12 @@ export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePoint
                 } }
             />
             {
-                isHovered && draggingStartPosition === undefined || isChangeableDialogOpened
+                isHovered || isChangeableDialogOpened
                     ? <TimeLinePointTooltip
+                        position={ position }
                         changeable={ changeable }
                         removable={ removable }
+                        movable={ movable }
                         isChangeableDialogOpen={ isChangeableDialogOpened }
                         requestChangeableDialogOpened={ this.requestChangeableDialogOpened }
                     />
@@ -122,15 +124,19 @@ export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePoint
 
         const {
             movable,
-            onPositionChangeStart = noop,
-            onPositionChange = noop,
-            onPositionChangeEnd = noop,
         } = this.props;
 
         if (movable) {
+            const {
+                onPositionChangeStart,
+                onPositionChange,
+                onPositionChangeEnd,
+            } = movable;
+
             this.cursorDragListener = new DragListener(dragElement, {
                 onStart: (dragPosition) => {
-                    this.setState({ draggingStartPosition: this.props.position });
+                    this.draggingStartPosition = this.props.position;
+
                     onPositionChangeStart(this.getPositionByPixelOffset(dragPosition));
                 },
                 onMove: (dragPosition) => {
@@ -138,7 +144,8 @@ export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePoint
                 },
                 onEnd: (dragPosition) => {
                     onPositionChangeEnd(this.getPositionByPixelOffset(dragPosition));
-                    this.setState({ draggingStartPosition: undefined });
+
+                    this.draggingStartPosition = undefined;
                 },
             });
         }
@@ -166,7 +173,7 @@ export class TimeLinePoint<T extends Unit> extends React.Component<TimeLinePoint
 
         const {
             draggingStartPosition,
-        } = this.state;
+        } = this;
 
         if (draggingStartPosition === undefined) {
             throw new Error('draggingStartPosition is not set');

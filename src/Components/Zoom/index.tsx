@@ -12,6 +12,7 @@ export type ZoomOwnProps = {
     className?: string;
 };
 
+// TODO: rename to StoreProps
 export type ZoomStateProps = {};
 
 export type ZoomDispatchProps = {
