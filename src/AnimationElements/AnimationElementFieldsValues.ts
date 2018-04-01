@@ -1,6 +1,6 @@
 import { AnimationElementFieldsNames } from './AnimationElementFieldsNames';
 import { AnimationElementFieldsTypes } from './AnimationElementFieldsTypes';
-import { AnimationElementName } from './AnimationElementName';
+import { AnimationElements } from './AnimationElements';
 
-export type AnimationElementFieldsValues<T extends AnimationElementName> =
+export type AnimationElementFieldsValues<T extends AnimationElements> =
     AnimationElementFieldsTypes<T>[AnimationElementFieldsNames<T>];

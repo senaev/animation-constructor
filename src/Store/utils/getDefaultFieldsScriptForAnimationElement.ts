@@ -1,10 +1,10 @@
 import { AnimationElementFieldsTypes } from '../../AnimationElements/AnimationElementFieldsTypes';
-import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
+import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementsDefaultValues } from '../../AnimationElements/AnimationElementsDefaultValues';
 import { AnimationElementFieldsScript } from '../../AnimationScript';
 import { mapFieldValuesToDefaultFieldsScript } from './mapFieldValuesToDefaultFieldsScript';
 
-export function getDefaultFieldsScriptForAnimationElement<T extends AnimationElementName>
+export function getDefaultFieldsScriptForAnimationElement<T extends AnimationElements>
 (elementName: T): AnimationElementFieldsScript<T> {
     const defaultFieldValues: AnimationElementFieldsTypes<T> = AnimationElementsDefaultValues[elementName] as any;
 

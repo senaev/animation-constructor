@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
 import { AnimationElementFieldTitles } from '../../AnimationElements/AnimationElementFieldTitles';
-import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
+import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementsFieldsUnits';
 import { AnimationElementScript } from '../../AnimationScript';
 import { BlockFieldTitles } from '../../Block/BlockFieldTitles';
@@ -39,18 +39,18 @@ export type TimeLinesState = {
 
 export type TimeLinesStateProps = {
     animationPosition: ConstructorState['animationPosition'];
-    animationElementScript: AnimationElementScript<AnimationElementName> | undefined;
+    animationElementScript: AnimationElementScript<AnimationElements> | undefined;
 };
 export type TimeLinesDispatchProps = {
     setAnimationPosition: (animationPosition: ConstructorState['animationPosition']) => void;
     setBlockScriptStepPosition: (stepPosition: EditableStepPosition<BlockFieldUnits>) => void;
-    setFieldsScriptStepPosition: (stepPosition: EditableStepPosition<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
+    setFieldsScriptStepPosition: (stepPosition: EditableStepPosition<AnimationElementsFieldsUnits[AnimationElements]>) => void;
     setBlockScriptStepValue: (stepValue: EditableStepValue<BlockFieldUnits>) => void;
-    setFieldsScriptStepValue: (stepValue: EditableStepValue<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
+    setFieldsScriptStepValue: (stepValue: EditableStepValue<AnimationElementsFieldsUnits[AnimationElements]>) => void;
     removeBlockScriptStep: (changedStep: EditableStep<BlockFieldUnits>) => void;
-    removeFieldsScriptStep: (changedStep: EditableStep<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
+    removeFieldsScriptStep: (changedStep: EditableStep<AnimationElementsFieldsUnits[AnimationElements]>) => void;
     addBlockScriptStep: (changedStep: AdditionalStep<BlockFieldUnits>) => void;
-    addFieldsScriptStep: (changedStep: AdditionalStep<AnimationElementsFieldsUnits[AnimationElementName]>) => void;
+    addFieldsScriptStep: (changedStep: AdditionalStep<AnimationElementsFieldsUnits[AnimationElements]>) => void;
 };
 
 export type TimeLinesProps =

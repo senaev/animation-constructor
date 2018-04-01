@@ -1,5 +1,5 @@
 import { getStepByPosition } from '../../Animation/util/getStepByPosition';
-import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
+import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementScript } from '../../AnimationScript';
 import { Block } from '../../Block/Block';
 import { mapObjectValues } from '../../utils/mapObjectValues';
@@ -64,7 +64,7 @@ export function setEditedBlockFieldsOnCurrentPosition(state: ConstructorState,
                     elementName,
                     blockScript: nextBlockScript,
                     fieldsScript,
-                } as AnimationElementScript<AnimationElementName>;
+                } as AnimationElementScript<AnimationElements>;
             } else {
                 return animationElementScript;
             }

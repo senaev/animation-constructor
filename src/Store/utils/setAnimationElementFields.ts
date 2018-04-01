@@ -1,5 +1,5 @@
 import { AnimationElementFieldsTypes } from '../../AnimationElements/AnimationElementFieldsTypes';
-import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
+import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementsFieldsUnits';
 import { AnimationElementScript } from '../../AnimationScript';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
@@ -8,7 +8,7 @@ import { mapObjectValues } from '../../utils/mapObjectValues';
 import { ConstructorState } from '../State';
 import { createDefaultUnitScript } from './createDefaultUnitScript';
 
-export function setAnimationElementFields<T extends AnimationElementName>
+export function setAnimationElementFields<T extends AnimationElements>
 (state: ConstructorState,
  blockLocation: BlockLocation,
  animationElementFields: Partial<AnimationElementFieldsTypes<T>>): ConstructorState {

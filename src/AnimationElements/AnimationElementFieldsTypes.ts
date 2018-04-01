@@ -1,5 +1,5 @@
 import { UnitsToTypes } from '../Unit/UnitsToTypes';
-import { AnimationElementName } from './AnimationElementName';
+import { AnimationElements } from './AnimationElements';
 import { AnimationElementsFieldsUnits } from './AnimationElementsFieldsUnits';
 
-export type AnimationElementFieldsTypes<T extends AnimationElementName> = UnitsToTypes<AnimationElementsFieldsUnits[T]>;
+export type AnimationElementFieldsTypes<T extends AnimationElements> = UnitsToTypes<AnimationElementsFieldsUnits[T]>;

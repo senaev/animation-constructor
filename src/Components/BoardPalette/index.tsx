@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
 import { ALL_ANIMATION_ELEMENT_NAMES } from '../../AnimationElements/ALL_ANIMATION_ELEMENT_NAMES';
-import { AnimationElementName } from '../../AnimationElements/AnimationElementName';
+import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementsTitles } from '../../AnimationElements/AnimationElementsTitles';
 import { addStandardElementAction } from '../../Store/actions';
 import * as c from './index.pcss';
 
 export type BoardPaletteProps = {
-    addStandardElement: (elementName: AnimationElementName) => void;
+    addStandardElement: (elementName: AnimationElements) => void;
 };
 
 class BoardPaletteComponent extends React.Component<BoardPaletteProps, {}> {

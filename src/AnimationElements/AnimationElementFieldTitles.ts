@@ -1,9 +1,8 @@
 import { AnimationElementFieldsNames } from './AnimationElementFieldsNames';
-import { AnimationElementName } from './AnimationElementName';
 import { AnimationElements } from './AnimationElements';
 
 export const AnimationElementFieldTitles: {
-    [elementName in AnimationElementName]: {
+    [elementName in AnimationElements]: {
     [key in AnimationElementFieldsNames<elementName>]: string;
     };
     } = {

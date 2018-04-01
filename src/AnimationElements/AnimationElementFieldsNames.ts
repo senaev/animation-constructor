@@ -1,4 +1,4 @@
-import { AnimationElementName } from './AnimationElementName';
+import { AnimationElements } from './AnimationElements';
 import { AnimationElementsFieldsUnits } from './AnimationElementsFieldsUnits';
 
-export type AnimationElementFieldsNames<T extends AnimationElementName> = keyof AnimationElementsFieldsUnits[T];
+export type AnimationElementFieldsNames<T extends AnimationElements> = keyof AnimationElementsFieldsUnits[T];

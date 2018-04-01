@@ -7,7 +7,7 @@ import { AnimationElementFieldsTypes } from '../AnimationElementFieldsTypes';
 import { AnimationElements } from '../AnimationElements';
 import * as c from './index.pcss';
 
-type ElementName = AnimationElements.Rectangle;
+type ElementName = typeof AnimationElements.Rectangle;
 
 export class Rectangle extends AnimationElement<ElementName> {
     private readonly rectangleDiv: HTMLElement;

@@ -1,4 +1,4 @@
-import { AnimationElementName } from '../AnimationElements/AnimationElementName';
+import { AnimationElements } from '../AnimationElements/AnimationElements';
 import { AnimationElementsFieldsUnits } from '../AnimationElements/AnimationElementsFieldsUnits';
 import { BlockFieldUnits } from '../Block/BlockFieldUnits';
 import { EasingName } from '../Easing/EasingName';
@@ -22,13 +22,13 @@ export type FieldsScripts<T extends Record<string, Unit>> = {
 
 export type BlockScript = FieldsScripts<BlockFieldUnits>;
 
-export type AnimationElementFieldsScript<T extends AnimationElementName>
+export type AnimationElementFieldsScript<T extends AnimationElements>
     = FieldsScripts<AnimationElementsFieldsUnits[T]>;
 
-export type AnimationElementScript<T extends AnimationElementName> = {
+export type AnimationElementScript<T extends AnimationElements> = {
     elementName: T;
     blockScript: BlockScript;
     fieldsScript: AnimationElementFieldsScript<T>;
 };
 
-export type AnimationScript = AnimationElementScript<AnimationElementName>[];
+export type AnimationScript = AnimationElementScript<AnimationElements>[];
