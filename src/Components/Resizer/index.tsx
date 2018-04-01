@@ -204,10 +204,38 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
         } = this.props;
 
         let blockOriginAbsoluteCoordinates: Readonly<PointCoordinates>;
+        let cursorOffset: PointCoordinates;
         this.dragListenerForResize = new DragListener(resizeElement, {
-            onStart: () => {
+            onStart: ({
+                          startX,
+                          startY,
+                      }) => {
                 setEditedBlockResizing(true);
                 blockOriginAbsoluteCoordinates = this.getBlockOriginAbsoluteCoordinates();
+
+                const pixelsInPercent = this.getPixelsInPercent();
+
+                const {
+                    width,
+                    height,
+                    rotation,
+                } = this.props.block;
+
+                const {
+                    width: cursorOffsetX,
+                    height: cursorOffsetY,
+                } = getRectangleSizeByPointAndAngle(
+                    {
+                        x: startX - blockOriginAbsoluteCoordinates.x,
+                        y: startY - blockOriginAbsoluteCoordinates.y,
+                    },
+                    rotation,
+                );
+
+                cursorOffset = {
+                    x: cursorOffsetX / pixelsInPercent - width,
+                    y: cursorOffsetY / pixelsInPercent - height,
+                };
             },
             onMove: (dragPosition) => {
                 const dragPositionRelativeToBlockOrigin: PointCoordinates = {
@@ -222,8 +250,8 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
 
                 const pixelsInPercent = this.getPixelsInPercent();
                 setEditedBlockFieldsOnCurrentPosition({
-                    width: Math.max(0, width) / pixelsInPercent,
-                    height: Math.max(0, height) / pixelsInPercent,
+                    width: Math.max(0, width) / pixelsInPercent - cursorOffset.x,
+                    height: Math.max(0, height) / pixelsInPercent - cursorOffset.y,
                 });
             },
             onEnd: () => {
