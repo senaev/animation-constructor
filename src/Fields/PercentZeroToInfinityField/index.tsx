@@ -6,7 +6,7 @@ import { clamp } from '../../utils/clamp';
 import { Field, FieldPreviewProps } from '../Field';
 import * as c from './index.pcss';
 
-const UNIT = Unit.degree;
+const UNIT = Unit.percent;
 type UNIT = typeof UNIT;
 
 export class PercentZeroToInfinityField extends Field<UNIT> {
