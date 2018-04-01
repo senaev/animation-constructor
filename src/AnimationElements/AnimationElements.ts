@@ -1,11 +1,5 @@
-import { Mirror } from '../types/Mirror';
+import { mirrorObject } from '../utils/Mirror/mirrorObject';
+import { ALL_ANIMATION_ELEMENTS } from './ALL_ANIMATION_ELEMENTS';
 
-const Rectangle = 'Rectangle';
-
-export type AnimationElementName =
-    | typeof Rectangle;
-
-export const AnimationElements: Mirror<AnimationElementName> = {
-    Rectangle,
-};
-export type AnimationElements = AnimationElementName;
+export const AnimationElements = mirrorObject(ALL_ANIMATION_ELEMENTS);
+export type AnimationElements = keyof typeof AnimationElements;
