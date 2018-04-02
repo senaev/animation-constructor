@@ -5,7 +5,7 @@ import { AnimationElementScript } from '../../AnimationScript';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { Unit } from '../../Unit/Unit';
 import { mapObjectValues } from '../../utils/mapObjectValues';
-import { ConstructorStore } from '../State';
+import { ConstructorStore } from '../ConstructorStore';
 import { createDefaultUnitScript } from './createDefaultUnitScript';
 
 export function setAnimationElementFields<T extends AnimationElements>

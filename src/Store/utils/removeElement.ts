@@ -1,6 +1,6 @@
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { removeElementFromArray } from '../../utils/removeElementFromArray';
-import { ConstructorStore } from '../State';
+import { ConstructorStore } from '../ConstructorStore';
 
 export function removeElement(state: ConstructorStore,
                               blockLocation: BlockLocation): ConstructorStore {

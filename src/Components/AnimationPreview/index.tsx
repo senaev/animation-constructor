@@ -4,7 +4,7 @@ import { Animation } from '../../Animation';
 import { AnimationScript } from '../../AnimationScript';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { getBlockLocationByElement } from '../../BlockLocation/getBlockLocationByElement';
-import { ConstructorStore } from '../../Store/State';
+import { ConstructorStore } from '../../Store/ConstructorStore';
 import { getIfNodeIsChild } from '../../utils/getIfNodeIsChild';
 import { ResizeSensor } from '../../utils/ResizeSensor';
 import * as c from './index.pcss';

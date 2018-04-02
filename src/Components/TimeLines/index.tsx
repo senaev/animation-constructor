@@ -20,7 +20,7 @@ import {
     setFieldsScriptStepPositionAction,
     setFieldsScriptStepValueAction,
 } from '../../Store/actions';
-import { ConstructorStore } from '../../Store/State';
+import { ConstructorStore } from '../../Store/ConstructorStore';
 import { AdditionalStep } from '../../Store/types/AdditionalStep';
 import { EditableStep } from '../../Store/types/EditableStep';
 import { EditableStepPosition } from '../../Store/types/EditableStepPosition';
@@ -121,6 +121,7 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                     ? null
                     : <>
                         <FieldsTimeLines
+                            isBlockPositionField={ true }
                             fieldsScripts={ animationElementScript.blockScript }
                             titlesDictionary={ BlockFieldTitles }
                             containerWidth={ containerWidth }
@@ -130,6 +131,7 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                             onScriptStepAdd={ addBlockScriptStep }
                         />
                         <FieldsTimeLines
+                            isBlockPositionField={ false }
                             fieldsScripts={ animationElementScript.fieldsScript }
                             titlesDictionary={ AnimationElementFieldTitles[animationElementScript.elementName] }
                             containerWidth={ containerWidth }

@@ -10,8 +10,8 @@ import { PointCoordinates } from '../types/PointCoordinates';
 import { Size } from '../types/Size';
 import { Unit } from '../Unit/Unit';
 
-export type ChangingPositionStep<T extends Record<string, Unit>> = {
-    isBlockPositionField: T extends BlockFieldUnits ? true : false;
+export type StepLocation<T extends Record<string, Unit>> = {
+    isBlockPositionField: boolean;
     fieldName: keyof T;
     stepIndex: number;
 };
@@ -22,8 +22,8 @@ export type ConstructorStore = {
         isResizing: boolean;
         isRotating: boolean;
         // TODO: handle
-        changingPositionStep:
-            | ChangingPositionStep<BlockFieldUnits | AnimationElementsFieldsUnits[AnimationElements]>
+        changingPositionStepLocation:
+            | StepLocation<BlockFieldUnits | AnimationElementsFieldsUnits[AnimationElements]>
             | undefined;
         blockLocation: BlockLocation;
     } | undefined,

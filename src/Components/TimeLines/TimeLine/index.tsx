@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Unit } from '../../../Unit/Unit';
-import { TimeLinePoint, TimeLinePointOwnProps } from '../TimeLinePoint/index';
+import { TimeLinePointConnected, TimeLinePointOwnProps } from '../TimeLinePoint';
 import * as c from './index.pcss';
 
 export type TimeLineProps = {
-    points: TimeLinePointOwnProps<Unit>[];
+    points: TimeLinePointOwnProps<Record<string, Unit>, string>[];
 };
 
 export class TimeLine extends React.Component<TimeLineProps, {}> {
@@ -18,7 +18,7 @@ export class TimeLine extends React.Component<TimeLineProps, {}> {
             <div className={ c.TimeLine__content }>{ children }</div>
             {
                 points.map((pointProps, i) => {
-                    return <TimeLinePoint
+                    return <TimeLinePointConnected
                         key={ i }
                         { ...pointProps }
                     />;

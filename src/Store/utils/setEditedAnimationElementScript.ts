@@ -1,6 +1,6 @@
 import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementScript } from '../../AnimationScript';
-import { ConstructorStore } from '../State';
+import { ConstructorStore } from '../ConstructorStore';
 import { getEditedAnimationElementBlockLocation } from './getEditedAnimationElementBlockLocation';
 
 export function setEditedAnimationElementScript<T extends AnimationElements>

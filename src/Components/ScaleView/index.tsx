@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { getRectangleByScale } from '../../Scale/utils/getRectangleByScale';
-import { ConstructorStore } from '../../Store/State';
+import { ConstructorStore } from '../../Store/ConstructorStore';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
 import { getCentralSquareOfRectangle } from '../../utils/Trigonometry/getCentralSquareOfRectangle';

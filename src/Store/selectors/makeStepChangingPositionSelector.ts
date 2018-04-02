@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { Unit } from '../../Unit/Unit';
 import { getObjectKeys } from '../../utils/getObjectKeys';
-import { ChangingPositionStep, ConstructorStore } from '../State';
+import { ConstructorStore, StepLocation } from '../ConstructorStore';
 
 function areObjectPropertiesEqual<T extends Record<string, any>>(first: T, second: T): boolean {
     const firstKeys = getObjectKeys(first);
@@ -20,7 +20,7 @@ function areObjectPropertiesEqual<T extends Record<string, any>>(first: T, secon
     return true;
 }
 
-export function makeStepChangingPositionSelector<T extends Record<string, Unit>>(originalChangingPositionStep: ChangingPositionStep<T>) {
+export function makeStepChangingPositionSelector<T extends Record<string, Unit>>(originalStepLocation: StepLocation<T>) {
     return createSelector<ConstructorStore,
         ConstructorStore['editParams'],
         boolean>([
@@ -31,13 +31,13 @@ export function makeStepChangingPositionSelector<T extends Record<string, Unit>>
         }
 
         const {
-            changingPositionStep,
+            changingPositionStepLocation,
         } = editParams;
 
-        if (changingPositionStep === undefined) {
+        if (changingPositionStepLocation === undefined) {
             return false;
         }
 
-        return areObjectPropertiesEqual(changingPositionStep as ChangingPositionStep<Record<string, Unit>>, originalChangingPositionStep);
+        return areObjectPropertiesEqual(changingPositionStepLocation as StepLocation<Record<string, Unit>>, originalStepLocation);
     });
 }

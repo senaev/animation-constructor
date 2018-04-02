@@ -3,7 +3,7 @@ import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementScript } from '../../AnimationScript';
 import { Block } from '../../Block/Block';
 import { mapObjectValues } from '../../utils/mapObjectValues';
-import { ConstructorStore } from '../State';
+import { ConstructorStore } from '../ConstructorStore';
 import { addStep } from './addStep';
 import { getEditedAnimationElementBlockLocation } from './getEditedAnimationElementBlockLocation';
 import { getEditedAnimationElementScript } from './getEditedAnimationElementScript';

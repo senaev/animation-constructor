@@ -22,7 +22,7 @@ import {
     zoomOutAction,
 } from './actions';
 import { ZOOM_IN_STEP, ZOOM_OUT_STEP } from './const/ZOOM_STEP';
-import { ConstructorStore } from './State';
+import { ConstructorStore } from './ConstructorStore';
 import { addScriptStepOnPosition } from './utils/addScriptStepOnPosition';
 import { getDefaultFieldsScriptForAnimationElement } from './utils/getDefaultFieldsScriptForAnimationElement';
 import { getEditedAnimationElementScript } from './utils/getEditedAnimationElementScript';
@@ -47,7 +47,7 @@ export const createConstructorReducer = (appState: ConstructorStore) => createRe
                 isMoving: false,
                 isResizing: false,
                 isRotating: false,
-                changingPositionStep: undefined,
+                changingPositionStepLocation: undefined,
                 blockLocation: [length],
             },
             animationScript: [
@@ -69,7 +69,7 @@ export const createConstructorReducer = (appState: ConstructorStore) => createRe
                     isMoving: true,
                     isResizing: false,
                     isRotating: false,
-                    changingPositionStep: undefined,
+                    changingPositionStepLocation: undefined,
                     blockLocation,
                 },
         };

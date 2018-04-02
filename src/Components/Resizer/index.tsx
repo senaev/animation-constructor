@@ -13,7 +13,7 @@ import {
     setEditedBlockResizingAction,
     setEditedBlockRotatingAction,
 } from '../../Store/actions';
-import { ConstructorStore } from '../../Store/State';
+import { ConstructorStore } from '../../Store/ConstructorStore';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Unit } from '../../Unit/Unit';

@@ -1,6 +1,6 @@
 import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementScript } from '../../AnimationScript';
-import { ConstructorStore } from '../State';
+import { ConstructorStore } from '../ConstructorStore';
 import { getAnimationElementScriptByBlockLocation } from './getAnimationElementScriptByBlockLocation';
 import { getEditedAnimationElementBlockLocation } from './getEditedAnimationElementBlockLocation';
 

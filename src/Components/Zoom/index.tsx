@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
 import { zoomInAction, zoomOutAction } from '../../Store/actions';
-import { ConstructorStore } from '../../Store/State';
+import { ConstructorStore } from '../../Store/ConstructorStore';
 import * as c from './index.pcss';
 
 export type ZoomOwnProps = {

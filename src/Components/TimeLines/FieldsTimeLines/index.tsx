@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FieldsScripts } from '../../../AnimationScript';
 import { getStepParams } from '../../../AnimationScript/utils/getStepParams';
+import { BlockFieldUnits } from '../../../Block/BlockFieldUnits';
 import { AdditionalStep } from '../../../Store/types/AdditionalStep';
 import { EditableStep } from '../../../Store/types/EditableStep';
 import { EditableStepPosition } from '../../../Store/types/EditableStepPosition';
@@ -14,6 +15,7 @@ import { TimeLine } from '../TimeLine';
 import { TimeLinePointOwnProps } from '../TimeLinePoint';
 
 export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
+    isBlockPositionField: T extends BlockFieldUnits ? true : false;
     fieldsScripts: FieldsScripts<T>;
     titlesDictionary: Record<keyof T, string>;
     containerWidth: UnitTypes[Unit.pixel];
@@ -26,6 +28,7 @@ export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
 export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Component<FieldsTimeLinesProps<T>, {}> {
     public render() {
         const {
+            isBlockPositionField,
             fieldsScripts,
             titlesDictionary,
             containerWidth,
@@ -44,12 +47,12 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                 steps,
             } = unitScript;
             const pointPositions = getStepParams(steps);
-            const points: TimeLinePointOwnProps<Unit>[] = pointPositions.map(({
+            const points: TimeLinePointOwnProps<T, T[typeof fieldName]>[] = pointPositions.map(({
                                                                                previousStepPosition,
                                                                                position,
                                                                                nextStepPosition,
                                                                            }, stepIndex) => {
-                let movable: TimeLinePointOwnProps<Unit>['movable'];
+                let movable: TimeLinePointOwnProps<T, T[typeof fieldName]>['movable'];
 
                 if (stepIndex > 0) {
                     if (previousStepPosition === undefined) {
@@ -86,8 +89,12 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
 
                 const { value } = steps[stepIndex];
 
-                const point: TimeLinePointOwnProps<Unit> = {
-                    stepIndex,
+                const point: TimeLinePointOwnProps<T, T[typeof fieldName]> = {
+                    stepLocation: {
+                        isBlockPositionField,
+                        fieldName,
+                        stepIndex,
+                    },
                     position,
                     movable,
                     removable: stepIndex > 0

@@ -1,5 +1,5 @@
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
-import { ConstructorStore } from '../State';
+import { ConstructorStore } from '../ConstructorStore';
 
 export function getEditedAnimationElementBlockLocation(state: ConstructorStore): BlockLocation {
     const {

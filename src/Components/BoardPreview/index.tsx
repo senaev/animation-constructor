@@ -5,7 +5,7 @@ import { Action } from 'redux-act';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { getRectangleByScale } from '../../Scale/utils/getRectangleByScale';
 import { selectBlockAction, setScaleCoordinatesAction } from '../../Store/actions';
-import { ConstructorStore } from '../../Store/State';
+import { ConstructorStore } from '../../Store/ConstructorStore';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
 import { addElementEventListener } from '../../utils/addElementEventListener';

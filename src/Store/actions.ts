@@ -6,7 +6,7 @@ import { Block } from '../Block/Block';
 import { BlockFieldUnits } from '../Block/BlockFieldUnits';
 import { BlockLocation } from '../BlockLocation/BlockLocation';
 import { PointCoordinates } from '../types/PointCoordinates';
-import { ConstructorStore } from './State';
+import { ConstructorStore } from './ConstructorStore';
 import { AdditionalStep } from './types/AdditionalStep';
 import { EditableStep } from './types/EditableStep';
 import { EditableStepPosition } from './types/EditableStepPosition';
