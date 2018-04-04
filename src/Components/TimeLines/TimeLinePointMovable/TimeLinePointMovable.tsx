@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createNumberField } from '../../../Fields/createNumberField/createNumberField';
 import { Unit } from '../../../Unit/Unit';
-import { TimeLinePointMovableParams } from '../TimeLinePoint';
+import { TimeLinePointMovableParams } from '../TimeLinePoint/index';
 
 type TimeLinePointMovableProps = {
     position: number;

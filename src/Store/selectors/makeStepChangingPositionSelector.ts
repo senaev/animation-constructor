@@ -31,13 +31,13 @@ export function makeStepChangingPositionSelector<T extends Record<string, Unit>>
         }
 
         const {
-            changingPositionStepLocation,
+            blockChangingPositionStepLocation,
         } = editParams;
 
-        if (changingPositionStepLocation === undefined) {
+        if (blockChangingPositionStepLocation === undefined) {
             return false;
         }
 
-        return areObjectPropertiesEqual(changingPositionStepLocation as StepLocation<Record<string, Unit>>, originalStepLocation);
+        return areObjectPropertiesEqual(blockChangingPositionStepLocation as StepLocation<Record<string, Unit>>, originalStepLocation);
     });
 }

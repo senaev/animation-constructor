@@ -5,7 +5,7 @@ import { Action } from 'redux-act';
 import { ALL_ANIMATION_ELEMENT_NAMES } from '../../AnimationElements/ALL_ANIMATION_ELEMENT_NAMES';
 import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementsTitles } from '../../AnimationElements/AnimationElementsTitles';
-import { addStandardElementAction } from '../../Store/actions';
+import { actions } from '../../Store/actions';
 import * as c from './index.pcss';
 
 export type BoardPaletteProps = {
@@ -34,7 +34,7 @@ class BoardPaletteComponent extends React.Component<BoardPaletteProps, {}> {
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): BoardPaletteProps => ({
     addStandardElement: (elementName) => {
-        dispatch(addStandardElementAction(elementName));
+        dispatch(actions.addStandardElement(elementName));
     },
 });
 

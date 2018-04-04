@@ -4,7 +4,7 @@ import * as Redux from 'redux';
 import { Action } from 'redux-act';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { getRectangleByScale } from '../../Scale/utils/getRectangleByScale';
-import { selectBlockAction, setScaleCoordinatesAction } from '../../Store/actions';
+import { actions } from '../../Store/actions';
 import { ConstructorStore } from '../../Store/ConstructorStore';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Size } from '../../types/Size';
@@ -325,10 +325,10 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): BoardPreviewDispatchProps => ({
     selectBlock: (blockLocation) => {
-        dispatch(selectBlockAction(blockLocation));
+        dispatch(actions.selectBlock(blockLocation));
     },
     setScalePosition: (scalePositoin) => {
-        dispatch(setScaleCoordinatesAction(scalePositoin));
+        dispatch(actions.setScaleCoordinates(scalePositoin));
     },
 });
 

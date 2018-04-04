@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Unit } from '../../../Unit/Unit';
-import { TimeLinePointConnected, TimeLinePointOwnProps } from '../TimeLinePoint';
+import { TimeLinePointConnected, TimeLinePointOwnProps } from '../TimeLinePoint/connected';
 import * as c from './index.pcss';
 
 export type TimeLineProps = {

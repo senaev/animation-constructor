@@ -10,15 +10,7 @@ import { AnimationElementScript } from '../../AnimationScript';
 import { BlockFieldTitles } from '../../Block/BlockFieldTitles';
 import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import {
-    addBlockScriptStepAction,
-    addFieldsScriptStepAction,
-    removeBlockScriptStepAction,
-    removeFieldsScriptStepAction,
-    setAnimationPositionAction,
-    setBlockScriptStepPositionAction,
-    setBlockScriptStepValueAction,
-    setFieldsScriptStepPositionAction,
-    setFieldsScriptStepValueAction,
+    actions,
 } from '../../Store/actions';
 import { ConstructorStore } from '../../Store/ConstructorStore';
 import { AdditionalStep } from '../../Store/types/AdditionalStep';
@@ -184,31 +176,31 @@ const mapStateToProps = (state: ConstructorStore): TimeLinesStateProps => {
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): TimeLinesDispatchProps => ({
     setAnimationPosition: (animationPosition) => {
-        dispatch(setAnimationPositionAction(animationPosition));
+        dispatch(actions.setAnimationPosition(animationPosition));
     },
     setBlockScriptStepPosition: (stepPosition) => {
-        dispatch(setBlockScriptStepPositionAction(stepPosition));
+        dispatch(actions.setBlockScriptStepPosition(stepPosition));
     },
     setFieldsScriptStepPosition: (stepPosition) => {
-        dispatch(setFieldsScriptStepPositionAction(stepPosition));
+        dispatch(actions.setFieldsScriptStepPosition(stepPosition));
     },
     setBlockScriptStepValue: (stepValue) => {
-        dispatch(setBlockScriptStepValueAction(stepValue));
+        dispatch(actions.setBlockScriptStepValue(stepValue));
     },
     setFieldsScriptStepValue: (stepValue) => {
-        dispatch(setFieldsScriptStepValueAction(stepValue));
+        dispatch(actions.setFieldsScriptStepValue(stepValue));
     },
     removeBlockScriptStep: (changedStep) => {
-        dispatch(removeBlockScriptStepAction(changedStep));
+        dispatch(actions.removeBlockScriptStep(changedStep));
     },
     removeFieldsScriptStep: (changedStep) => {
-        dispatch(removeFieldsScriptStepAction(changedStep));
+        dispatch(actions.removeFieldsScriptStep(changedStep));
     },
     addBlockScriptStep: (addedStep) => {
-        dispatch(addBlockScriptStepAction(addedStep));
+        dispatch(actions.addBlockScriptStep(addedStep));
     },
     addFieldsScriptStep: (addedStep) => {
-        dispatch(addFieldsScriptStepAction(addedStep));
+        dispatch(actions.addFieldsScriptStep(addedStep));
     },
 });
 

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import { zoomInAction, zoomOutAction } from '../../Store/actions';
+import { actions } from '../../Store/actions';
 import { ConstructorStore } from '../../Store/ConstructorStore';
 import * as c from './index.pcss';
 
@@ -54,10 +54,10 @@ const mapStateToProps = (state: ConstructorStore, {}: ZoomOwnProps): ZoomStatePr
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): ZoomDispatchProps => ({
     zoomIn: () => {
-        dispatch(zoomInAction());
+        dispatch(actions.zoomIn());
     },
     zoomOut: () => {
-        dispatch(zoomOutAction());
+        dispatch(actions.zoomOut());
     },
 });
 

@@ -1,4 +1,4 @@
-import { createAction } from 'redux-act';
+import { createAction, EmptyActionCreator, SimpleActionCreator } from 'redux-act';
 import { AnimationElementFieldsTypes } from '../AnimationElements/AnimationElementFieldsTypes';
 import { AnimationElements } from '../AnimationElements/AnimationElements';
 import { AnimationElementsFieldsUnits } from '../AnimationElements/AnimationElementsFieldsUnits';
@@ -6,53 +6,47 @@ import { Block } from '../Block/Block';
 import { BlockFieldUnits } from '../Block/BlockFieldUnits';
 import { BlockLocation } from '../BlockLocation/BlockLocation';
 import { PointCoordinates } from '../types/PointCoordinates';
+import { mapObjectValues } from '../utils/mapObjectValues';
 import { ConstructorStore } from './ConstructorStore';
 import { AdditionalStep } from './types/AdditionalStep';
 import { EditableStep } from './types/EditableStep';
 import { EditableStepPosition } from './types/EditableStepPosition';
 import { EditableStepValue } from './types/EditableStepValue';
 
-export const addStandardElementAction =
-    createAction<AnimationElements>('addStandardElementAction');
+const anyParam: any = undefined;
 
-export const selectBlockAction =
-    createAction<BlockLocation | undefined>('selectBlockAction');
+const ActionTypes = {
+    addStandardElement: anyParam as AnimationElements,
 
-export const setEditedBlockMovingAction =
-    createAction<boolean>('setEditedBlockMovingAction');
-export const setEditedBlockResizingAction =
-    createAction<boolean>('setEditedBlockResizingAction');
-export const setEditedBlockRotatingAction =
-    createAction<boolean>('setEditedBlockRotatingAction');
+    selectBlock: anyParam as (BlockLocation | undefined),
 
-export const setScaleCoordinatesAction = createAction<PointCoordinates>('setScaleCoordinatesAction');
-export const zoomInAction = createAction('zoomInAction');
-export const zoomOutAction = createAction('zoomOutAction');
+    setEditedBlockMoving: anyParam as boolean,
+    setEditedBlockResizing: anyParam as boolean,
+    setEditedBlockRotating: anyParam as boolean,
 
-export const setEditedBlockFieldsOnCurrentPositionAction =
-    createAction<Partial<Block>>('setEditedBlockFieldsOnCurrentPositionAction');
-export const setEditedElementFieldsAction =
-    createAction<Partial<AnimationElementFieldsTypes<AnimationElements>>>('setEditedElementFieldsAction');
+    setScaleCoordinates: anyParam as PointCoordinates,
+    zoomIn: anyParam as undefined,
+    zoomOut: anyParam as undefined,
 
-export const setAnimationPositionAction =
-    createAction<ConstructorStore['animationPosition']>('setAnimationPositionAction');
+    setEditedBlockFieldsOnCurrentPosition: anyParam as Partial<Block>,
+    setEditedElementFields: anyParam as Partial<AnimationElementFieldsTypes<AnimationElements>>,
 
-export const setBlockScriptStepPositionAction =
-    createAction<EditableStepPosition<BlockFieldUnits>>('setBlockScriptStepPositionAction');
-export const setFieldsScriptStepPositionAction =
-    createAction<EditableStepPosition<AnimationElementsFieldsUnits[AnimationElements]>>('setFieldsScriptStepPositionAction');
+    setAnimationPosition: anyParam as ConstructorStore['animationPosition'],
 
-export const setBlockScriptStepValueAction =
-    createAction<EditableStepValue<BlockFieldUnits>>('setBlockScriptStepValueAction');
-export const setFieldsScriptStepValueAction =
-    createAction<EditableStepValue<AnimationElementsFieldsUnits[AnimationElements]>>('setFieldsScriptStepValueAction');
+    setBlockScriptStepPosition: anyParam as EditableStepPosition<BlockFieldUnits>,
+    setFieldsScriptStepPosition: anyParam as EditableStepPosition<AnimationElementsFieldsUnits[AnimationElements]>,
 
-export const removeBlockScriptStepAction =
-    createAction<EditableStep<BlockFieldUnits>>('removeBlockScriptStepAction');
-export const removeFieldsScriptStepAction =
-    createAction<EditableStep<AnimationElementsFieldsUnits[AnimationElements]>>('removeFieldsScriptStepAction');
+    setBlockScriptStepValue: anyParam as EditableStepValue<BlockFieldUnits>,
+    setFieldsScriptStepValue: anyParam as EditableStepValue<AnimationElementsFieldsUnits[AnimationElements]>,
 
-export const addBlockScriptStepAction =
-    createAction<AdditionalStep<BlockFieldUnits>>('addBlockScriptStepAction');
-export const addFieldsScriptStepAction =
-    createAction<AdditionalStep<AnimationElementsFieldsUnits[AnimationElements]>>('addFieldsScriptStepAction');
+    removeBlockScriptStep: anyParam as EditableStep<BlockFieldUnits>,
+    removeFieldsScriptStep: anyParam as EditableStep<AnimationElementsFieldsUnits[AnimationElements]>,
+
+    addBlockScriptStep: anyParam as AdditionalStep<BlockFieldUnits>,
+    addFieldsScriptStep: anyParam as AdditionalStep<AnimationElementsFieldsUnits[AnimationElements]>,
+};
+type ActionTypes = typeof ActionTypes;
+
+export const actions: {
+    [key in keyof ActionTypes]: ActionTypes[key] extends undefined ? EmptyActionCreator : SimpleActionCreator<ActionTypes[key]>;
+} = mapObjectValues(ActionTypes, (u, actionName) => createAction(actionName) as any);

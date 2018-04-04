@@ -1,9 +1,5 @@
 import * as React from 'react';
-import { connect, MapDispatchToPropsFunction, MapStateToPropsFactory } from 'react-redux';
-import * as Redux from 'redux';
-import { Action } from 'redux-act';
-import { ConstructorStore, StepLocation } from '../../../Store/ConstructorStore';
-import { makeStepChangingPositionSelector } from '../../../Store/selectors/makeStepChangingPositionSelector';
+import { StepLocation } from '../../../Store/ConstructorStore';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { clamp } from '../../../utils/clamp';
@@ -16,7 +12,6 @@ import * as c from './index.pcss';
 export type TimeLinePointRemovableParams = {
     onRemove: () => void;
 };
-
 
 export type TimeLinePointMovableParams = {
     min: number;
@@ -33,11 +28,9 @@ export type TimeLinePointChangeableParams<T extends Unit> = {
     onChange: (value: UnitTypes[T]) => void;
 };
 
-export type TimeLinePointStoreProps = {
-    isChangingPosition: boolean;
-};
-
-export type TimeLinePointOwnProps<T extends Record<string, Unit>, K extends keyof T> = {
+export type TimeLinePointProps<T extends Record<string, Unit>, K extends keyof T> = {
+    changingPosition: boolean;
+    isBlockFieldStep: boolean;
     stepLocation: StepLocation<T>
     position: number;
     containerWidth: UnitTypes[Unit.pixel];
@@ -46,25 +39,12 @@ export type TimeLinePointOwnProps<T extends Record<string, Unit>, K extends keyo
     changeable: TimeLinePointChangeableParams<T[K]> | undefined;
 };
 
-export type TimeLinePointDispatchProps = {
-    // TODO
-};
-
-type TimeLinePointMappedProps<T extends Record<string, Unit>, K extends keyof T> =
-    & TimeLinePointStoreProps
-    & TimeLinePointOwnProps<T, K>;
-
-type TimeLinePointProps<T extends Record<string, Unit>, K extends keyof T> =
-    & TimeLinePointMappedProps<T, K>
-    & TimeLinePointDispatchProps;
-
-
 export type TimeLinePointState = {
     isHovered: boolean;
     isChangeableDialogOpened: boolean;
 };
 
-class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
+export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
     extends React.Component<TimeLinePointProps<T, K>, TimeLinePointState> {
     private containerElement?: HTMLDivElement | null;
     private dragElement?: HTMLDivElement | null;
@@ -91,6 +71,7 @@ class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
         } = this.state;
 
         const {
+            changingPosition,
             position,
             removable,
             movable,
@@ -114,7 +95,7 @@ class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
                 } }
             />
             {
-                isHovered || isChangeableDialogOpened
+                changingPosition || isHovered || isChangeableDialogOpened
                     ? <TimeLinePointTooltip
                         position={ position }
                         changeable={ changeable }
@@ -208,37 +189,3 @@ class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
         this.setState({ isChangeableDialogOpened: opened });
     }
 }
-
-
-const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointStoreProps, TimeLinePointOwnProps<any, any>, ConstructorStore>
-    = (initialStore, initialOwnProps) => {
-    const stepChangingPositionSelector = makeStepChangingPositionSelector(initialOwnProps.stepLocation);
-
-    return (store, ownProps): TimeLinePointMappedProps<Record<string, Unit>, string> => {
-        const {
-            stepLocation,
-            position,
-            containerWidth,
-            removable,
-            movable,
-            changeable,
-        } = ownProps;
-
-        return {
-            stepLocation,
-            position,
-            containerWidth,
-            removable,
-            movable,
-            changeable,
-            isChangingPosition: stepChangingPositionSelector(store),
-        };
-    };
-};
-
-const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointDispatchProps, {}> =
-    (dispatch: Redux.Dispatch<Action<any>>) => ({
-        // TODO
-    });
-
-export const TimeLinePointConnected = connect(makeMapStoreToProps, mapDispatchToProps)(TimeLinePoint);

@@ -8,10 +8,7 @@ import { Block } from '../../Block/Block';
 import { blockToStyles } from '../../Block/utils/blockToStyles';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import {
-    setEditedBlockFieldsOnCurrentPositionAction,
-    setEditedBlockMovingAction,
-    setEditedBlockResizingAction,
-    setEditedBlockRotatingAction,
+    actions,
 } from '../../Store/actions';
 import { ConstructorStore } from '../../Store/ConstructorStore';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
@@ -378,16 +375,16 @@ const mapStateToProps = (state: ConstructorStore): ResizerStateProps => {
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): ResizerDispatchProps => ({
     setEditedBlockMoving: (isMoving) => {
-        dispatch(setEditedBlockMovingAction(isMoving));
+        dispatch(actions.setEditedBlockMoving(isMoving));
     },
     setEditedBlockResizing: (isResizing) => {
-        dispatch(setEditedBlockResizingAction(isResizing));
+        dispatch(actions.setEditedBlockResizing(isResizing));
     },
     setEditedBlockRotating: (isRotating) => {
-        dispatch(setEditedBlockRotatingAction(isRotating));
+        dispatch(actions.setEditedBlockRotating(isRotating));
     },
     setEditedBlockFieldsOnCurrentPosition: (blockFields) => {
-        dispatch(setEditedBlockFieldsOnCurrentPositionAction(blockFields));
+        dispatch(actions.setEditedBlockFieldsOnCurrentPosition(blockFields));
     },
 });
 

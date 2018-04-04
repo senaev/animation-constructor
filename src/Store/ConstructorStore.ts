@@ -11,7 +11,6 @@ import { Size } from '../types/Size';
 import { Unit } from '../Unit/Unit';
 
 export type StepLocation<T extends Record<string, Unit>> = {
-    isBlockPositionField: boolean;
     fieldName: keyof T;
     stepIndex: number;
 };
@@ -21,8 +20,7 @@ export type ConstructorStore = {
         isMoving: boolean;
         isResizing: boolean;
         isRotating: boolean;
-        // TODO: handle
-        changingPositionStepLocation:
+        blockChangingPositionStepLocation:
             | StepLocation<BlockFieldUnits | AnimationElementsFieldsUnits[AnimationElements]>
             | undefined;
         blockLocation: BlockLocation;

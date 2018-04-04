@@ -12,7 +12,7 @@ import { UnitTypes } from '../../../Unit/UnitTypes';
 import { getObjectKeys } from '../../../utils/getObjectKeys';
 import * as c from '../index.pcss';
 import { TimeLine } from '../TimeLine';
-import { TimeLinePointOwnProps } from '../TimeLinePoint';
+import { TimeLinePointOwnProps } from '../TimeLinePoint/connected';
 
 export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
     isBlockPositionField: T extends BlockFieldUnits ? true : false;
@@ -90,8 +90,8 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                 const { value } = steps[stepIndex];
 
                 const point: TimeLinePointOwnProps<T, T[typeof fieldName]> = {
+                    isBlockFieldStep: isBlockPositionField,
                     stepLocation: {
-                        isBlockPositionField,
                         fieldName,
                         stepIndex,
                     },
