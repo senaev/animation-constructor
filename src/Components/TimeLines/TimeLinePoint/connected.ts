@@ -1,10 +1,15 @@
 import { connect, MapDispatchToPropsFunction, MapStateToPropsFactory } from 'react-redux';
+import { AnimationElementFieldsNames } from '../../../AnimationElements/AnimationElementFieldsNames';
+import { AnimationElements } from '../../../AnimationElements/AnimationElements';
+import { BlockFieldName } from '../../../Block/BlockFieldName';
+import { actions } from '../../../Store/actions';
 import { ConstructorStore, StepLocation } from '../../../Store/ConstructorStore';
 import { makeStepChangingPositionSelector } from '../../../Store/selectors/makeStepChangingPositionSelector';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import {
     TimeLinePoint,
+    TimeLinePointCallbacks,
     TimeLinePointChangeableParams,
     TimeLinePointMovableParams,
     TimeLinePointRemovableParams,
@@ -22,10 +27,6 @@ export type TimeLinePointOwnProps<T extends Record<string, Unit>, K extends keyo
     removable: TimeLinePointRemovableParams | undefined;
     movable: TimeLinePointMovableParams | undefined;
     changeable: TimeLinePointChangeableParams<T[K]> | undefined;
-};
-
-export type TimeLinePointDispatchProps = {
-    // TODO
 };
 
 export type TimeLinePointMappedProps<T extends Record<string, Unit>, K extends keyof T> =
@@ -60,9 +61,39 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointStateProps, TimeL
     };
 };
 
-const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointDispatchProps, TimeLinePointOwnProps<Record<string, Unit>, string>> =
-    (dispatch, ownProps) => ({
-        // TODO
-    });
+const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointCallbacks, TimeLinePointOwnProps<Record<string, Unit>, string>> =
+    (dispatch, ownProps): TimeLinePointCallbacks => {
+        const {
+            isBlockFieldStep,
+            stepLocation: {
+                fieldName,
+                stepIndex,
+            },
+        } = ownProps;
+
+        return {
+            onPositionChangeStart: () => {
+                console.log('start');
+            },
+            onPositionChange: (stepPosition) => {
+                if (isBlockFieldStep) {
+                    dispatch(actions.setBlockScriptStepPosition({
+                        fieldName: fieldName as BlockFieldName,
+                        stepIndex,
+                        position: stepPosition,
+                    }));
+                } else {
+                    dispatch(actions.setFieldsScriptStepPosition({
+                        fieldName: fieldName as AnimationElementFieldsNames<AnimationElements>,
+                        stepIndex,
+                        position: stepPosition,
+                    }));
+                }
+            },
+            onPositionChangeEnd: () => {
+                console.log('end');
+            },
+        };
+    };
 
 export const TimeLinePointConnected = connect(makeMapStoreToProps, mapDispatchToProps)(TimeLinePoint);

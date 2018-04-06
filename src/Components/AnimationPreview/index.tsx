@@ -16,6 +16,7 @@ export type AnimationPreviewProps = Pick<ConstructorStore,
 
 export class AnimationPreview extends React.Component<AnimationPreviewProps, {}> {
     private container?: HTMLDivElement | null;
+    private animationContainer?: HTMLDivElement | null;
     private resizeSensor?: ResizeSensor;
     private animation?: Animation;
 
@@ -25,7 +26,14 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
             ref={ (element) => {
                 this.container = element;
             } }
-        />;
+        >
+            <div
+                ref={ (element) => {
+                    this.animationContainer = element;
+                } }
+                className={ c.AnimationPreview__resetPointerEvents }
+            />
+        </div>;
     }
 
     public getIfHTMLElementIsPartOfAnimation(element: HTMLElement): boolean {
@@ -64,13 +72,8 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
             throw new Error('Container element has not been initialized');
         }
 
-        const { parentElement } = container;
-
-        if (!parentElement) {
-            throw new Error('Container has no parent element');
-        }
-
-        this.resizeSensor = new ResizeSensor(parentElement, ({ width, height }) => {
+        console.log(container);
+        this.resizeSensor = new ResizeSensor(container, ({ width, height }) => {
             const size = Math.min(width, height);
 
             const { animation } = this;

@@ -13,37 +13,37 @@ import { EditableStep } from './types/EditableStep';
 import { EditableStepPosition } from './types/EditableStepPosition';
 import { EditableStepValue } from './types/EditableStepValue';
 
-const anyParam: any = undefined;
+const any: any = undefined;
 
 const ActionTypes = {
-    addStandardElement: anyParam as AnimationElements,
+    addStandardElement: any as AnimationElements,
 
-    selectBlock: anyParam as (BlockLocation | undefined),
+    selectBlock: any as (BlockLocation | undefined),
 
-    setEditedBlockMoving: anyParam as boolean,
-    setEditedBlockResizing: anyParam as boolean,
-    setEditedBlockRotating: anyParam as boolean,
+    setEditedBlockMoving: any as boolean,
+    setEditedBlockResizing: any as boolean,
+    setEditedBlockRotating: any as boolean,
 
-    setScaleCoordinates: anyParam as PointCoordinates,
-    zoomIn: anyParam as undefined,
-    zoomOut: anyParam as undefined,
+    setScaleCoordinates: any as PointCoordinates,
+    zoomIn: any as undefined,
+    zoomOut: any as undefined,
 
-    setEditedBlockFieldsOnCurrentPosition: anyParam as Partial<Block>,
-    setEditedElementFields: anyParam as Partial<AnimationElementFieldsTypes<AnimationElements>>,
+    setEditedBlockFieldsOnCurrentPosition: any as Partial<Block>,
+    setEditedElementFields: any as Partial<AnimationElementFieldsTypes<AnimationElements>>,
 
-    setAnimationPosition: anyParam as ConstructorStore['animationPosition'],
+    setAnimationPosition: any as ConstructorStore['animationPosition'],
 
-    setBlockScriptStepPosition: anyParam as EditableStepPosition<BlockFieldUnits>,
-    setFieldsScriptStepPosition: anyParam as EditableStepPosition<AnimationElementsFieldsUnits[AnimationElements]>,
+    setBlockScriptStepPosition: any as EditableStepPosition<BlockFieldUnits>,
+    setFieldsScriptStepPosition: any as EditableStepPosition<AnimationElementsFieldsUnits[AnimationElements]>,
 
-    setBlockScriptStepValue: anyParam as EditableStepValue<BlockFieldUnits>,
-    setFieldsScriptStepValue: anyParam as EditableStepValue<AnimationElementsFieldsUnits[AnimationElements]>,
+    setBlockScriptStepValue: any as EditableStepValue<BlockFieldUnits>,
+    setFieldsScriptStepValue: any as EditableStepValue<AnimationElementsFieldsUnits[AnimationElements]>,
 
-    removeBlockScriptStep: anyParam as EditableStep<BlockFieldUnits>,
-    removeFieldsScriptStep: anyParam as EditableStep<AnimationElementsFieldsUnits[AnimationElements]>,
+    removeBlockScriptStep: any as EditableStep<BlockFieldUnits>,
+    removeFieldsScriptStep: any as EditableStep<AnimationElementsFieldsUnits[AnimationElements]>,
 
-    addBlockScriptStep: anyParam as AdditionalStep<BlockFieldUnits>,
-    addFieldsScriptStep: anyParam as AdditionalStep<AnimationElementsFieldsUnits[AnimationElements]>,
+    addBlockScriptStep: any as AdditionalStep<BlockFieldUnits>,
+    addFieldsScriptStep: any as AdditionalStep<AnimationElementsFieldsUnits[AnimationElements]>,
 };
 type ActionTypes = typeof ActionTypes;
 

@@ -4,7 +4,6 @@ import { getStepParams } from '../../../AnimationScript/utils/getStepParams';
 import { BlockFieldUnits } from '../../../Block/BlockFieldUnits';
 import { AdditionalStep } from '../../../Store/types/AdditionalStep';
 import { EditableStep } from '../../../Store/types/EditableStep';
-import { EditableStepPosition } from '../../../Store/types/EditableStepPosition';
 import { EditableStepValue } from '../../../Store/types/EditableStepValue';
 import { UnitTimeLinePreviews } from '../../../TimelinePreviews/UnitTimeLinePreviews';
 import { Unit } from '../../../Unit/Unit';
@@ -19,7 +18,6 @@ export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
     fieldsScripts: FieldsScripts<T>;
     titlesDictionary: Record<keyof T, string>;
     containerWidth: UnitTypes[Unit.pixel];
-    onScriptStepPositionChange: (stepPosition: EditableStepPosition<T>) => void;
     onScriptStepValueChange: (stepPosition: EditableStepValue<T>) => void;
     onScriptStepRemove: (stepPosition: EditableStep<T>) => void;
     onScriptStepAdd: (stepPosition: AdditionalStep<T>) => void;
@@ -32,7 +30,6 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
             fieldsScripts,
             titlesDictionary,
             containerWidth,
-            onScriptStepPositionChange,
             onScriptStepValueChange,
             onScriptStepRemove,
             onScriptStepAdd,
@@ -48,10 +45,10 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
             } = unitScript;
             const pointPositions = getStepParams(steps);
             const points: TimeLinePointOwnProps<T, T[typeof fieldName]>[] = pointPositions.map(({
-                                                                               previousStepPosition,
-                                                                               position,
-                                                                               nextStepPosition,
-                                                                           }, stepIndex) => {
+                                                                                                    previousStepPosition,
+                                                                                                    position,
+                                                                                                    nextStepPosition,
+                                                                                                }, stepIndex) => {
                 let movable: TimeLinePointOwnProps<T, T[typeof fieldName]>['movable'];
 
                 if (stepIndex > 0) {
@@ -64,26 +61,6 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                         max: nextStepPosition === undefined
                             ? 1
                             : nextStepPosition,
-                        onPositionChangeStart: (nextPosition: number) => {
-                            this.setState({
-                                changingPositionStep: {
-                                    fieldName,
-                                    stepIndex,
-                                },
-                            });
-                        },
-                        onPositionChange: (nextPosition: number) => {
-                            onScriptStepPositionChange({
-                                fieldName,
-                                stepIndex,
-                                position: nextPosition,
-                            });
-                        },
-                        onPositionChangeEnd: (nextPosition: number) => {
-                            this.setState({
-                                changingPositionStep: undefined,
-                            });
-                        },
                     };
                 }
 

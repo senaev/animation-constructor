@@ -16,9 +16,6 @@ export type TimeLinePointRemovableParams = {
 export type TimeLinePointMovableParams = {
     min: number;
     max: number;
-    onPositionChangeStart: (position: number) => void;
-    onPositionChange: (position: number) => void;
-    onPositionChangeEnd: (position: number) => void;
 };
 
 export type TimeLinePointChangeableParams<T extends Unit> = {
@@ -28,7 +25,7 @@ export type TimeLinePointChangeableParams<T extends Unit> = {
     onChange: (value: UnitTypes[T]) => void;
 };
 
-export type TimeLinePointProps<T extends Record<string, Unit>, K extends keyof T> = {
+export type TimeLinePointParams<T extends Record<string, Unit>, K extends keyof T> = {
     changingPosition: boolean;
     isBlockFieldStep: boolean;
     stepLocation: StepLocation<T>
@@ -38,6 +35,16 @@ export type TimeLinePointProps<T extends Record<string, Unit>, K extends keyof T
     movable: TimeLinePointMovableParams | undefined;
     changeable: TimeLinePointChangeableParams<T[K]> | undefined;
 };
+
+export type TimeLinePointCallbacks = {
+    onPositionChangeStart: (position: number) => void;
+    onPositionChange: (position: number) => void;
+    onPositionChangeEnd: (position: number) => void;
+};
+
+export type TimeLinePointProps<T extends Record<string, Unit>, K extends keyof T> =
+    & TimeLinePointParams<T, K>
+    & TimeLinePointCallbacks;
 
 export type TimeLinePointState = {
     isHovered: boolean;
@@ -125,13 +132,13 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
 
         const {
             movable,
+            onPositionChangeStart,
+            onPositionChange,
+            onPositionChangeEnd,
         } = this.props;
 
         if (movable) {
             const {
-                onPositionChangeStart,
-                onPositionChange,
-                onPositionChangeEnd,
             } = movable;
 
             this.cursorDragListener = new DragListener(dragElement, {

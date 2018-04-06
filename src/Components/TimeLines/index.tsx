@@ -15,7 +15,6 @@ import {
 import { ConstructorStore } from '../../Store/ConstructorStore';
 import { AdditionalStep } from '../../Store/types/AdditionalStep';
 import { EditableStep } from '../../Store/types/EditableStep';
-import { EditableStepPosition } from '../../Store/types/EditableStepPosition';
 import { EditableStepValue } from '../../Store/types/EditableStepValue';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { Unit } from '../../Unit/Unit';
@@ -35,8 +34,6 @@ export type TimeLinesStateProps = {
 };
 export type TimeLinesDispatchProps = {
     setAnimationPosition: (animationPosition: ConstructorStore['animationPosition']) => void;
-    setBlockScriptStepPosition: (stepPosition: EditableStepPosition<BlockFieldUnits>) => void;
-    setFieldsScriptStepPosition: (stepPosition: EditableStepPosition<AnimationElementsFieldsUnits[AnimationElements]>) => void;
     setBlockScriptStepValue: (stepValue: EditableStepValue<BlockFieldUnits>) => void;
     setFieldsScriptStepValue: (stepValue: EditableStepValue<AnimationElementsFieldsUnits[AnimationElements]>) => void;
     removeBlockScriptStep: (changedStep: EditableStep<BlockFieldUnits>) => void;
@@ -67,8 +64,6 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
         const {
             animationPosition,
             animationElementScript,
-            setBlockScriptStepPosition,
-            setFieldsScriptStepPosition,
             setBlockScriptStepValue,
             setFieldsScriptStepValue,
             removeBlockScriptStep,
@@ -117,7 +112,6 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                             fieldsScripts={ animationElementScript.blockScript }
                             titlesDictionary={ BlockFieldTitles }
                             containerWidth={ containerWidth }
-                            onScriptStepPositionChange={ setBlockScriptStepPosition }
                             onScriptStepValueChange={ setBlockScriptStepValue }
                             onScriptStepRemove={ removeBlockScriptStep }
                             onScriptStepAdd={ addBlockScriptStep }
@@ -127,7 +121,6 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                             fieldsScripts={ animationElementScript.fieldsScript }
                             titlesDictionary={ AnimationElementFieldTitles[animationElementScript.elementName] }
                             containerWidth={ containerWidth }
-                            onScriptStepPositionChange={ setFieldsScriptStepPosition }
                             onScriptStepValueChange={ setFieldsScriptStepValue }
                             onScriptStepRemove={ removeFieldsScriptStep }
                             onScriptStepAdd={ addFieldsScriptStep }
@@ -177,12 +170,6 @@ const mapStateToProps = (state: ConstructorStore): TimeLinesStateProps => {
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): TimeLinesDispatchProps => ({
     setAnimationPosition: (animationPosition) => {
         dispatch(actions.setAnimationPosition(animationPosition));
-    },
-    setBlockScriptStepPosition: (stepPosition) => {
-        dispatch(actions.setBlockScriptStepPosition(stepPosition));
-    },
-    setFieldsScriptStepPosition: (stepPosition) => {
-        dispatch(actions.setFieldsScriptStepPosition(stepPosition));
     },
     setBlockScriptStepValue: (stepValue) => {
         dispatch(actions.setBlockScriptStepValue(stepValue));
