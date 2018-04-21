@@ -4,10 +4,10 @@
   "description": "Web-animations constructor",
   "scripts": {
     "build": "webpack",
+    "build:watch": "webpack --watch",
     "lint": "tslint -e \"node_modules/**/*.ts?(x)\" \"src/**/*.ts?(x)\" --project tsconfig.json",
     "lint:fix": "tslint -e \"node_modules/**/*.ts?(x)\" \"**/*.ts?(x)\" --project tsconfig.json --fix",
-    "prepush": "yarn check --integrity && yarn lint",
-    "watch": "webpack --watch"
+    "prepush": "yarn check --integrity && yarn lint"
   },
   "repository": {
     "type": "git",

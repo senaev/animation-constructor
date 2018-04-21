@@ -50,16 +50,16 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
 
     public getBlockLocationByHTMLElement(element: HTMLElement): BlockLocation | undefined {
         const {
-            container,
             animation,
+            animationContainer,
         } = this;
 
-        if (!container || !animation) {
+        if (!animationContainer || !animation) {
             throw new Error('One of properties has not been initialized');
         }
 
         return getBlockLocationByElement(
-            container,
+            animationContainer,
             element,
             animation.elementsAnimations,
         );
@@ -72,7 +72,6 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
             throw new Error('Container element has not been initialized');
         }
 
-        console.log(container);
         this.resizeSensor = new ResizeSensor(container, ({ width, height }) => {
             const size = Math.min(width, height);
 
@@ -140,14 +139,14 @@ export class AnimationPreview extends React.Component<AnimationPreviewProps, {}>
 
         const { width, height } = resizeSensor.getSize();
 
-        const { container } = this;
+        const { animationContainer } = this;
 
-        if (!container) {
+        if (!animationContainer) {
             throw new Error('Container element has not been initialized');
         }
 
         this.animation = new Animation(
-            container,
+            animationContainer,
             animationScript,
             animationPosition,
             Math.min(width, height),
