@@ -39,13 +39,13 @@ export type DragListenerCallbacks = {
 };
 
 /**
- * Для корректной работы на элементе должен быть установлен стиль `user-select: none;`
+ * Add `user-select: none;` to dragging element to provide normal working of `DragListener`
  */
 export class DragListener {
     private readonly callbacks: DragListenerCallbacks;
 
     private draggingStartRelativePosition: RelativePosition | undefined;
-    private readonly onDestroyFunctions: Array<() => void> = [];
+    private readonly onDestroyFunctions: (() => void)[] = [];
 
     constructor(private readonly element: HTMLElement,
                 {

@@ -1,9 +1,10 @@
-"use strict";
+'use strict';
 module.exports = {
     'extends': ['tslint-eslint-rules'],
     'rules': {
         'adjacent-overload-signatures': true,
         'align': true,
+        'array-type': [true, 'array'],
         'arrow-parens': 'always',
         'arrow-return-shorthand': true,
         'await-promise': true,
@@ -11,12 +12,16 @@ module.exports = {
         'brace-style': [2, '1tbs', { 'allowSingleLine': true }],
         'class-name': true,
         'comment-format': [true, 'check-space'],
+        // TODO: doc everything
+        // 'completed-docs': true,
         'curly': true,
+        'cyclomatic-complexity': true,
         'encoding': true,
         'eofline': true,
         'import-spacing': true,
         'indent': [true, 'spaces', 4],
         'label-position': true,
+        'max-classes-per-file': [true, 1],
         'max-line-length': [true, 140],
         'member-access': true,
         'member-ordering': [
@@ -65,6 +70,7 @@ module.exports = {
         // 'no-unnecessary-callback-wrapper': true,
         'no-unnecessary-initializer': true,
         'no-unnecessary-qualifier': true,
+        'no-unsafe-finally': true,
         'no-unused-expression': [
             true,
             'allow-fast-null-checks',
@@ -77,11 +83,14 @@ module.exports = {
             'always',
         ],
         'object-literal-shorthand': true,
+        'object-literal-key-quotes': [true, 'as-needed'],
         'one-line': true,
         'one-variable-per-declaration': true,
+        'only-arrow-functions': [true, 'allow-declarations', 'allow-named-functions'],
         'ordered-imports': true,
         'prefer-const': true,
         'prefer-object-spread': true,
+        'prefer-for-of': true,
         'prefer-template': [
             true,
             'allow-single-concat',
@@ -114,7 +123,7 @@ module.exports = {
             },
         ],
         'triple-equals': true,
-        "type-literal-delimiter": true,
+        'type-literal-delimiter': true,
         'typedef-whitespace': [
             true,
             {
