@@ -9,10 +9,6 @@ import { subscribeHoverChange } from '../../../utils/subscribeHoverChange';
 import { TimeLinePointTooltip } from '../TimeLinePointTooltip';
 import * as c from './index.pcss';
 
-export type TimeLinePointRemovableParams = {
-    onRemove: () => void;
-};
-
 export type TimeLinePointMovableParams = {
     min: number;
     max: number;
@@ -31,7 +27,6 @@ export type TimeLinePointParams<T extends Record<string, Unit>, K extends keyof 
     stepLocation: StepLocation<T>
     position: number;
     containerWidth: UnitTypes[Unit.pixel];
-    removable: TimeLinePointRemovableParams | undefined;
     movable: TimeLinePointMovableParams | undefined;
     changeable: TimeLinePointChangeableParams<T[K]> | undefined;
 };
@@ -40,6 +35,7 @@ export type TimeLinePointCallbacks = {
     onPositionChangeStart: (position: number) => void;
     onPositionChange: (position: number) => void;
     onPositionChangeEnd: (position: number) => void;
+    onRemove: (() => void) | undefined;
 };
 
 export type TimeLinePointProps<T extends Record<string, Unit>, K extends keyof T> =
@@ -80,7 +76,7 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
         const {
             changingPosition,
             position,
-            removable,
+            onRemove,
             movable,
             changeable,
         } = this.props;
@@ -106,7 +102,7 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
                     ? <TimeLinePointTooltip
                         position={ position }
                         changeable={ changeable }
-                        removable={ removable }
+                        onRemove={ onRemove }
                         movable={ movable }
                         isChangeableDialogOpen={ isChangeableDialogOpened }
                         requestChangeableDialogOpened={ this.requestChangeableDialogOpened }

@@ -1,8 +1,11 @@
 import { ActionDelete } from 'material-ui/svg-icons';
 import * as React from 'react';
-import { TimeLinePointRemovableParams } from '../TimeLinePoint';
 
-export class TimeLinePointRemovable extends React.Component<TimeLinePointRemovableParams, {}> {
+export type TimeLinePointRemovableProps = {
+    onRemove: () => void;
+};
+
+export class TimeLinePointRemovable extends React.Component<TimeLinePointRemovableProps, {}> {
     public render() {
 
         return <div onClick={ this.props.onRemove }>

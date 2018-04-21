@@ -3,7 +3,6 @@ import { Unit } from '../../../Unit/Unit';
 import {
     TimeLinePointChangeableParams,
     TimeLinePointMovableParams,
-    TimeLinePointRemovableParams,
 } from '../TimeLinePoint';
 import { TimeLinePointChangable } from '../TimeLinePointChangable';
 import { TimeLinePointRemovable } from '../TimeLinePointRemovable';
@@ -11,7 +10,7 @@ import * as c from './index.pcss';
 
 export type TimeLinePointTooltipProps<T extends Unit> = {
     position: number;
-    removable: TimeLinePointRemovableParams | undefined;
+    onRemove: (() => void) | undefined;
     movable: TimeLinePointMovableParams | undefined;
     changeable: TimeLinePointChangeableParams<T> | undefined;
     isChangeableDialogOpen: boolean;
@@ -21,7 +20,7 @@ export type TimeLinePointTooltipProps<T extends Unit> = {
 export class TimeLinePointTooltip<T extends Unit> extends React.Component<TimeLinePointTooltipProps<T>, {}> {
     public render() {
         const {
-            removable,
+            onRemove,
             changeable,
             isChangeableDialogOpen,
             requestChangeableDialogOpened,
@@ -50,9 +49,9 @@ export class TimeLinePointTooltip<T extends Unit> extends React.Component<TimeLi
                 //     />
             }
             {
-                removable === undefined
-                    ? null
-                    : <TimeLinePointRemovable onRemove={ removable.onRemove }/>
+                typeof onRemove === 'function'
+                    ? <TimeLinePointRemovable onRemove={ onRemove }/>
+                    : null
             }
         </div>;
     }

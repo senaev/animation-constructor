@@ -13,9 +13,8 @@ import {
     TimeLinePointCallbacks,
     TimeLinePointChangeableParams,
     TimeLinePointMovableParams,
-    TimeLinePointRemovableParams,
+    TimeLinePointParams,
 } from './';
-import { TimeLinePointParams } from './index';
 
 export type TimeLinePointStateProps = {
     changingPosition: boolean;
@@ -26,7 +25,6 @@ export type TimeLinePointOwnProps<T extends Record<string, Unit>, K extends keyo
     isBlockFieldStep: boolean;
     stepLocation: StepLocation<T>
     containerWidth: UnitTypes[Unit.pixel];
-    removable: TimeLinePointRemovableParams | undefined;
     movable: TimeLinePointMovableParams | undefined;
     changeable: TimeLinePointChangeableParams<T[K]> | undefined;
 };
@@ -41,7 +39,6 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointStateProps, TimeL
             isBlockFieldStep,
             stepLocation,
             containerWidth,
-            removable,
             movable,
             changeable,
         } = ownProps;
@@ -51,7 +48,6 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointStateProps, TimeL
             stepLocation,
             position: getStepPositionSelector(state),
             containerWidth,
-            removable,
             movable,
             changeable,
             changingPosition: stepChangingPositionSelector(state),
@@ -66,27 +62,34 @@ const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointCallbacks, Tim
             stepLocation,
         } = ownProps;
 
+        const blockFieldStepLocation = stepLocation as StepLocation<BlockFieldUnits>;
+        const elementFieldStepLocation = stepLocation as StepLocation<AnimationElementsFieldsUnits[AnimationElements]>;
+
+        const removeAction = isBlockFieldStep
+            ? actions.removeBlockScriptStep(blockFieldStepLocation)
+            : actions.removeFieldsScriptStep(elementFieldStepLocation);
+
+        const onRemove = stepLocation.stepIndex === 0
+            ? undefined
+            : () => dispatch(removeAction);
+
         return {
             onPositionChangeStart: () => {
                 if (isBlockFieldStep) {
-                    dispatch(actions.setBlockChangingPositionStepLocation(
-                        stepLocation as StepLocation<BlockFieldUnits>
-                    ));
+                    dispatch(actions.setBlockChangingPositionStepLocation(blockFieldStepLocation));
                 } else {
-                    dispatch(actions.setElementFieldsChangingPositionStepLocation(
-                        stepLocation as StepLocation<AnimationElementsFieldsUnits[AnimationElements]>
-                    ));
+                    dispatch(actions.setElementFieldsChangingPositionStepLocation(elementFieldStepLocation));
                 }
             },
             onPositionChange: (stepPosition) => {
                 if (isBlockFieldStep) {
                     dispatch(actions.setBlockScriptStepPosition({
-                        ...stepLocation as StepLocation<BlockFieldUnits>,
+                        ...blockFieldStepLocation,
                         position: stepPosition,
                     }));
                 } else {
                     dispatch(actions.setFieldsScriptStepPosition({
-                        ...stepLocation as StepLocation<AnimationElementsFieldsUnits[AnimationElements]>,
+                        ...elementFieldStepLocation,
                         position: stepPosition,
                     }));
                 }
@@ -98,6 +101,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointCallbacks, Tim
                     dispatch(actions.setElementFieldsChangingPositionStepLocation(undefined));
                 }
             },
+            onRemove,
         };
     };
 
