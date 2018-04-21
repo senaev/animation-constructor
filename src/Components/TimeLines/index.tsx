@@ -96,14 +96,14 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                     ? null
                     : <>
                         <FieldsTimeLines
-                            isBlockPositionField={ true }
+                            isBlockField={ true }
                             fieldsScripts={ animationElementScript.blockScript }
                             titlesDictionary={ BlockFieldTitles }
                             containerWidth={ containerWidth }
                             onScriptStepAdd={ addBlockScriptStep }
                         />
                         <FieldsTimeLines
-                            isBlockPositionField={ false }
+                            isBlockField={ false }
                             fieldsScripts={ animationElementScript.fieldsScript }
                             titlesDictionary={ AnimationElementFieldTitles[animationElementScript.elementName] }
                             containerWidth={ containerWidth }
