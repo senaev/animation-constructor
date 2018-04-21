@@ -108,7 +108,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointCallbacks<Reco
                 }
             },
             onRemove,
-            onChange: (nextValue) => {
+            onChangeValue: (nextValue) => {
                 if (isBlockFieldStep) {
                     dispatch(actions.setBlockScriptStepValue({
                         ...blockFieldStepLocation,

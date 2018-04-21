@@ -31,7 +31,7 @@ export type TimeLinePointCallbacks<T extends Record<string, Unit>, K extends key
     onPositionChange: (position: number) => void;
     onPositionChangeEnd: (position: number) => void;
     onRemove: (() => void) | undefined;
-    onChange: (nextValue: UnitTypes[T[K]]) => void;
+    onChangeValue: (nextValue: UnitTypes[T[K]]) => void;
 };
 
 export type TimeLinePointProps<T extends Record<string, Unit>, K extends keyof T> =
@@ -77,7 +77,8 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
             unit,
             title,
             value,
-            onChange,
+            onChangeValue,
+            onPositionChange,
         } = this.props;
 
         return <div
@@ -103,7 +104,8 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
                         unit={ unit }
                         title={ title }
                         value={ value }
-                        onChange={ onChange }
+                        onChangeValue={ onChangeValue }
+                        onChangePosition={ onPositionChange }
                         onRemove={ onRemove }
                         movable={ movable }
                         isChangeableDialogOpen={ isChangeableDialogOpened }
