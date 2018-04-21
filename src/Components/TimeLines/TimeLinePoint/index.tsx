@@ -14,33 +14,29 @@ export type TimeLinePointMovableParams = {
     max: number;
 };
 
-export type TimeLinePointChangeableParams<T extends Unit> = {
-    unit: T;
-    title: string;
-    value: UnitTypes[T];
-    onChange: (value: UnitTypes[T]) => void;
-};
-
 export type TimeLinePointParams<T extends Record<string, Unit>, K extends keyof T> = {
     changingPosition: boolean;
     isBlockFieldStep: boolean;
-    stepLocation: StepLocation<T>
+    stepLocation: StepLocation<T>;
     position: number;
     containerWidth: UnitTypes[Unit.pixel];
     movable: TimeLinePointMovableParams | undefined;
-    changeable: TimeLinePointChangeableParams<T[K]> | undefined;
+    unit: T[K];
+    title: string;
+    value: UnitTypes[T[keyof T]];
 };
 
-export type TimeLinePointCallbacks = {
+export type TimeLinePointCallbacks<T extends Record<string, Unit>, K extends keyof T> = {
     onPositionChangeStart: (position: number) => void;
     onPositionChange: (position: number) => void;
     onPositionChangeEnd: (position: number) => void;
     onRemove: (() => void) | undefined;
+    onChange: (nextValue: UnitTypes[T[K]]) => void;
 };
 
 export type TimeLinePointProps<T extends Record<string, Unit>, K extends keyof T> =
     & TimeLinePointParams<T, K>
-    & TimeLinePointCallbacks;
+    & TimeLinePointCallbacks<T, K>;
 
 export type TimeLinePointState = {
     isHovered: boolean;
@@ -78,7 +74,10 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
             position,
             onRemove,
             movable,
-            changeable,
+            unit,
+            title,
+            value,
+            onChange,
         } = this.props;
 
         return <div
@@ -101,7 +100,10 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
                 changingPosition || isHovered || isChangeableDialogOpened
                     ? <TimeLinePointTooltip
                         position={ position }
-                        changeable={ changeable }
+                        unit={ unit }
+                        title={ title }
+                        value={ value }
+                        onChange={ onChange }
                         onRemove={ onRemove }
                         movable={ movable }
                         isChangeableDialogOpen={ isChangeableDialogOpened }
@@ -134,8 +136,7 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
         } = this.props;
 
         if (movable) {
-            const {
-            } = movable;
+            const {} = movable;
 
             this.cursorDragListener = new DragListener(dragElement, {
                 onStart: (dragPosition) => {

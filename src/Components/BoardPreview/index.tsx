@@ -200,7 +200,7 @@ class BoardPreviewComponent extends React.Component<BoardPreviewProps, BoardPrev
     }
 
     private getBackgroundStyle(): {
-        backgroundPosition: string,
+        backgroundPosition: string;
         backgroundSize: string;
     } {
         const animationSquareSize = this.getAnimationSquareSize();

@@ -3,21 +3,19 @@ import { FieldsScripts } from '../../../AnimationScript';
 import { getStepsParams } from '../../../AnimationScript/utils/getStepsParams';
 import { BlockFieldUnits } from '../../../Block/BlockFieldUnits';
 import { AdditionalStep } from '../../../Store/types/AdditionalStep';
-import { EditableStepValue } from '../../../Store/types/EditableStepValue';
 import { UnitTimeLinePreviews } from '../../../TimelinePreviews/UnitTimeLinePreviews';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { getObjectKeys } from '../../../utils/getObjectKeys';
 import * as c from '../index.pcss';
 import { TimeLine } from '../TimeLine';
-import { TimeLinePointOwnProps } from '../TimeLinePoint/connected';
+import { TimeLinePointConnectedOwnProps } from '../TimeLinePoint/connected';
 
 export type FieldsTimeLinesProps<T extends Record<string, Unit>> = {
     isBlockPositionField: T extends BlockFieldUnits ? true : false;
     fieldsScripts: FieldsScripts<T>;
     titlesDictionary: Record<keyof T, string>;
     containerWidth: UnitTypes[Unit.pixel];
-    onScriptStepValueChange: (stepPosition: EditableStepValue<T>) => void;
     onScriptStepAdd: (stepPosition: AdditionalStep<T>) => void;
 };
 
@@ -28,7 +26,6 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
             fieldsScripts,
             titlesDictionary,
             containerWidth,
-            onScriptStepValueChange,
             onScriptStepAdd,
         } = this.props;
 
@@ -41,31 +38,16 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                 steps,
             } = unitScript;
             const pointStepsParams = getStepsParams(steps);
-            const points: TimeLinePointOwnProps<T, T[typeof fieldName]>[] = pointStepsParams.map(({
+            const points: TimeLinePointConnectedOwnProps<T>[] = pointStepsParams.map(({
                                                                                                       previousStepPosition,
                                                                                                       position,
                                                                                                       nextStepPosition,
                                                                                                   }, stepIndex) => {
-
-                const { value } = steps[stepIndex];
-
-                const point: TimeLinePointOwnProps<T, T[typeof fieldName]> = {
+                const point: TimeLinePointConnectedOwnProps<T> = {
                     isBlockFieldStep: isBlockPositionField,
                     stepLocation: {
                         fieldName,
                         stepIndex,
-                    },
-                    changeable: {
-                        unit,
-                        title,
-                        value,
-                        onChange: (nextValue) => {
-                            onScriptStepValueChange({
-                                fieldName,
-                                stepIndex,
-                                value: nextValue,
-                            });
-                        },
                     },
                     containerWidth,
                 };

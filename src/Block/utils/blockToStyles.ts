@@ -14,7 +14,7 @@ export function blockToStyles({
     width: string;
     transform: string;
     transformOrigin: string;
-    display: 'block' | 'none',
+    display: 'block' | 'none';
 } {
     return {
         top: `${y}%`,

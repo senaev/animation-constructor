@@ -62,7 +62,7 @@ export type ConstructorState = {
     /**
      * Relation of edited animation area
      */
-    relation: Size,
+    relation: Size;
     /**
      * Current user zoom on `Board`
      */

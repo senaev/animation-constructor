@@ -7,12 +7,13 @@ import { FieldClass } from '../../../Fields/Field';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { noop } from '../../../utils/noop';
-import { TimeLinePointChangeableParams } from '../TimeLinePoint';
 import * as c from './index.pcss';
 
-type TimeLinePointChangableProps<T extends Unit> =
-    & TimeLinePointChangeableParams<T>
-    & {
+type TimeLinePointChangableProps<T extends Unit> = {
+    unit: T;
+    title: string;
+    value: UnitTypes[T];
+    onChange: (nextValue: UnitTypes[T]) => void;
     isDialogOpen: boolean;
     requestDialogOpened: (opened: boolean) => void;
 };

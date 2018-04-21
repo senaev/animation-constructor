@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { Unit } from '../../../Unit/Unit';
-import {
-    TimeLinePointChangeableParams,
-    TimeLinePointMovableParams,
-} from '../TimeLinePoint';
+import { UnitTypes } from '../../../Unit/UnitTypes';
+import { TimeLinePointMovableParams, } from '../TimeLinePoint';
 import { TimeLinePointChangable } from '../TimeLinePointChangable';
 import { TimeLinePointRemovable } from '../TimeLinePointRemovable';
 import * as c from './index.pcss';
@@ -12,7 +10,10 @@ export type TimeLinePointTooltipProps<T extends Unit> = {
     position: number;
     onRemove: (() => void) | undefined;
     movable: TimeLinePointMovableParams | undefined;
-    changeable: TimeLinePointChangeableParams<T> | undefined;
+    unit: T;
+    title: string;
+    value: UnitTypes[T];
+    onChange: ((nextValue: UnitTypes[T]) => void) | undefined;
     isChangeableDialogOpen: boolean;
     requestChangeableDialogOpened: (opened: boolean) => void;
 };
@@ -21,23 +22,26 @@ export class TimeLinePointTooltip<T extends Unit> extends React.Component<TimeLi
     public render() {
         const {
             onRemove,
-            changeable,
+            unit,
+            title,
+            value,
+            onChange,
             isChangeableDialogOpen,
             requestChangeableDialogOpened,
         } = this.props;
 
         return <div className={ c.TimeLinePointTooltip }>
             {
-                changeable === undefined
-                    ? null
-                    : <TimeLinePointChangable
-                        unit={ changeable.unit }
-                        title={ changeable.title }
-                        value={ changeable.value }
-                        onChange={ changeable.onChange }
+                typeof onChange === 'function'
+                    ? <TimeLinePointChangable
+                        unit={ unit }
+                        title={ title }
+                        value={ value }
+                        onChange={ onChange }
                         isDialogOpen={ isChangeableDialogOpen }
                         requestDialogOpened={ requestChangeableDialogOpened }
                     />
+                    : null
             }
             {
                 // TODO

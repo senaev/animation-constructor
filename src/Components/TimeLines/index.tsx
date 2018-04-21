@@ -12,7 +12,6 @@ import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import { actions, } from '../../Store/actions';
 import { ConstructorState } from '../../Store/ConstructorState';
 import { AdditionalStep } from '../../Store/types/AdditionalStep';
-import { EditableStepValue } from '../../Store/types/EditableStepValue';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
@@ -31,8 +30,6 @@ export type TimeLinesStateProps = {
 };
 export type TimeLinesDispatchProps = {
     setAnimationPosition: (animationPosition: ConstructorState['animationPosition']) => void;
-    setBlockScriptStepValue: (stepValue: EditableStepValue<BlockFieldUnits>) => void;
-    setFieldsScriptStepValue: (stepValue: EditableStepValue<AnimationElementsFieldsUnits[AnimationElements]>) => void;
     addBlockScriptStep: (changedStep: AdditionalStep<BlockFieldUnits>) => void;
     addFieldsScriptStep: (changedStep: AdditionalStep<AnimationElementsFieldsUnits[AnimationElements]>) => void;
 };
@@ -59,8 +56,6 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
         const {
             animationPosition,
             animationElementScript,
-            setBlockScriptStepValue,
-            setFieldsScriptStepValue,
             addBlockScriptStep,
             addFieldsScriptStep,
         } = this.props;
@@ -105,7 +100,6 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                             fieldsScripts={ animationElementScript.blockScript }
                             titlesDictionary={ BlockFieldTitles }
                             containerWidth={ containerWidth }
-                            onScriptStepValueChange={ setBlockScriptStepValue }
                             onScriptStepAdd={ addBlockScriptStep }
                         />
                         <FieldsTimeLines
@@ -113,7 +107,6 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                             fieldsScripts={ animationElementScript.fieldsScript }
                             titlesDictionary={ AnimationElementFieldTitles[animationElementScript.elementName] }
                             containerWidth={ containerWidth }
-                            onScriptStepValueChange={ setFieldsScriptStepValue }
                             onScriptStepAdd={ addFieldsScriptStep }
                         />
                     </>
@@ -161,12 +154,6 @@ const mapStateToProps = (state: ConstructorState): TimeLinesStateProps => {
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): TimeLinesDispatchProps => ({
     setAnimationPosition: (animationPosition) => {
         dispatch(actions.setAnimationPosition(animationPosition));
-    },
-    setBlockScriptStepValue: (stepValue) => {
-        dispatch(actions.setBlockScriptStepValue(stepValue));
-    },
-    setFieldsScriptStepValue: (stepValue) => {
-        dispatch(actions.setFieldsScriptStepValue(stepValue));
     },
     addBlockScriptStep: (addedStep) => {
         dispatch(actions.addBlockScriptStep(addedStep));

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Unit } from '../../../Unit/Unit';
-import { TimeLinePointConnected, TimeLinePointOwnProps } from '../TimeLinePoint/connected';
+import { TimeLinePointConnected, TimeLinePointConnectedOwnProps } from '../TimeLinePoint/connected';
 import * as c from './index.pcss';
 
 export type TimeLineProps = {
-    points: TimeLinePointOwnProps<Record<string, Unit>, string>[];
+    points: TimeLinePointConnectedOwnProps<Record<string, Unit>>[];
 };
 
 export class TimeLine extends React.Component<TimeLineProps, {}> {

@@ -6,58 +6,63 @@ import { actions } from '../../../Store/actions';
 import { ConstructorState, StepLocation } from '../../../Store/ConstructorState';
 import { makeGetStepMovableSelector } from '../../../Store/selectors/makeGetStepMovableSelector';
 import { makeGetStepPositionSelector } from '../../../Store/selectors/makeGetStepPositionSelector';
+import { makeGetStepTitleSelector } from '../../../Store/selectors/makeGetStepTitleSelector';
+import { makeGetStepUnitSelector } from '../../../Store/selectors/makeGetStepUnitSelector';
+import { makeGetStepValueSelector } from '../../../Store/selectors/makeGetStepValueSelector';
 import { makeStepChangingPositionSelector } from '../../../Store/selectors/makeStepChangingPositionSelector';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
-import {
-    TimeLinePoint,
-    TimeLinePointCallbacks,
-    TimeLinePointChangeableParams,
-    TimeLinePointMovableParams,
-    TimeLinePointParams,
-} from './';
+import { TimeLinePoint, TimeLinePointCallbacks, TimeLinePointMovableParams, TimeLinePointParams, } from './';
 
-export type TimeLinePointStateProps = {
+export type TimeLinePointConnectedStateProps<T extends Record<string, Unit>> = {
     changingPosition: boolean;
     position: number;
     movable: TimeLinePointMovableParams | undefined;
+    unit: T;
+    title: string;
+    value: UnitTypes[T[keyof T]];
 };
 
-export type TimeLinePointOwnProps<T extends Record<string, Unit>, K extends keyof T> = {
+export type TimeLinePointConnectedOwnProps<T extends Record<string, Unit>> = {
     isBlockFieldStep: boolean;
-    stepLocation: StepLocation<T>
+    stepLocation: StepLocation<T>;
     containerWidth: UnitTypes[Unit.pixel];
-    changeable: TimeLinePointChangeableParams<T[K]> | undefined;
 };
 
-const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointStateProps, TimeLinePointOwnProps<any, any>, ConstructorState>
+const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointConnectedStateProps<any>,
+    TimeLinePointConnectedOwnProps<any>, ConstructorState>
     = (initialStore, initialOwnProps) => {
     const stepChangingPositionSelector = makeStepChangingPositionSelector(initialOwnProps);
     const getStepPositionSelector = makeGetStepPositionSelector(initialOwnProps);
     const getStepMovableSelector = makeGetStepMovableSelector(initialOwnProps);
+    const getStepUnitSelector = makeGetStepUnitSelector(initialOwnProps);
+    const getStepTitleSelector = makeGetStepTitleSelector(initialOwnProps);
+    const getStepValueSelector = makeGetStepValueSelector(initialOwnProps);
 
     return (state, ownProps): TimeLinePointParams<Record<string, Unit>, string> => {
         const {
             isBlockFieldStep,
             stepLocation,
             containerWidth,
-            changeable,
         } = ownProps;
 
         return {
             isBlockFieldStep,
             stepLocation,
-            position: getStepPositionSelector(state),
             containerWidth,
+            position: getStepPositionSelector(state),
             movable: getStepMovableSelector(state),
-            changeable,
             changingPosition: stepChangingPositionSelector(state),
+            unit: getStepUnitSelector(state),
+            title: getStepTitleSelector(state),
+            value: getStepValueSelector(state),
         };
     };
 };
 
-const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointCallbacks, TimeLinePointOwnProps<Record<string, Unit>, string>> =
-    (dispatch, ownProps): TimeLinePointCallbacks => {
+const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointCallbacks<Record<string, Unit>, string>,
+    TimeLinePointConnectedOwnProps<Record<string, Unit>>> =
+    (dispatch, ownProps): TimeLinePointCallbacks<Record<string, Unit>, string> => {
         const {
             isBlockFieldStep,
             stepLocation,
@@ -103,6 +108,19 @@ const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointCallbacks, Tim
                 }
             },
             onRemove,
+            onChange: (nextValue) => {
+                if (isBlockFieldStep) {
+                    dispatch(actions.setBlockScriptStepValue({
+                        ...blockFieldStepLocation,
+                        value: nextValue as any,
+                    }));
+                } else {
+                    dispatch(actions.setFieldsScriptStepValue({
+                        ...elementFieldStepLocation,
+                        value: nextValue as any,
+                    }));
+                }
+            },
         };
     };
 

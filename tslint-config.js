@@ -114,6 +114,7 @@ module.exports = {
             },
         ],
         'triple-equals': true,
+        "type-literal-delimiter": true,
         'typedef-whitespace': [
             true,
             {
@@ -124,7 +125,6 @@ module.exports = {
                 'variable-declaration': 'nospace'
             },
         ],
-        'typeof-compare': true,
         'unified-signatures': true,
         'use-isnan': true,
         'valid-typeof': true,
