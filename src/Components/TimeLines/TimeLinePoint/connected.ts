@@ -41,14 +41,10 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointConnectedStatePro
 
     return (state, ownProps): TimeLinePointParams<Record<string, Unit>, string> => {
         const {
-            isBlockFieldStep,
-            stepLocation,
             containerWidth,
         } = ownProps;
 
         return {
-            isBlockFieldStep,
-            stepLocation,
             containerWidth,
             position: getStepPositionSelector(state),
             movable: getStepMovableSelector(state),

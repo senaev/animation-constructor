@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { StepLocation } from '../../../Store/ConstructorState';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { clamp } from '../../../utils/clamp';
@@ -15,10 +14,8 @@ export type TimeLinePointMovableParams = {
 };
 
 export type TimeLinePointParams<T extends Record<string, Unit>, K extends keyof T> = {
-    changingPosition: boolean;
-    isBlockFieldStep: boolean;
-    stepLocation: StepLocation<T>;
     position: number;
+    changingPosition: boolean;
     containerWidth: UnitTypes[Unit.pixel];
     movable: TimeLinePointMovableParams | undefined;
     unit: T[K];
@@ -31,7 +28,7 @@ export type TimeLinePointCallbacks<T extends Record<string, Unit>, K extends key
     onPositionChange: (position: number) => void;
     onPositionChangeEnd: (position: number) => void;
     onRemove: (() => void) | undefined;
-    onChangeValue: (nextValue: UnitTypes[T[K]]) => void;
+    onChangeValue: ((nextValue: UnitTypes[T[K]]) => void) | undefined;
 };
 
 export type TimeLinePointProps<T extends Record<string, Unit>, K extends keyof T> =

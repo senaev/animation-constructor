@@ -1,4 +1,3 @@
-import { Slider } from 'material-ui';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
@@ -19,6 +18,7 @@ import { noop } from '../../utils/noop';
 import { ResizeSensor } from '../../utils/ResizeSensor';
 import { FieldsTimeLines } from './FieldsTimeLines';
 import * as c from './index.pcss';
+import { TimeLinePoint } from './TimeLinePoint';
 
 export type TimeLinesState = {
     containerWidth: UnitTypes[Unit.pixel];
@@ -78,16 +78,22 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                         this.sliderContainerElement = element;
                     } }
                 >
-                    <Slider
-                        value={ animationPosition }
-                        onChange={ this.onPositionChange }
-                        onDragStart={ noop }
-                        onDragStop={ noop }
-                        step={ 0.0001 }
-                        sliderStyle={ {
-                            marginTop: '0',
-                            marginBottom: '0',
+                    <TimeLinePoint
+                        position={ animationPosition }
+                        changingPosition={ false }
+                        containerWidth={ containerWidth }
+                        movable={ {
+                            min: 0,
+                            max: 1,
                         } }
+                        unit={ Unit.percent }
+                        title={ AMIMATION_POSITION_TITLE }
+                        value={ 0 }
+                        onPositionChangeStart={ noop }
+                        onPositionChangeEnd={ noop }
+                        onPositionChange={ this.onPositionChange }
+                        onRemove={ undefined }
+                        onChangeValue={ undefined }
                     />
                 </div>
             </div>
@@ -130,7 +136,7 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
         this.setState({ containerWidth: this.resizeSensor.getSize().width });
     }
 
-    private onPositionChange = (event: any, position: number) => {
+    private onPositionChange = (position: number) => {
         this.props.setAnimationPosition(position);
     }
 }

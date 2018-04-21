@@ -1,5 +1,4 @@
 import * as cx from 'classnames';
-import { ActionZoomIn, ActionZoomOut } from 'material-ui/svg-icons';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
@@ -36,11 +35,11 @@ class ZoomComponent extends React.Component<ZoomProps, {}> {
         const containerClassName = cx(className, c.Zoom);
 
         return <div className={ containerClassName }>
-            <ActionZoomIn
-                className={ c.Zoom__button }
+            <div
+                className={ cx(c.Zoom__button, c.Zoom__button_zoomIn) }
                 onClick={ zoomIn }
             />
-            <ActionZoomOut
+            <div
                 className={ cx(c.Zoom__button, c.Zoom__button_zoomOut) }
                 onClick={ zoomOut }
             />
