@@ -15,8 +15,8 @@ export function makeStepChangingPositionSelector<T extends Record<string, Unit>>
         boolean>([
         ({ editParams }) => editParams,
     ], (editParams) => {
-        if (!editParams) {
-            throw new Error('editParams is not initialized');
+        if (editParams === undefined) {
+            throw new Error('editParams is not initialized on makeStepChangingPositionSelector call');
         }
 
         const {

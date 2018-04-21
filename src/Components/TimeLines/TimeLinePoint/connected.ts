@@ -4,6 +4,7 @@ import { AnimationElementsFieldsUnits } from '../../../AnimationElements/Animati
 import { BlockFieldUnits } from '../../../Block/BlockFieldUnits';
 import { actions } from '../../../Store/actions';
 import { ConstructorState, StepLocation } from '../../../Store/ConstructorState';
+import { makeGetStepPositionSelector } from '../../../Store/selectors/makeGetStepPositionSelector';
 import { makeStepChangingPositionSelector } from '../../../Store/selectors/makeStepChangingPositionSelector';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
@@ -14,34 +15,31 @@ import {
     TimeLinePointMovableParams,
     TimeLinePointRemovableParams,
 } from './';
+import { TimeLinePointParams } from './index';
 
 export type TimeLinePointStateProps = {
     changingPosition: boolean;
+    position: number;
 };
 
 export type TimeLinePointOwnProps<T extends Record<string, Unit>, K extends keyof T> = {
     isBlockFieldStep: boolean;
     stepLocation: StepLocation<T>
-    position: number;
     containerWidth: UnitTypes[Unit.pixel];
     removable: TimeLinePointRemovableParams | undefined;
     movable: TimeLinePointMovableParams | undefined;
     changeable: TimeLinePointChangeableParams<T[K]> | undefined;
 };
 
-export type TimeLinePointMappedProps<T extends Record<string, Unit>, K extends keyof T> =
-    & TimeLinePointStateProps
-    & TimeLinePointOwnProps<T, K>;
-
 const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointStateProps, TimeLinePointOwnProps<any, any>, ConstructorState>
     = (initialStore, initialOwnProps) => {
     const stepChangingPositionSelector = makeStepChangingPositionSelector(initialOwnProps);
+    const getStepPositionSelector = makeGetStepPositionSelector(initialOwnProps);
 
-    return (store, ownProps): TimeLinePointMappedProps<Record<string, Unit>, string> => {
+    return (state, ownProps): TimeLinePointParams<Record<string, Unit>, string> => {
         const {
             isBlockFieldStep,
             stepLocation,
-            position,
             containerWidth,
             removable,
             movable,
@@ -51,12 +49,12 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointStateProps, TimeL
         return {
             isBlockFieldStep,
             stepLocation,
-            position,
+            position: getStepPositionSelector(state),
             containerWidth,
             removable,
             movable,
             changeable,
-            changingPosition: stepChangingPositionSelector(store),
+            changingPosition: stepChangingPositionSelector(state),
         };
     };
 };

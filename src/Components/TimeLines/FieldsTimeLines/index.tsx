@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FieldsScripts } from '../../../AnimationScript';
-import { getStepParams } from '../../../AnimationScript/utils/getStepParams';
+import { getStepsParams } from '../../../AnimationScript/utils/getStepsParams';
 import { BlockFieldUnits } from '../../../Block/BlockFieldUnits';
 import { AdditionalStep } from '../../../Store/types/AdditionalStep';
 import { EditableStep } from '../../../Store/types/EditableStep';
@@ -43,8 +43,8 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                 unit,
                 steps,
             } = unitScript;
-            const pointPositions = getStepParams(steps);
-            const points: TimeLinePointOwnProps<T, T[typeof fieldName]>[] = pointPositions.map(({
+            const pointStepsParams = getStepsParams(steps);
+            const points: TimeLinePointOwnProps<T, T[typeof fieldName]>[] = pointStepsParams.map(({
                                                                                                     previousStepPosition,
                                                                                                     position,
                                                                                                     nextStepPosition,
@@ -72,7 +72,6 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                         fieldName,
                         stepIndex,
                     },
-                    position,
                     movable,
                     removable: stepIndex > 0
                         ? {

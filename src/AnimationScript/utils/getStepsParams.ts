@@ -10,7 +10,7 @@ export type StepParams<T extends Unit> = {
     value: UnitTypes[T];
 };
 
-export function getStepParams<T extends Unit>(steps: Step<T>[]): StepParams<T>[] {
+export function getStepsParams<T extends Unit>(steps: Step<T>[]): StepParams<T>[] {
 
     let durationSum = 0;
 

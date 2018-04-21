@@ -1,5 +1,5 @@
 import { Step } from '../../AnimationScript';
-import { getStepParams } from '../../AnimationScript/utils/getStepParams';
+import { getStepsParams } from '../../AnimationScript/utils/getStepsParams';
 import { Unit } from '../../Unit/Unit';
 
 export function setStepPosition<T extends Unit>(steps: Step<T>[],
@@ -9,7 +9,7 @@ export function setStepPosition<T extends Unit>(steps: Step<T>[],
         throw new Error('It is impossible to change first step position in UnitScript');
     }
 
-    const stepsPositions = getStepParams(steps);
+    const stepsPositions = getStepsParams(steps);
 
     const previousStepPosition = stepsPositions[stepIndex - 1].position;
     const nextStep = stepsPositions[stepIndex + 1];
