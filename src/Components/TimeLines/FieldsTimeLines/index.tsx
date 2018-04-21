@@ -46,20 +46,6 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                                                                                                       position,
                                                                                                       nextStepPosition,
                                                                                                   }, stepIndex) => {
-                let movable: TimeLinePointOwnProps<T, T[typeof fieldName]>['movable'];
-
-                if (stepIndex > 0) {
-                    if (previousStepPosition === undefined) {
-                        throw new Error('PointParams without previousPosition value in not first point');
-                    }
-
-                    movable = {
-                        min: previousStepPosition,
-                        max: nextStepPosition === undefined
-                            ? 1
-                            : nextStepPosition,
-                    };
-                }
 
                 const { value } = steps[stepIndex];
 
@@ -69,7 +55,6 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                         fieldName,
                         stepIndex,
                     },
-                    movable,
                     changeable: {
                         unit,
                         title,

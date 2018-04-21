@@ -4,6 +4,7 @@ import { AnimationElementsFieldsUnits } from '../../../AnimationElements/Animati
 import { BlockFieldUnits } from '../../../Block/BlockFieldUnits';
 import { actions } from '../../../Store/actions';
 import { ConstructorState, StepLocation } from '../../../Store/ConstructorState';
+import { makeGetStepMovableSelector } from '../../../Store/selectors/makeGetStepMovableSelector';
 import { makeGetStepPositionSelector } from '../../../Store/selectors/makeGetStepPositionSelector';
 import { makeStepChangingPositionSelector } from '../../../Store/selectors/makeStepChangingPositionSelector';
 import { Unit } from '../../../Unit/Unit';
@@ -19,13 +20,13 @@ import {
 export type TimeLinePointStateProps = {
     changingPosition: boolean;
     position: number;
+    movable: TimeLinePointMovableParams | undefined;
 };
 
 export type TimeLinePointOwnProps<T extends Record<string, Unit>, K extends keyof T> = {
     isBlockFieldStep: boolean;
     stepLocation: StepLocation<T>
     containerWidth: UnitTypes[Unit.pixel];
-    movable: TimeLinePointMovableParams | undefined;
     changeable: TimeLinePointChangeableParams<T[K]> | undefined;
 };
 
@@ -33,13 +34,13 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointStateProps, TimeL
     = (initialStore, initialOwnProps) => {
     const stepChangingPositionSelector = makeStepChangingPositionSelector(initialOwnProps);
     const getStepPositionSelector = makeGetStepPositionSelector(initialOwnProps);
+    const getStepMovableSelector = makeGetStepMovableSelector(initialOwnProps);
 
     return (state, ownProps): TimeLinePointParams<Record<string, Unit>, string> => {
         const {
             isBlockFieldStep,
             stepLocation,
             containerWidth,
-            movable,
             changeable,
         } = ownProps;
 
@@ -48,7 +49,7 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointStateProps, TimeL
             stepLocation,
             position: getStepPositionSelector(state),
             containerWidth,
-            movable,
+            movable: getStepMovableSelector(state),
             changeable,
             changingPosition: stepChangingPositionSelector(state),
         };
