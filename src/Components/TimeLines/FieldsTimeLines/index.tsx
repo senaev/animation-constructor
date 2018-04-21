@@ -51,8 +51,8 @@ export class FieldsTimeLines<T extends Record<string, Unit>> extends React.Compo
                     { title }
                 </span>
                 <div className={ c.TimeLines__row__timeline }>
-                    <div className={ c.TimeLines__row__timeline__points }>
-                        <div className={ c.TimeLines__row__timeline__points__content }>
+                    <div className={ c.TimeLines__row__timeline__container }>
+                        <div className={ c.TimeLines__row__timeline__container__content }>
                             <TimeLinePreviewClass
                                 size={ containerWidth }
                                 unitScript={ unitScript }/>
