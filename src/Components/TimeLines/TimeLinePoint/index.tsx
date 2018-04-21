@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StepLocation } from '../../../Store/ConstructorStore';
+import { StepLocation } from '../../../Store/ConstructorState';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { clamp } from '../../../utils/clamp';

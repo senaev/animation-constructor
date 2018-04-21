@@ -1,9 +1,9 @@
 import { connect, MapDispatchToPropsFunction, MapStateToPropsFactory } from 'react-redux';
-import { AnimationElementFieldsNames } from '../../../AnimationElements/AnimationElementFieldsNames';
 import { AnimationElements } from '../../../AnimationElements/AnimationElements';
-import { BlockFieldName } from '../../../Block/BlockFieldName';
+import { AnimationElementsFieldsUnits } from '../../../AnimationElements/AnimationElementsFieldsUnits';
+import { BlockFieldUnits } from '../../../Block/BlockFieldUnits';
 import { actions } from '../../../Store/actions';
-import { ConstructorStore, StepLocation } from '../../../Store/ConstructorStore';
+import { ConstructorState, StepLocation } from '../../../Store/ConstructorState';
 import { makeStepChangingPositionSelector } from '../../../Store/selectors/makeStepChangingPositionSelector';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
@@ -13,7 +13,7 @@ import {
     TimeLinePointChangeableParams,
     TimeLinePointMovableParams,
     TimeLinePointRemovableParams,
-} from './index';
+} from './';
 
 export type TimeLinePointStateProps = {
     changingPosition: boolean;
@@ -33,9 +33,9 @@ export type TimeLinePointMappedProps<T extends Record<string, Unit>, K extends k
     & TimeLinePointStateProps
     & TimeLinePointOwnProps<T, K>;
 
-const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointStateProps, TimeLinePointOwnProps<any, any>, ConstructorStore>
+const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointStateProps, TimeLinePointOwnProps<any, any>, ConstructorState>
     = (initialStore, initialOwnProps) => {
-    const stepChangingPositionSelector = makeStepChangingPositionSelector(initialOwnProps.stepLocation);
+    const stepChangingPositionSelector = makeStepChangingPositionSelector(initialOwnProps);
 
     return (store, ownProps): TimeLinePointMappedProps<Record<string, Unit>, string> => {
         const {
@@ -65,33 +65,40 @@ const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointCallbacks, Tim
     (dispatch, ownProps): TimeLinePointCallbacks => {
         const {
             isBlockFieldStep,
-            stepLocation: {
-                fieldName,
-                stepIndex,
-            },
+            stepLocation,
         } = ownProps;
 
         return {
             onPositionChangeStart: () => {
-                console.log('start');
+                if (isBlockFieldStep) {
+                    dispatch(actions.setBlockChangingPositionStepLocation(
+                        stepLocation as StepLocation<BlockFieldUnits>
+                    ));
+                } else {
+                    dispatch(actions.setElementFieldsChangingPositionStepLocation(
+                        stepLocation as StepLocation<AnimationElementsFieldsUnits[AnimationElements]>
+                    ));
+                }
             },
             onPositionChange: (stepPosition) => {
                 if (isBlockFieldStep) {
                     dispatch(actions.setBlockScriptStepPosition({
-                        fieldName: fieldName as BlockFieldName,
-                        stepIndex,
+                        ...stepLocation as StepLocation<BlockFieldUnits>,
                         position: stepPosition,
                     }));
                 } else {
                     dispatch(actions.setFieldsScriptStepPosition({
-                        fieldName: fieldName as AnimationElementFieldsNames<AnimationElements>,
-                        stepIndex,
+                        ...stepLocation as StepLocation<AnimationElementsFieldsUnits[AnimationElements]>,
                         position: stepPosition,
                     }));
                 }
             },
             onPositionChangeEnd: () => {
-                console.log('end');
+                if (isBlockFieldStep) {
+                    dispatch(actions.setBlockChangingPositionStepLocation(undefined));
+                } else {
+                    dispatch(actions.setElementFieldsChangingPositionStepLocation(undefined));
+                }
             },
         };
     };

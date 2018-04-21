@@ -1,6 +1,6 @@
 import { ActionDelete } from 'material-ui/svg-icons';
 import * as React from 'react';
-import { TimeLinePointRemovableParams } from '../TimeLinePoint/index';
+import { TimeLinePointRemovableParams } from '../TimeLinePoint';
 
 export class TimeLinePointRemovable extends React.Component<TimeLinePointRemovableParams, {}> {
     public render() {

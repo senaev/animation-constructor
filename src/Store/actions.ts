@@ -7,7 +7,7 @@ import { BlockFieldUnits } from '../Block/BlockFieldUnits';
 import { BlockLocation } from '../BlockLocation/BlockLocation';
 import { PointCoordinates } from '../types/PointCoordinates';
 import { mapObjectValues } from '../utils/mapObjectValues';
-import { ConstructorStore } from './ConstructorStore';
+import { ConstructorState, StepLocation } from './ConstructorState';
 import { AdditionalStep } from './types/AdditionalStep';
 import { EditableStep } from './types/EditableStep';
 import { EditableStepPosition } from './types/EditableStepPosition';
@@ -31,7 +31,7 @@ const ActionTypes = {
     setEditedBlockFieldsOnCurrentPosition: any as Partial<Block>,
     setEditedElementFields: any as Partial<AnimationElementFieldsTypes<AnimationElements>>,
 
-    setAnimationPosition: any as ConstructorStore['animationPosition'],
+    setAnimationPosition: any as ConstructorState['animationPosition'],
 
     setBlockScriptStepPosition: any as EditableStepPosition<BlockFieldUnits>,
     setFieldsScriptStepPosition: any as EditableStepPosition<AnimationElementsFieldsUnits[AnimationElements]>,
@@ -44,6 +44,9 @@ const ActionTypes = {
 
     addBlockScriptStep: any as AdditionalStep<BlockFieldUnits>,
     addFieldsScriptStep: any as AdditionalStep<AnimationElementsFieldsUnits[AnimationElements]>,
+
+    setBlockChangingPositionStepLocation: any as (StepLocation<BlockFieldUnits> | undefined),
+    setElementFieldsChangingPositionStepLocation: any as (StepLocation<AnimationElementsFieldsUnits[AnimationElements]> | undefined),
 };
 type ActionTypes = typeof ActionTypes;
 

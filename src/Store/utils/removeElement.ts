@@ -1,9 +1,9 @@
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { removeElementFromArray } from '../../utils/removeElementFromArray';
-import { ConstructorStore } from '../ConstructorStore';
+import { ConstructorState } from '../ConstructorState';
 
-export function removeElement(state: ConstructorStore,
-                              blockLocation: BlockLocation): ConstructorStore {
+export function removeElement(state: ConstructorState,
+                              blockLocation: BlockLocation): ConstructorState {
     const { animationScript } = state;
 
     const blockIndex = blockLocation[0];

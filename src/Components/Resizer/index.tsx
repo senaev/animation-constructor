@@ -10,7 +10,7 @@ import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import {
     actions,
 } from '../../Store/actions';
-import { ConstructorStore } from '../../Store/ConstructorStore';
+import { ConstructorState } from '../../Store/ConstructorState';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { PointCoordinates } from '../../types/PointCoordinates';
 import { Unit } from '../../Unit/Unit';
@@ -340,7 +340,7 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
 }
 
 
-const mapStateToProps = (state: ConstructorStore): ResizerStateProps => {
+const mapStateToProps = (state: ConstructorState): ResizerStateProps => {
 
     const {
         editParams,

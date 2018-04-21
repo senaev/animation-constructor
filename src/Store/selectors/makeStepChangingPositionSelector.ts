@@ -1,28 +1,17 @@
 import { createSelector } from 'reselect';
 import { Unit } from '../../Unit/Unit';
-import { getObjectKeys } from '../../utils/getObjectKeys';
-import { ConstructorStore, StepLocation } from '../ConstructorStore';
+import { areObjectPropertiesEqual } from '../../utils/areObjectPropertiesEqual';
+import { ConstructorState, StepLocation } from '../ConstructorState';
 
-function areObjectPropertiesEqual<T extends Record<string, any>>(first: T, second: T): boolean {
-    const firstKeys = getObjectKeys(first);
-    const secondKeys = getObjectKeys(second);
-
-    if (firstKeys.length !== secondKeys.length) {
-        return false;
-    }
-
-    for (const i in firstKeys) {
-        if (firstKeys[i] !== secondKeys[i]) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-export function makeStepChangingPositionSelector<T extends Record<string, Unit>>(originalStepLocation: StepLocation<T>) {
-    return createSelector<ConstructorStore,
-        ConstructorStore['editParams'],
+export function makeStepChangingPositionSelector<T extends Record<string, Unit>>({
+                                                                                     isBlockFieldStep,
+                                                                                     stepLocation,
+                                                                                 }: {
+    isBlockFieldStep: boolean;
+    stepLocation: StepLocation<T>;
+}) {
+    return createSelector<ConstructorState,
+        ConstructorState['editParams'],
         boolean>([
         ({ editParams }) => editParams,
     ], (editParams) => {
@@ -32,12 +21,17 @@ export function makeStepChangingPositionSelector<T extends Record<string, Unit>>
 
         const {
             blockChangingPositionStepLocation,
+            elementFieldChangingPositionStepLocation,
         } = editParams;
 
-        if (blockChangingPositionStepLocation === undefined) {
+        const changingPositoinStepLocation = isBlockFieldStep
+            ? blockChangingPositionStepLocation
+            : elementFieldChangingPositionStepLocation;
+
+        if (changingPositoinStepLocation === undefined) {
             return false;
         }
 
-        return areObjectPropertiesEqual(blockChangingPositionStepLocation as StepLocation<Record<string, Unit>>, originalStepLocation);
+        return areObjectPropertiesEqual(changingPositoinStepLocation, stepLocation);
     });
 }

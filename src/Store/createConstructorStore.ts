@@ -1,9 +1,9 @@
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import { ConstructorStore } from './ConstructorStore';
+import { ConstructorState } from './ConstructorState';
 import { createConstructorReducer } from './reducers';
 
-export function createConstructorStore(initialState: ConstructorStore) {
+export function createConstructorStore(initialState: ConstructorState) {
     const sagaMiddleware = createSagaMiddleware();
     const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     const enhancer = composeEnhancers(

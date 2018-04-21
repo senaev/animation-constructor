@@ -28,7 +28,6 @@ export class Rectangle extends AnimationElement<ElementName> {
         const { style } = this.rectangleDiv;
 
         style.backgroundColor = colorToRGBAString(backgroundColor);
-        console.log(size, borderRadius);
         style.borderRadius = `${size * (borderRadius / 100)}px`;
 
         this.values = values;

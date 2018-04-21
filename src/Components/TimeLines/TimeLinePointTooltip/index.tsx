@@ -4,7 +4,7 @@ import {
     TimeLinePointChangeableParams,
     TimeLinePointMovableParams,
     TimeLinePointRemovableParams,
-} from '../TimeLinePoint/index';
+} from '../TimeLinePoint';
 import { TimeLinePointChangable } from '../TimeLinePointChangable';
 import { TimeLinePointRemovable } from '../TimeLinePointRemovable';
 import * as c from './index.pcss';

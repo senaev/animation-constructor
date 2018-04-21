@@ -4,13 +4,13 @@ import { Animation } from '../../Animation';
 import { AnimationScript } from '../../AnimationScript';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
 import { getBlockLocationByElement } from '../../BlockLocation/getBlockLocationByElement';
-import { ConstructorStore } from '../../Store/ConstructorStore';
+import { ConstructorState } from '../../Store/ConstructorState';
 import { getIfNodeIsChild } from '../../utils/getIfNodeIsChild';
 import { ResizeSensor } from '../../utils/ResizeSensor';
 import * as c from './index.pcss';
 
 
-export type AnimationPreviewProps = Pick<ConstructorStore,
+export type AnimationPreviewProps = Pick<ConstructorState,
     | 'animationScript'
     | 'animationPosition'>;
 

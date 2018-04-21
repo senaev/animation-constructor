@@ -12,7 +12,7 @@ import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
 import {
     actions,
 } from '../../Store/actions';
-import { ConstructorStore } from '../../Store/ConstructorStore';
+import { ConstructorState } from '../../Store/ConstructorState';
 import { AdditionalStep } from '../../Store/types/AdditionalStep';
 import { EditableStep } from '../../Store/types/EditableStep';
 import { EditableStepValue } from '../../Store/types/EditableStepValue';
@@ -29,11 +29,11 @@ export type TimeLinesState = {
 };
 
 export type TimeLinesStateProps = {
-    animationPosition: ConstructorStore['animationPosition'];
+    animationPosition: ConstructorState['animationPosition'];
     animationElementScript: AnimationElementScript<AnimationElements> | undefined;
 };
 export type TimeLinesDispatchProps = {
-    setAnimationPosition: (animationPosition: ConstructorStore['animationPosition']) => void;
+    setAnimationPosition: (animationPosition: ConstructorState['animationPosition']) => void;
     setBlockScriptStepValue: (stepValue: EditableStepValue<BlockFieldUnits>) => void;
     setFieldsScriptStepValue: (stepValue: EditableStepValue<AnimationElementsFieldsUnits[AnimationElements]>) => void;
     removeBlockScriptStep: (changedStep: EditableStep<BlockFieldUnits>) => void;
@@ -151,7 +151,7 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
     }
 }
 
-const mapStateToProps = (state: ConstructorStore): TimeLinesStateProps => {
+const mapStateToProps = (state: ConstructorState): TimeLinesStateProps => {
     const {
         animationPosition,
         editParams,

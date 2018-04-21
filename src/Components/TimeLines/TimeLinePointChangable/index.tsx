@@ -7,7 +7,7 @@ import { FieldClass } from '../../../Fields/Field';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { noop } from '../../../utils/noop';
-import { TimeLinePointChangeableParams } from '../TimeLinePoint/index';
+import { TimeLinePointChangeableParams } from '../TimeLinePoint';
 import * as c from './index.pcss';
 
 type TimeLinePointChangableProps<T extends Unit> =
