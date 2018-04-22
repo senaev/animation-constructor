@@ -323,16 +323,15 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
         };
     })
     .on(actions.startEditingJSON, (state): ConstructorState => {
-        const {
-            animationScript,
-        } = state;
-
-        const jsonString = JSON.stringify(animationScript);
-
         return {
             ...state,
             editingAsJSONParams: {
-                jsonString,
             },
+        };
+    })
+    .on(actions.cancelEditingJSON, (state): ConstructorState => {
+        return {
+            ...state,
+            editingAsJSONParams: undefined,
         };
     });

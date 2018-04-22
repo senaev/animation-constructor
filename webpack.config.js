@@ -2,6 +2,30 @@
 
 const path = require('path');
 
+const styleLoaderConfig ={
+    loader: 'style-loader',
+    options: {
+        singleton: true,
+    },
+};
+
+const postCssLoaderConfig = {
+    loader: 'postcss-loader',
+    options: {
+        ident: 'postcss',
+        plugins: () => [
+            require('postcss-nested')(),
+            require('postcss-cssnext')({
+                warnForDuplicates: false,
+            }),
+            require('postcss-url')({
+                url: 'inline',
+            }),
+            require('cssnano')(),
+        ],
+    },
+};
+
 module.exports = {
     entry: {
         costructor: './src',
@@ -23,35 +47,27 @@ module.exports = {
             {
                 test: /\.pcss$/,
                 use: [
-                    {
-                        loader: 'style-loader',
-                        options: {
-                            singleton: true,
-                        },
-                    },
+                    styleLoaderConfig,
                     {
                         loader: 'typings-for-css-modules-loader',
                         options: {
                             namedExport: true,
+                            camelCase: true,
                             modules: true,
                             importLoaders: 1,
                             localIdentName: '[path]-[name]--[local]',
                             minimize: true,
                         },
                     },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            ident: 'postcss',
-                            plugins: () => [
-                                require('postcss-nested'),
-                                require('postcss-cssnext'),
-                                require('postcss-inline-svg')(),
-                                require('cssnano')(),
-                            ],
-                        },
-                    },
-                ]
+                    postCssLoaderConfig,
+                ],
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    styleLoaderConfig,
+                    postCssLoaderConfig,
+                ],
             },
             {
                 test: /\.tsx?$/,
@@ -67,8 +83,8 @@ module.exports = {
                         },
                     },
                     'awesome-typescript-loader',
-                ]
-            }
-        ]
+                ],
+            },
+        ],
     },
 };

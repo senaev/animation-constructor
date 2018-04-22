@@ -5,4 +5,58 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+
+    &__editorContainer {
+        position: relative;
+        width: 100%;
+        flex-grow: 1;
+
+        &__absoluteSizer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &__buttons {
+        width: 100%;
+        background-color: white;
+        height: 30px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+
+        &__button {
+            composes: button from '../../mixins/button.pcss';
+            margin: 4px;
+
+            &_save {
+                background-color: lightgreen;
+            }
+
+            &_cancel {
+                background-color: lightcoral;
+            }
+        }
+    }
+
+    &__validationIndicator {
+        width: 100%;
+        background-color: white;
+
+        &__message {
+            height: calc(100% - 8px);
+            width: calc(100% - 16px);
+            background-color: lightcoral;
+            color: white;
+            font-family: monospace;
+            font-size: 12px;
+            padding: 4px 8px;
+        }
+    }
 }

@@ -2,6 +2,7 @@ import { createAction, EmptyActionCreator, SimpleActionCreator } from 'redux-act
 import { AnimationElementFieldsTypes } from '../AnimationElements/AnimationElementFieldsTypes';
 import { AnimationElements } from '../AnimationElements/AnimationElements';
 import { AnimationElementsFieldsUnits } from '../AnimationElements/AnimationElementsFieldsUnits';
+import { AnimationScript } from '../AnimationScript';
 import { Block } from '../Block/Block';
 import { BlockFieldUnits } from '../Block/BlockFieldUnits';
 import { BlockLocation } from '../BlockLocation/BlockLocation';
@@ -49,6 +50,9 @@ const ActionTypes = {
     setElementFieldsChangingPositionStepLocation: any as (StepLocation<AnimationElementsFieldsUnits[AnimationElements]> | undefined),
 
     startEditingJSON: any as void,
+    cancelEditingJSON: any as void,
+
+    setAnimationScript: any as AnimationScript,
 };
 type ActionTypes = typeof ActionTypes;
 

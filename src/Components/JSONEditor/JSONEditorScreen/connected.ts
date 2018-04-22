@@ -1,32 +1,26 @@
 import { connect, MapStateToPropsFactory } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
+import { actions } from '../../../Store/actions';
 import { ConstructorState } from '../../../Store/ConstructorState';
 import { JSONEditorScreen, JSONEditorScreenCallbacks, JSONEditorScreenParams } from './';
 
 const makeMapStoreToProps: MapStateToPropsFactory<JSONEditorScreenParams, {}, ConstructorState> = (initialStore, initialOwnProps) => {
     return (state, ownProps): JSONEditorScreenParams => {
         const {
-            editingAsJSONParams,
+            animationScript,
         } = state;
 
-        if (editingAsJSONParams === undefined) {
-            throw new Error('JSONEditorScreenConnected should not been rendered when editingAsJSONParams is not set');
-        }
-
-        const {
-            jsonString,
-        } = editingAsJSONParams;
-
         return {
-            jsonString,
+            animationScript,
         };
     };
 };
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): JSONEditorScreenCallbacks => {
     return {
-        //
+        onCancel: () => dispatch(actions.cancelEditingJSON()),
+        onSave: (nextAnimationScript) => dispatch(actions.setAnimationScript(nextAnimationScript)),
     };
 };
 

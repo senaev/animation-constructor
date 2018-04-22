@@ -28,10 +28,6 @@ export type StepLocation<T extends Record<string, Unit>> = {
  * Params that describe state of editing animation as JSON
  */
 export type EditingAsJSONParams = {
-    /**
-     * Current string in editor
-     */
-    jsonString: string;
 };
 
 /**
