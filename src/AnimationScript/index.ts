@@ -1,14 +1,14 @@
 import { AnimationElements } from '../AnimationElements/AnimationElements';
 import { AnimationElementsFieldsUnits } from '../AnimationElements/AnimationElementsFieldsUnits';
 import { BlockFieldUnits } from '../Block/BlockFieldUnits';
-import { EasingName } from '../Easing/EasingName';
+import { Easing } from '../Easing/Easing';
 import { Unit } from '../Unit/Unit';
 import { UnitTypes } from '../Unit/UnitTypes';
 
 export type Step<T extends Unit> = {
     duration: number;
     value: UnitTypes[T];
-    easing: EasingName | undefined;
+    easing: Easing | undefined;
 };
 
 export type UnitScript<T extends Unit> = {

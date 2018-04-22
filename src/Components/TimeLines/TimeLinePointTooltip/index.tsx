@@ -3,6 +3,7 @@ import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { TimeLinePointMovableParams, } from '../TimeLinePoint';
 import { TimeLinePointChangable } from '../TimeLinePointChangable';
+import { TimeLinePointEasing } from '../TimeLinePointEasing';
 import { TimeLinePointMovable } from '../TimeLinePointMovable/TimeLinePointMovable';
 import { TimeLinePointRemovable } from '../TimeLinePointRemovable';
 import * as c from './index.pcss';
@@ -48,6 +49,7 @@ export class TimeLinePointTooltip<T extends Unit> extends React.Component<TimeLi
                     />
                     : null
             }
+            <TimeLinePointEasing/>
             {
                 movable === undefined
                     ? null

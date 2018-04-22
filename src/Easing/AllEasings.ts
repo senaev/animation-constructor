@@ -1,8 +1,8 @@
+import { Easing } from './Easing';
 import { EasingFunction } from './EasingFunction';
-import { EasingName } from './EasingName';
 
 // https://gist.github.com/gre/1650294
-export const AllEasings: Record<EasingName, EasingFunction> = {
+export const AllEasings: Record<Easing, EasingFunction> = {
     // no easing, no acceleration
     linear: (t) => t,
     // accelerating from zero velocity
