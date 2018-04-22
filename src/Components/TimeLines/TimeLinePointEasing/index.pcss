@@ -2,9 +2,26 @@
     display: flex;
     font-family: monospace;
     font-size: 10px;
-    background: #eeeeee;
+    background-color: #eeeeee;
+
+    &__previewsContainer {
+        position: relative;
+    }
 
     &__preview {
-        background-color: green;
+        background-color: #cccccc;
+        border-radius: 4px;
+        padding: 4px;
+
+        &_pointer {
+            cursor: pointer;
+        }
+    }
+
+    &__otherPreviews {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: 100%;
     }
 }

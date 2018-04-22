@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Easing } from '../../../Easing/Easing';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { TimeLinePointMovableParams, } from '../TimeLinePoint';
@@ -19,6 +20,8 @@ export type TimeLinePointTooltipProps<T extends Unit> = {
     onChangePosition: (nextPosition: number) => void;
     isChangeableDialogOpen: boolean;
     requestChangeableDialogOpened: (opened: boolean) => void;
+    easing: Easing | undefined;
+    onChangeEasing: (easing: Easing | undefined) => void;
 };
 
 export class TimeLinePointTooltip<T extends Unit> extends React.Component<TimeLinePointTooltipProps<T>, {}> {
@@ -34,6 +37,8 @@ export class TimeLinePointTooltip<T extends Unit> extends React.Component<TimeLi
             onChangePosition,
             isChangeableDialogOpen,
             requestChangeableDialogOpened,
+            easing,
+            onChangeEasing,
         } = this.props;
 
         return <div className={ c.TimeLinePointTooltip }>
@@ -49,7 +54,10 @@ export class TimeLinePointTooltip<T extends Unit> extends React.Component<TimeLi
                     />
                     : null
             }
-            <TimeLinePointEasing/>
+            <TimeLinePointEasing
+                easing={ easing }
+                onChange={ onChangeEasing }
+            />
             {
                 movable === undefined
                     ? null

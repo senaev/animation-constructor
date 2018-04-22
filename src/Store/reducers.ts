@@ -10,6 +10,7 @@ import { removeFieldsScriptsStep } from './utils/removeFieldsScriptsStep';
 import { setAnimationElementFields } from './utils/setAnimationElementFields';
 import { setEditedAnimationElementScript } from './utils/setEditedAnimationElementScript';
 import { setEditedBlockFieldsOnCurrentPosition } from './utils/setEditedBlockFieldsOnCurrentPosition';
+import { setFieldsScriptsStepEasing } from './utils/setFieldsScriptsStepEasing';
 import { setFieldsScriptsStepPosition } from './utils/setFieldsScriptsStepPosition';
 import { setFieldsScriptsStepValue } from './utils/setFieldsScriptsStepValue';
 
@@ -201,6 +202,44 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
             fieldsScript,
         });
     })
+    .on(actions.setBlockScriptStepEasing, (state, {
+        fieldName,
+        stepIndex,
+        easing,
+    }): ConstructorState => {
+        const animationElementScript = getEditedAnimationElementScript(state);
+
+        const blockScript = setFieldsScriptsStepEasing(
+            animationElementScript.blockScript,
+            fieldName,
+            stepIndex,
+            easing,
+        );
+
+        return setEditedAnimationElementScript(state, {
+            ...animationElementScript,
+            blockScript,
+        });
+    })
+    .on(actions.setFieldsScriptStepEasing, (state, {
+        fieldName,
+        stepIndex,
+        easing,
+    }): ConstructorState => {
+        const animationElementScript = getEditedAnimationElementScript(state);
+
+        const fieldsScript = setFieldsScriptsStepEasing(
+            animationElementScript.fieldsScript,
+            fieldName,
+            stepIndex,
+            easing,
+        );
+
+        return setEditedAnimationElementScript(state, {
+            ...animationElementScript,
+            fieldsScript,
+        });
+    })
     .on(actions.setScaleCoordinates, (state, scaleCoordinates): ConstructorState => {
         return {
             ...state,
@@ -268,7 +307,6 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
         const animationElementScript = getEditedAnimationElementScript(state);
 
         const blockScript = addScriptStepOnPosition(animationElementScript.blockScript, fieldName, position);
-
 
         return setEditedAnimationElementScript(state, {
             ...animationElementScript,

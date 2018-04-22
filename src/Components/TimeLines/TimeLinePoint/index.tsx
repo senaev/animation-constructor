@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Easing } from '../../../Easing/Easing';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
 import { clamp } from '../../../utils/clamp';
@@ -21,6 +22,7 @@ export type TimeLinePointParams<T extends Record<string, Unit>, K extends keyof 
     unit: T[K];
     title: string;
     value: UnitTypes[T[keyof T]];
+    easing: Easing | undefined;
 };
 
 export type TimeLinePointCallbacks<T extends Record<string, Unit>, K extends keyof T> = {
@@ -29,6 +31,7 @@ export type TimeLinePointCallbacks<T extends Record<string, Unit>, K extends key
     onPositionChangeEnd: (position: number) => void;
     onRemove: (() => void) | undefined;
     onChangeValue: ((nextValue: UnitTypes[T[K]]) => void) | undefined;
+    onChangeEasing: (easing: Easing | undefined) => void;
 };
 
 export type TimeLinePointProps<T extends Record<string, Unit>, K extends keyof T> =
@@ -76,6 +79,8 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
             value,
             onChangeValue,
             onPositionChange,
+            easing,
+            onChangeEasing,
         } = this.props;
 
         return <div
@@ -107,6 +112,8 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
                         movable={ movable }
                         isChangeableDialogOpen={ isChangeableDialogOpened }
                         requestChangeableDialogOpened={ this.requestChangeableDialogOpened }
+                        easing={ easing }
+                        onChangeEasing={ onChangeEasing }
                     />
                     : null
             }

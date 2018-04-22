@@ -9,6 +9,7 @@ import { PointCoordinates } from '../types/PointCoordinates';
 import { ConstructorState, StepLocation } from './ConstructorState';
 import { AdditionalStep } from './types/AdditionalStep';
 import { EditableStep } from './types/EditableStep';
+import { EditableStepEasing } from './types/EditableStepEasing';
 import { EditableStepPosition } from './types/EditableStepPosition';
 import { EditableStepValue } from './types/EditableStepValue';
 import { createActions } from './utils/createActions';
@@ -38,6 +39,9 @@ const ActionTypes = {
 
     setBlockScriptStepValue: any as EditableStepValue<BlockFieldUnits>,
     setFieldsScriptStepValue: any as EditableStepValue<AnimationElementsFieldsUnits[AnimationElements]>,
+
+    setBlockScriptStepEasing: any as EditableStepEasing<BlockFieldUnits>,
+    setFieldsScriptStepEasing: any as EditableStepEasing<AnimationElementsFieldsUnits[AnimationElements]>,
 
     removeBlockScriptStep: any as EditableStep<BlockFieldUnits>,
     removeFieldsScriptStep: any as EditableStep<AnimationElementsFieldsUnits[AnimationElements]>,

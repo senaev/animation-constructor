@@ -2,8 +2,10 @@ import { connect, MapDispatchToPropsFunction, MapStateToPropsFactory } from 'rea
 import { AnimationElements } from '../../../AnimationElements/AnimationElements';
 import { AnimationElementsFieldsUnits } from '../../../AnimationElements/AnimationElementsFieldsUnits';
 import { BlockFieldUnits } from '../../../Block/BlockFieldUnits';
+import { Easing } from '../../../Easing/Easing';
 import { actions } from '../../../Store/actions';
 import { ConstructorState, StepLocation } from '../../../Store/ConstructorState';
+import { makeGetStepEasingSelector } from '../../../Store/selectors/makeGetStepEasingSelector';
 import { makeGetStepMovableSelector } from '../../../Store/selectors/makeGetStepMovableSelector';
 import { makeGetStepPositionSelector } from '../../../Store/selectors/makeGetStepPositionSelector';
 import { makeGetStepTitleSelector } from '../../../Store/selectors/makeGetStepTitleSelector';
@@ -21,6 +23,7 @@ export type TimeLinePointConnectedStateProps<T extends Record<string, Unit>> = {
     unit: T;
     title: string;
     value: UnitTypes[T[keyof T]];
+    easing: Easing | undefined;
 };
 
 export type TimeLinePointConnectedOwnProps<T extends Record<string, Unit>> = {
@@ -38,6 +41,7 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointConnectedStatePro
     const getStepUnitSelector = makeGetStepUnitSelector(initialOwnProps);
     const getStepTitleSelector = makeGetStepTitleSelector(initialOwnProps);
     const getStepValueSelector = makeGetStepValueSelector(initialOwnProps);
+    const getStepEasingSelector = makeGetStepEasingSelector(initialOwnProps);
 
     return (state, ownProps): TimeLinePointParams<Record<string, Unit>, string> => {
         const {
@@ -52,6 +56,7 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointConnectedStatePro
             unit: getStepUnitSelector(state),
             title: getStepTitleSelector(state),
             value: getStepValueSelector(state),
+            easing: getStepEasingSelector(state),
         };
     };
 };
@@ -114,6 +119,19 @@ const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointCallbacks<Reco
                     dispatch(actions.setFieldsScriptStepValue({
                         ...elementFieldStepLocation,
                         value: nextValue as any,
+                    }));
+                }
+            },
+            onChangeEasing: (easing) => {
+                if (isBlockFieldStep) {
+                    dispatch(actions.setBlockScriptStepEasing({
+                        ...blockFieldStepLocation,
+                        easing,
+                    }));
+                } else {
+                    dispatch(actions.setFieldsScriptStepEasing({
+                        ...elementFieldStepLocation,
+                        easing,
                     }));
                 }
             },

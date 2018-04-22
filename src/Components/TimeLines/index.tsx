@@ -94,6 +94,8 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                         onPositionChange={ this.onPositionChange }
                         onRemove={ undefined }
                         onChangeValue={ undefined }
+                        easing={ undefined }
+                        onChangeEasing={ noop }
                     />
                 </div>
             </div>
