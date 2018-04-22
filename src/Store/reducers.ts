@@ -321,4 +321,18 @@ export const createConstructorReducer = (appState: ConstructorState) => createRe
                 elementFieldChangingPositionStepLocation,
             },
         };
+    })
+    .on(actions.startEditingJSON, (state): ConstructorState => {
+        const {
+            animationScript,
+        } = state;
+
+        const jsonString = JSON.stringify(animationScript);
+
+        return {
+            ...state,
+            editingAsJSONParams: {
+                jsonString,
+            },
+        };
     });

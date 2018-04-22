@@ -25,8 +25,8 @@ const ActionTypes = {
     setEditedBlockRotating: any as boolean,
 
     setScaleCoordinates: any as PointCoordinates,
-    zoomIn: any as undefined,
-    zoomOut: any as undefined,
+    zoomIn: any as void,
+    zoomOut: any as void,
 
     setEditedBlockFieldsOnCurrentPosition: any as Partial<Block>,
     setEditedElementFields: any as Partial<AnimationElementFieldsTypes<AnimationElements>>,
@@ -47,9 +47,11 @@ const ActionTypes = {
 
     setBlockChangingPositionStepLocation: any as (StepLocation<BlockFieldUnits> | undefined),
     setElementFieldsChangingPositionStepLocation: any as (StepLocation<AnimationElementsFieldsUnits[AnimationElements]> | undefined),
+
+    startEditingJSON: any as void,
 };
 type ActionTypes = typeof ActionTypes;
 
 export const actions: {
-    [key in keyof ActionTypes]: ActionTypes[key] extends undefined ? EmptyActionCreator : SimpleActionCreator<ActionTypes[key]>;
+    [key in keyof ActionTypes]: ActionTypes[key] extends void ? EmptyActionCreator : SimpleActionCreator<ActionTypes[key]>;
 } = mapObjectValues(ActionTypes, (u, actionName) => createAction(actionName) as any);

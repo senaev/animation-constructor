@@ -14,8 +14,24 @@ import { Unit } from '../Unit/Unit';
  * Coordinates of animation `Step` within `AnimationElement` or `Block`
  */
 export type StepLocation<T extends Record<string, Unit>> = {
+    /**
+     * Name of `AnimationElement` or `Block` field that contains `Step`
+     */
     fieldName: keyof T;
+    /**
+     * Index of `Step` in field steps array
+     */
     stepIndex: number;
+};
+
+/**
+ * Params that describe state of editing animation as JSON
+ */
+export type EditingAsJSONParams = {
+    /**
+     * Current string in editor
+     */
+    jsonString: string;
 };
 
 /**
@@ -56,6 +72,10 @@ export type ConstructorState = {
         blockLocation: BlockLocation;
     } | undefined;
     /**
+     * `undefined` means that animation is not editing as JSON at the moment
+     */
+    editingAsJSONParams: EditingAsJSONParams | undefined;
+    /**
      * Сoordinates of `Board` center at the screen square
      */
     scaleCoordinates: PointCoordinates;
@@ -79,6 +99,7 @@ export type ConstructorState = {
 
 export const defaultConstructorState: ConstructorState = {
     editParams: undefined,
+    editingAsJSONParams: undefined,
     scaleCoordinates: DEFAULT_SCALE_COORDINATES,
     zoom: DEFAULT_ZOOM,
     relation: DEFAULT_RELATION,
