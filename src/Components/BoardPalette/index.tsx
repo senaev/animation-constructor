@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Redux from 'redux';
 import { Action } from 'redux-act';
-import { ALL_ANIMATION_ELEMENT_NAMES } from '../../AnimationElements/ALL_ANIMATION_ELEMENT_NAMES';
+import { AllAnimationElementsNames } from '../../AnimationElements/AllAnimationElementsNames';
 import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementsTitles } from '../../AnimationElements/AnimationElementsTitles';
 import { actions } from '../../Store/actions';
@@ -16,7 +16,7 @@ class BoardPaletteComponent extends React.Component<BoardPaletteProps, {}> {
     public render() {
         return <div className={ c.BoardPalette }>
             {
-                ALL_ANIMATION_ELEMENT_NAMES.map((elementName, key) => {
+                AllAnimationElementsNames.map((elementName, key) => {
                     return <div
                         key={ key }
                         className={ c.BoardPalette__element }

@@ -1,4 +1,4 @@
-import { ALL_ANIMATION_ELEMENTS } from '../AnimationElements/ALL_ANIMATION_ELEMENTS';
+import { AllAnimationElements } from '../AnimationElements/AllAnimationElements';
 import { AnimationScript } from '../AnimationScript';
 import { Block } from '../Block/Block';
 import { applyBlockToElement } from '../Block/utils/applyBlockToElement';
@@ -34,7 +34,7 @@ export class Animation {
 
             const initialFieldValues = getFieldValuesByAnimationPosition(animationPosition);
 
-            const AnimationElementClass = ALL_ANIMATION_ELEMENTS[elementName];
+            const AnimationElementClass = AllAnimationElements[elementName];
             const animationElement = new AnimationElementClass(
                 container,
                 initialFieldValues,

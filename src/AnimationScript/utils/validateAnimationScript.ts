@@ -1,5 +1,5 @@
 import { AnimationElementScript, AnimationScript, FieldsScripts, Step, UnitScript } from '../';
-import { ALL_ANIMATION_ELEMENT_NAMES } from '../../AnimationElements/ALL_ANIMATION_ELEMENT_NAMES';
+import { AllAnimationElementsNames } from '../../AnimationElements/AllAnimationElementsNames';
 import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementsFieldsUnits';
 import { BlockFieldUnits } from '../../Block/BlockFieldUnits';
@@ -120,9 +120,9 @@ function validateAnimationElementScript(animationElementScript: AnimationElement
         throw new Error(`AnimationElementScript.elementName should be a string but got [${elementName}][${typeof elementName}]`);
     }
 
-    if (ALL_ANIMATION_ELEMENT_NAMES.indexOf(elementName) === -1) {
+    if (AllAnimationElementsNames.indexOf(elementName) === -1) {
         throw new Error(`AnimationElementScript.elementName is not one of known element names [${elementName}] ` +
-            `all names [${ALL_ANIMATION_ELEMENT_NAMES}]`);
+            `all names [${AllAnimationElementsNames}]`);
     }
 
     try {
