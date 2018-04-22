@@ -1,4 +1,3 @@
-import { createAction, EmptyActionCreator, SimpleActionCreator } from 'redux-act';
 import { AnimationElementFieldsTypes } from '../AnimationElements/AnimationElementFieldsTypes';
 import { AnimationElements } from '../AnimationElements/AnimationElements';
 import { AnimationElementsFieldsUnits } from '../AnimationElements/AnimationElementsFieldsUnits';
@@ -7,12 +6,12 @@ import { Block } from '../Block/Block';
 import { BlockFieldUnits } from '../Block/BlockFieldUnits';
 import { BlockLocation } from '../BlockLocation/BlockLocation';
 import { PointCoordinates } from '../types/PointCoordinates';
-import { mapObjectValues } from '../utils/mapObjectValues';
 import { ConstructorState, StepLocation } from './ConstructorState';
 import { AdditionalStep } from './types/AdditionalStep';
 import { EditableStep } from './types/EditableStep';
 import { EditableStepPosition } from './types/EditableStepPosition';
 import { EditableStepValue } from './types/EditableStepValue';
+import { createActions } from './utils/createActions';
 
 const any: any = undefined;
 
@@ -51,11 +50,7 @@ const ActionTypes = {
 
     startEditingJSON: any as void,
     cancelEditingJSON: any as void,
-
-    setAnimationScript: any as AnimationScript,
+    saveAnimationScript: any as AnimationScript,
 };
-type ActionTypes = typeof ActionTypes;
 
-export const actions: {
-    [key in keyof ActionTypes]: ActionTypes[key] extends void ? EmptyActionCreator : SimpleActionCreator<ActionTypes[key]>;
-} = mapObjectValues(ActionTypes, (u, actionName) => createAction(actionName) as any);
+export const actions = createActions(ActionTypes);

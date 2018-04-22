@@ -20,7 +20,7 @@ const makeMapStoreToProps: MapStateToPropsFactory<JSONEditorScreenParams, {}, Co
 const mapDispatchToProps = (dispatch: Redux.Dispatch<Action<any>>): JSONEditorScreenCallbacks => {
     return {
         onCancel: () => dispatch(actions.cancelEditingJSON()),
-        onSave: (nextAnimationScript) => dispatch(actions.setAnimationScript(nextAnimationScript)),
+        onSave: (nextAnimationScript) => dispatch(actions.saveAnimationScript(nextAnimationScript)),
     };
 };
 

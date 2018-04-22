@@ -159,6 +159,9 @@ export class JSONEditorScreen extends React.Component<JSONEditorScreenProps, JSO
             throw new Error('jsonEditor has not been initialized');
         }
 
-        // TODO
+        const jsonString = jsonEditor.getText();
+        const animationScript = JSON.parse(jsonString);
+
+        this.props.onSave(animationScript);
     }
 }

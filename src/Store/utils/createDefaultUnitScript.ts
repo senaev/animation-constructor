@@ -1,5 +1,4 @@
 import { UnitScript } from '../../AnimationScript';
-import { Easing } from '../../Easing/Easing';
 import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 
@@ -10,7 +9,7 @@ export function createDefaultUnitScript<T extends Unit>(unit: T, value: UnitType
             {
                 duration: 1,
                 value,
-                easing: Easing.easeInOut,
+                easing: undefined,
             },
         ],
     };
