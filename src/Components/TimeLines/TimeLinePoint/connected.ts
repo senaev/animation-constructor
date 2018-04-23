@@ -5,12 +5,11 @@ import { BlockFieldUnits } from '../../../Block/BlockFieldUnits';
 import { Easing } from '../../../Easing/Easing';
 import { actions } from '../../../Store/actions';
 import { ConstructorState, StepLocation } from '../../../Store/ConstructorState';
-import { makeGetStepEasingSelector } from '../../../Store/selectors/makeGetStepEasingSelector';
 import { makeGetStepMovableSelector } from '../../../Store/selectors/makeGetStepMovableSelector';
 import { makeGetStepPositionSelector } from '../../../Store/selectors/makeGetStepPositionSelector';
+import { makeGetStepSelector } from '../../../Store/selectors/makeGetStepSelector';
 import { makeGetStepTitleSelector } from '../../../Store/selectors/makeGetStepTitleSelector';
 import { makeGetStepUnitSelector } from '../../../Store/selectors/makeGetStepUnitSelector';
-import { makeGetStepValueSelector } from '../../../Store/selectors/makeGetStepValueSelector';
 import { makeStepChangingPositionSelector } from '../../../Store/selectors/makeStepChangingPositionSelector';
 import { Unit } from '../../../Unit/Unit';
 import { UnitTypes } from '../../../Unit/UnitTypes';
@@ -40,13 +39,17 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointConnectedStatePro
     const getStepMovableSelector = makeGetStepMovableSelector(initialOwnProps);
     const getStepUnitSelector = makeGetStepUnitSelector(initialOwnProps);
     const getStepTitleSelector = makeGetStepTitleSelector(initialOwnProps);
-    const getStepValueSelector = makeGetStepValueSelector(initialOwnProps);
-    const getStepEasingSelector = makeGetStepEasingSelector(initialOwnProps);
+    const getStepSelector = makeGetStepSelector(initialOwnProps);
 
     return (state, ownProps): TimeLinePointParams<Record<string, Unit>, string> => {
         const {
             containerWidth,
         } = ownProps;
+
+        const {
+            value,
+            easing,
+        } = getStepSelector(state);
 
         return {
             containerWidth,
@@ -55,8 +58,8 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointConnectedStatePro
             changingPosition: stepChangingPositionSelector(state),
             unit: getStepUnitSelector(state),
             title: getStepTitleSelector(state),
-            value: getStepValueSelector(state),
-            easing: getStepEasingSelector(state),
+            value,
+            easing,
         };
     };
 };

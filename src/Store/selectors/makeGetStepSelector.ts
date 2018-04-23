@@ -1,13 +1,13 @@
 import { createSelector } from 'reselect';
 import { AnimationElementFieldsNames } from '../../AnimationElements/AnimationElementFieldsNames';
 import { AnimationElements } from '../../AnimationElements/AnimationElements';
+import { Step } from '../../AnimationScript';
 import { BlockFieldName } from '../../Block/BlockFieldName';
 import { Unit } from '../../Unit/Unit';
-import { UnitTypes } from '../../Unit/UnitTypes';
 import { ConstructorState, StepLocation } from '../ConstructorState';
 import { getAnimationElementScriptByBlockLocation } from '../utils/getAnimationElementScriptByBlockLocation';
 
-export function makeGetStepValueSelector<T extends Record<string, Unit>>({
+export function makeGetStepSelector<T extends Record<string, Unit>>({
                                                                              isBlockFieldStep,
                                                                              stepLocation: {
                                                                                  fieldName,
@@ -20,12 +20,12 @@ export function makeGetStepValueSelector<T extends Record<string, Unit>>({
     return createSelector<ConstructorState,
         ConstructorState['editParams'],
         ConstructorState['animationScript'],
-        UnitTypes[T[keyof T]]>([
+        Step<Unit>>([
         ({ editParams }) => editParams,
         ({ animationScript }) => animationScript,
     ], (editParams, animationScript) => {
         if (editParams === undefined) {
-            throw new Error('editParams is not initialized on makeGetStepValueSelector call');
+            throw new Error('editParams is not initialized on makeGetStepSelector call');
         }
 
         const {
@@ -40,6 +40,6 @@ export function makeGetStepValueSelector<T extends Record<string, Unit>>({
             ? blockScript[fieldName as BlockFieldName]
             : fieldsScript[fieldName as AnimationElementFieldsNames<AnimationElements>];
 
-        return steps[stepIndex].value;
+        return steps[stepIndex];
     });
 }
