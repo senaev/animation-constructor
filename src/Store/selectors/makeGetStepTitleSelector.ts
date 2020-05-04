@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 import { AnimationElementFieldTitles } from '../../AnimationElements/AnimationElementFieldTitles';
-import { BlockFieldName } from '../../Block/BlockFieldName';
 import { BlockFieldTitles } from '../../Block/BlockFieldTitles';
 import { Unit } from '../../Unit/Unit';
 import { ConstructorState, StepLocation } from '../ConstructorState';
@@ -32,11 +31,11 @@ export function makeGetStepTitleSelector<T extends Record<string, Unit>>({
         } = editParams;
 
         if (isBlockFieldStep) {
-            return BlockFieldTitles[fieldName as string as BlockFieldName];
+            return BlockFieldTitles[fieldName];
         } else {
             const elementName = getAnimationElementScriptByBlockLocation(animationScript, blockLocation).elementName;
 
-            const animationElementFieldsTitles: Record<string, string> = AnimationElementFieldTitles[elementName];
+            const animationElementFieldsTitles = AnimationElementFieldTitles[elementName];
 
             return animationElementFieldsTitles[fieldName];
         }

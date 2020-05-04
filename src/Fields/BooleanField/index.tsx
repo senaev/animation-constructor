@@ -1,5 +1,5 @@
 import * as cx from 'classnames';
-import { Checkbox } from 'material-ui';
+import { ChangeEvent } from 'react';
 import * as React from 'react';
 import { Unit } from '../../Unit/Unit';
 import { Field, FieldPreviewProps } from '../Field';
@@ -20,11 +20,14 @@ export class BooleanField extends Field<UNIT> {
     }
 
     public render() {
-        return <Checkbox
+        return <input
+            type='checkbox'
             checked={ this.props.value }
-            onCheck={ (event, value) => {
-                this.props.onChange(value);
-            } }
+            onChange={ this.onChange }
         />;
+    }
+
+    private onChange = (event: ChangeEvent<HTMLInputElement>) => {
+        this.props.onChange(event.target.checked);
     }
 }

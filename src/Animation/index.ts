@@ -22,7 +22,7 @@ export class Animation {
                                                            fieldsScript,
                                                        }) => {
             const { ownerDocument } = animationContainer;
-            const container = ownerDocument.createElement('div');
+            const container = ownerDocument!.createElement('div');
             container.className = c.AnimationBlock;
 
             const getBlockByAnimationPosition =

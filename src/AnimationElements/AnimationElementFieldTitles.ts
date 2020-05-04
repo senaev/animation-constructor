@@ -1,13 +1,8 @@
-import { AnimationElementFieldsNames } from './AnimationElementFieldsNames';
 import { AnimationElements } from './AnimationElements';
 
-export const AnimationElementFieldTitles: {
-    [elementName in AnimationElements]: {
-    [key in AnimationElementFieldsNames<elementName>]: string;
-    };
-    } = {
+export const AnimationElementFieldTitles = {
     [AnimationElements.Rectangle]: {
         backgroundColor: 'Цвет заливки',
         borderRadius: 'Радиус скругления',
     },
-};
+} as const;
