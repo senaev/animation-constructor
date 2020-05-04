@@ -18,9 +18,10 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/deep-equal/-/deep-equal-1.0.1.tgz#71cfabb247c22bcc16d536111f50c0ed12476b03"
 
-"@types/jsoneditor@^5.5.2":
+"@types/jsoneditor@5.5.2":
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/@types/jsoneditor/-/jsoneditor-5.5.2.tgz#9e584f52db6cde7f962a2a0940a1093ddaa8e4a9"
+  integrity sha1-nlhPUtts3n+WKioJQKEJPdqo5Kk=
   dependencies:
     "@types/ace" "*"
 
@@ -952,9 +953,10 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
-base64-inline-loader@^1.1.1:
+base64-inline-loader@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/base64-inline-loader/-/base64-inline-loader-1.1.1.tgz#2b8b2841e7848292519ea3a3d8dfc6a6c141791a"
+  integrity sha512-v/bHvXQ8sW28t9ZwBsFGgyqZw2bpT49/dtPTtlmixoSM/s9wnOngOKFVQLRH8BfMTy6jTl5m5CdvqpZt8y5d6g==
   dependencies:
     file-loader "^1.1.11"
     loader-utils "^1.1.0"
@@ -3220,9 +3222,10 @@ json5@^0.5.0, json5@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
 
-jsoneditor@^5.14.1:
+jsoneditor@5.14.1:
   version "5.14.1"
   resolved "https://registry.yarnpkg.com/jsoneditor/-/jsoneditor-5.14.1.tgz#30fbb4b78ae431d46ab31b2d79401339a7367ad9"
+  integrity sha512-qgrKU3F6Bq0CMEx1DPPCVenBtI90ihT8OlKKA4PA59/84aMGjAUnHo/DG4xfo6ZONJyDwxxmUZJzBqELaHmDtg==
   dependencies:
     ajv "5.5.2"
     brace "0.11.0"
@@ -4632,9 +4635,10 @@ postcss-unique-selectors@^2.0.2:
     postcss "^5.0.4"
     uniqs "^2.0.0"
 
-postcss-url@^7.3.2:
+postcss-url@7.3.2:
   version "7.3.2"
   resolved "https://registry.yarnpkg.com/postcss-url/-/postcss-url-7.3.2.tgz#5fea273807fb84b38c461c3c9a9e8abd235f7120"
+  integrity sha512-QMV5mA+pCYZQcUEPQkmor9vcPQ2MT+Ipuu8qdi1gVxbNiIiErEGft+eny1ak19qALoBkccS5AHaCaCDzh7b9MA==
   dependencies:
     mime "^1.4.1"
     minimatch "^3.0.4"
@@ -5017,9 +5021,10 @@ redux-act@1.7.3:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/redux-act/-/redux-act-1.7.3.tgz#08897a2158df28f5c95c400110d8b0ae795e908c"
 
-redux-saga@^0.16.0:
+redux-saga@0.16.0:
   version "0.16.0"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.0.tgz#0a231db0a1489301dd980f6f2f88d8ced418f724"
+  integrity sha1-CiMdsKFIkwHdmA9vL4jYztQY9yQ=
 
 redux@*, redux@3.7.2, redux@^3.6.0:
   version "3.7.2"
@@ -5150,9 +5155,10 @@ require-main-filename@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
 
-reselect@^3.0.1:
+reselect@3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-3.0.1.tgz#efdaa98ea7451324d092b2b2163a6a1d7a9a2147"
+  integrity sha1-79qpjqdFEyTQkrKyFjpqHXqaIUc=
 
 resize-observer-polyfill@1.5.0:
   version "1.5.0"
