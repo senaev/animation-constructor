@@ -53,7 +53,7 @@ export class DragListener {
                     onMove = noop,
                     onEnd = noop,
                 }: Partial<DragListenerCallbacks>) {
-        const { documentElement } = element.ownerDocument;
+        const { documentElement } = element.ownerDocument!;
 
         this.callbacks = {
             onStart,
@@ -94,7 +94,7 @@ export class DragListener {
 
         const {
             documentElement,
-        } = this.element.ownerDocument;
+        } = this.element.ownerDocument!;
 
         let wasMoved = false;
 

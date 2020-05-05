@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { createNumberField } from '../../../Fields/createNumberField/createNumberField';
-import { Unit } from '../../../Unit/Unit';
 import { noop } from '../../../utils/noop';
 import { TimeLinePointMovableParams } from '../TimeLinePoint';
 
@@ -21,7 +20,7 @@ export class TimeLinePointMovable extends React.Component<TimeLinePointMovablePr
         } = this.props;
 
         const Field = createNumberField({
-            unit: Unit.percent,
+            unit: 'percent',
             min,
             max,
         });

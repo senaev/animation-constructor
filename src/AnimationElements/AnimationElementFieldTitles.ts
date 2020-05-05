@@ -1,7 +1,5 @@
-import { AnimationElements } from './AnimationElements';
-
 export const AnimationElementFieldTitles = {
-    [AnimationElements.Rectangle]: {
+    Rectangle: {
         backgroundColor: 'Цвет заливки',
         borderRadius: 'Радиус скругления',
     },

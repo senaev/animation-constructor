@@ -1,8 +1,6 @@
 import { ALL_COLOR_PROPERTIES } from '../Color/ALL_COLOR_PROPERTIES';
 import { Color } from '../Color/Color';
-import { Unit } from '../Unit/Unit';
 import { mapArrayValuesToObject } from '../utils/mapArrayValuesToObject';
-import { UnitTransitionFunction } from './UnitTransitionFunction';
 
 const proceedNumber = (position: number,
                        startValue: number,
@@ -11,17 +9,17 @@ const proceedNumber = (position: number,
     return startValue + diff;
 };
 
-const returnStartValue = <T>(position: T, startValue: T): T => startValue;
+const proceedBoolean = (position: number, startValue: boolean, endValue: boolean): boolean => startValue;
 
-export const AllUnitTransitionFunctions: Record<Unit, UnitTransitionFunction<Unit>> = {
-    [Unit.degree]: proceedNumber as UnitTransitionFunction<Unit>,
-    [Unit.percent]: proceedNumber as UnitTransitionFunction<Unit>,
-    [Unit.percentZeroToInfinity]: proceedNumber as UnitTransitionFunction<Unit>,
-    [Unit.pixel]: proceedNumber as UnitTransitionFunction<Unit>,
-    [Unit.color]: ((position, startValue: Color, endValue: Color) => {
+export const AllUnitTransitionFunctions = {
+    degree: proceedNumber,
+    percent: proceedNumber,
+    percentZeroToInfinity: proceedNumber,
+    pixel: proceedNumber,
+    color: ((position: number, startValue: Color, endValue: Color) => {
         return mapArrayValuesToObject(ALL_COLOR_PROPERTIES, (colorPropertyName) => {
             return proceedNumber(position, startValue[colorPropertyName], endValue[colorPropertyName]);
         });
-    }) as UnitTransitionFunction<Unit>,
-    [Unit.boolean]: returnStartValue,
-};
+    }),
+    boolean: proceedBoolean,
+} as const;

@@ -14,11 +14,9 @@ export type TimeLinePointTooltipProps<T extends Unit> = {
     onRemove: (() => void) | undefined;
     movable: TimeLinePointMovableParams | undefined;
     unit: T;
-    title: string;
     value: UnitTypes[T];
     onChangeValue: ((nextValue: UnitTypes[T]) => void) | undefined;
     onChangePosition: (nextPosition: number) => void;
-    isChangeableDialogOpen: boolean;
     requestChangeableDialogOpened: (opened: boolean) => void;
     easing: Easing | undefined;
     onChangeEasing: (easing: Easing | undefined) => void;
@@ -31,11 +29,9 @@ export class TimeLinePointTooltip<T extends Unit> extends React.Component<TimeLi
             onRemove,
             movable,
             unit,
-            title,
             value,
             onChangeValue,
             onChangePosition,
-            isChangeableDialogOpen,
             requestChangeableDialogOpened,
             easing,
             onChangeEasing,
@@ -46,10 +42,8 @@ export class TimeLinePointTooltip<T extends Unit> extends React.Component<TimeLi
                 typeof onChangeValue === 'function'
                     ? <TimeLinePointChangable
                         unit={ unit }
-                        title={ title }
                         value={ value }
                         onChange={ onChangeValue }
-                        isDialogOpen={ isChangeableDialogOpen }
                         requestDialogOpened={ requestChangeableDialogOpened }
                     />
                     : null

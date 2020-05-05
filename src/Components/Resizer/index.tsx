@@ -7,13 +7,10 @@ import { getFieldsValuesByPosition } from '../../Animation/util/getFieldsValuesB
 import { Block } from '../../Block/Block';
 import { blockToStyles } from '../../Block/utils/blockToStyles';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
-import {
-    actions,
-} from '../../Store/actions';
+import { actions, } from '../../Store/actions';
 import { ConstructorState } from '../../Store/ConstructorState';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
 import { PointCoordinates } from '../../types/PointCoordinates';
-import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 import { areArraysEqual } from '../../utils/areArraysEqual/areArraysEqual';
 import { DragListener } from '../../utils/DragListener/DragListener';
@@ -309,7 +306,7 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
         };
     }
 
-    private getCursorAngleRelativeToBlockOrigin({ x, y }: PointCoordinates): UnitTypes[Unit.degree] {
+    private getCursorAngleRelativeToBlockOrigin({ x, y }: PointCoordinates): UnitTypes['degree'] {
         const originCoordinates = this.getBlockOriginAbsoluteCoordinates();
 
         return getAngleRelativeToOrigin({
@@ -330,7 +327,7 @@ class ResizerComponent extends React.Component<ResizerProps, {}> {
         return containerElement.getBoundingClientRect();
     }
 
-    private getPercentageInPixel(): UnitTypes[Unit.percent] {
+    private getPercentageInPixel(): UnitTypes['percent'] {
         return 100 / this.getContainerBlockRect().width;
     }
 

@@ -6,7 +6,8 @@ export type EventMap =
 
 export type HTMLElementEventName = keyof EventMap;
 
-type EventListener = (this: EventTarget, event: Event) => any;
+type EventListener<K extends HTMLElementEventName> = (this: EventTarget,
+                                                      event: EventMap[K]) => any;
 
 let isSupportsOnceOption = false;
 let isSupportsCaptureOption = false;
@@ -24,7 +25,7 @@ div.addEventListener('click', noop, optionsCheckObject as any);
 
 export function addElementEventListener<K extends HTMLElementEventName>(element: EventTarget,
                                                                         eventName: K,
-                                                                        listener: EventListener,
+                                                                        listener: EventListener<K>,
                                                                         {
                                                                             capture,
                                                                             passive,
@@ -38,21 +39,21 @@ export function addElementEventListener<K extends HTMLElementEventName>(element:
         }
         : Boolean(capture);
 
-    const onceFallback: EventListener = function (event) {
+    const onceFallback: EventListener<K> = function (event) {
         removeListener();
         // tslint:disable-next-line:no-invalid-this
         listener.call(this, event);
     };
 
-    const finalListener: EventListener = once === true && !isSupportsOnceOption
+    const finalListener: EventListener<K> = once === true && !isSupportsOnceOption
         ? onceFallback
         : listener;
 
     const removeListener = () => {
-        element.removeEventListener(eventName, finalListener, finalOptions);
+        element.removeEventListener(eventName, finalListener as any, finalOptions);
     };
 
-    element.addEventListener(eventName, finalListener, finalOptions);
+    element.addEventListener(eventName, finalListener as any, finalOptions);
 
     return removeListener;
 }

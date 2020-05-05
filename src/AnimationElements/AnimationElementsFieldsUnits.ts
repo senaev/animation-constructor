@@ -1,11 +1,8 @@
-import { Unit } from '../Unit/Unit';
-import { AnimationElements } from './AnimationElements';
-
 export const AnimationElementsFieldsUnits = {
-    [AnimationElements.Rectangle]: {
+    Rectangle: {
         // cast types to have a particular type for each property
-        backgroundColor: Unit.color as Unit.color,
-        borderRadius: Unit.percent as Unit.percent,
+        backgroundColor: 'color',
+        borderRadius: 'percent',
     },
-};
+} as const;
 export type AnimationElementsFieldsUnits = typeof AnimationElementsFieldsUnits;

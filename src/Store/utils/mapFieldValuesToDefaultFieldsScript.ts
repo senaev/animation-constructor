@@ -2,7 +2,6 @@ import { AnimationElementFieldsTypes } from '../../AnimationElements/AnimationEl
 import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementsFieldsUnits';
 import { AnimationElementFieldsScript } from '../../AnimationScript';
-import { Unit } from '../../Unit/Unit';
 import { mapObjectValues } from '../../utils/mapObjectValues';
 import { createDefaultUnitScript } from './createDefaultUnitScript';
 
@@ -14,7 +13,10 @@ export function mapFieldValuesToDefaultFieldsScript<T extends AnimationElements>
             const animationElementFieldsUnits = AnimationElementsFieldsUnits[elementName];
             const unit = animationElementFieldsUnits[fieldName];
 
-            return createDefaultUnitScript(unit as any as Unit, value) as any;
+            return createDefaultUnitScript({
+                unit,
+                value,
+            } as any) as any;
         },
     );
 }

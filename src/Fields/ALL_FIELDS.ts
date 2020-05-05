@@ -7,19 +7,19 @@ import { FieldClass } from './Field';
 export const ALL_FIELDS: {
     [key in Unit]: FieldClass<key>;
 } = {
-    [Unit.color]: ColorField as FieldClass<Unit.color>,
-    [Unit.percent]: createNumberField({
-        unit: Unit.percent,
+    color: ColorField as FieldClass<'color'>,
+    percent: createNumberField({
+        unit: 'percent',
     }),
-    [Unit.percentZeroToInfinity]: createNumberField({
-        unit: Unit.percentZeroToInfinity,
+    percentZeroToInfinity: createNumberField({
+        unit: 'percentZeroToInfinity',
         min: 0,
     }),
-    [Unit.degree]: createNumberField({
-        unit: Unit.degree,
+    degree: createNumberField({
+        unit: 'degree',
     }),
-    [Unit.pixel]: createNumberField({
-        unit: Unit.pixel,
+    pixel: createNumberField({
+        unit: 'pixel',
     }),
-    [Unit.boolean]: BooleanField as FieldClass<Unit.boolean>,
+    boolean: BooleanField as FieldClass<'boolean'>,
 };

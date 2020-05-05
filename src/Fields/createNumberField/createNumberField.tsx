@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { NumberUnit } from '../../Unit/NumberUnit';
 import { Unit } from '../../Unit/Unit';
 import { UnitShortTitles } from '../../Unit/UnitShortTitles';
 import { clamp } from '../../utils/clamp';
@@ -11,7 +12,7 @@ export type NumberFieldProperties<T extends Unit> = {
     max?: number;
 };
 
-export function createNumberField<T extends Unit>({
+export function createNumberField<T extends NumberUnit>({
                                                       unit,
                                                       min = -Infinity,
                                                       max = Infinity,

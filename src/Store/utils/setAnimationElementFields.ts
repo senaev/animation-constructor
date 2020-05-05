@@ -3,7 +3,6 @@ import { AnimationElements } from '../../AnimationElements/AnimationElements';
 import { AnimationElementsFieldsUnits } from '../../AnimationElements/AnimationElementsFieldsUnits';
 import { AnimationElementScript } from '../../AnimationScript';
 import { BlockLocation } from '../../BlockLocation/BlockLocation';
-import { Unit } from '../../Unit/Unit';
 import { mapObjectValues } from '../../utils/mapObjectValues';
 import { ConstructorState } from '../ConstructorState';
 import { createDefaultUnitScript } from './createDefaultUnitScript';
@@ -29,10 +28,10 @@ export function setAnimationElementFields<T extends AnimationElements>
     const nextAnimationElementFields = mapObjectValues(
         animationElementFields as AnimationElementFieldsTypes<T>,
         (value, animationElementFieldName) => {
-            return createDefaultUnitScript(
-                AnimationElementsFieldsUnits[elementName][animationElementFieldName] as any as Unit,
+            return createDefaultUnitScript({
+                unit: AnimationElementsFieldsUnits[elementName][animationElementFieldName],
                 value,
-            );
+            } as any);
         },
     );
 

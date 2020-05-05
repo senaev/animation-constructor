@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { getValueByPosition } from '../../Animation/util/getValueByPosition';
 import { UnitScript } from '../../AnimationScript';
-import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 import { colorToRGBAString } from '../../utils/colorToRGBAString';
 import { TimeLinePreviewProps } from '../UnitTimeLinePreviews';
 import { COLOR_TIMELINE_HEIGHT } from './COLOR_TIMELINE_HEIGHT';
 import * as c from './index.pcss';
 
-export class ColorTimeLinePreview extends React.Component<TimeLinePreviewProps<Unit.color>> {
+export class ColorTimeLinePreview extends React.Component<TimeLinePreviewProps<'color'>> {
     private canvas?: HTMLCanvasElement | null;
 
     public render() {
@@ -37,11 +36,11 @@ export class ColorTimeLinePreview extends React.Component<TimeLinePreviewProps<U
     public componentWillReceiveProps({
                                          size,
                                          unitScript,
-                                     }: TimeLinePreviewProps<Unit.color>) {
+                                     }: TimeLinePreviewProps<'color'>) {
         this.redrawCanvas(size, unitScript);
     }
 
-    private redrawCanvas(size: UnitTypes[Unit.pixel], unitScript: UnitScript<Unit.color>) {
+    private redrawCanvas(size: UnitTypes['pixel'], unitScript: UnitScript<'color'>) {
         const { canvas } = this;
 
         if (!canvas) {

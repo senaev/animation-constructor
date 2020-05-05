@@ -1,16 +1,11 @@
 import * as cx from 'classnames';
-import { ChangeEvent } from 'react';
 import * as React from 'react';
-import { Unit } from '../../Unit/Unit';
 import { Field, FieldPreviewProps } from '../Field';
 import * as c from './index.pcss';
 
-const UNIT = Unit.boolean;
-type UNIT = typeof UNIT;
-
-export class BooleanField extends Field<UNIT> {
-    public static unit = UNIT;
-    public static Preview = ({ value }: FieldPreviewProps<UNIT>) => {
+export class BooleanField extends Field<'boolean'> {
+    public static unit = 'boolean';
+    public static Preview = ({ value }: FieldPreviewProps<'boolean'>) => {
         return <div className={ cx(
             c.BooleanField__preview,
             value
@@ -27,7 +22,7 @@ export class BooleanField extends Field<UNIT> {
         />;
     }
 
-    private onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    private onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.props.onChange(event.target.checked);
     }
 }

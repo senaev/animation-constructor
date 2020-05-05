@@ -17,7 +17,8 @@
     "noErrorTruncation": true,
     "strictPropertyInitialization": true,
     "strictFunctionTypes": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "keyofStringsOnly": true
   },
   "exclude": [
     "node_modules"

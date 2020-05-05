@@ -1,11 +1,10 @@
 import { Color } from '../Color/Color';
-import { Unit } from './Unit';
 
 export type UnitTypes = {
-    [Unit.degree]: number;
-    [Unit.percent]: number;
-    [Unit.percentZeroToInfinity]: number;
-    [Unit.pixel]: number;
-    [Unit.color]: Color;
-    [Unit.boolean]: boolean;
+    degree: number;
+    percent: number;
+    percentZeroToInfinity: number;
+    pixel: number;
+    color: Color;
+    boolean: boolean;
 };

@@ -1,5 +1,3 @@
-import { AnimationElements } from './AnimationElements';
-
-export const AnimationElementsTitles: Record<AnimationElements, string> = {
-    [AnimationElements.Rectangle]: 'Прямоугольник',
-};
+export const AnimationElementsTitles = {
+    Rectangle: 'Прямоугольник',
+} as const;

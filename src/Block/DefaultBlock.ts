@@ -1,6 +1,9 @@
-import { Block } from './Block';
+import { UnitTypes } from '../Unit/UnitTypes';
+import { BlockFieldUnits } from './BlockFieldUnits';
 
-export const DefaultBlock: Block = {
+export const DefaultBlock: {
+    [key in keyof BlockFieldUnits]: UnitTypes[BlockFieldUnits[key]];
+} = {
     x: 10,
     y: 10,
     height: 25,

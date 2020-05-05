@@ -8,7 +8,6 @@ import { ConstructorState, StepLocation } from '../../../Store/ConstructorState'
 import { makeGetStepMovableSelector } from '../../../Store/selectors/makeGetStepMovableSelector';
 import { makeGetStepPositionSelector } from '../../../Store/selectors/makeGetStepPositionSelector';
 import { makeGetStepSelector } from '../../../Store/selectors/makeGetStepSelector';
-import { makeGetStepTitleSelector } from '../../../Store/selectors/makeGetStepTitleSelector';
 import { makeGetStepUnitSelector } from '../../../Store/selectors/makeGetStepUnitSelector';
 import { makeStepChangingPositionSelector } from '../../../Store/selectors/makeStepChangingPositionSelector';
 import { Unit } from '../../../Unit/Unit';
@@ -20,7 +19,6 @@ export type TimeLinePointConnectedStateProps<T extends Record<string, Unit>> = {
     position: number;
     movable: TimeLinePointMovableParams | undefined;
     unit: T;
-    title: string;
     value: UnitTypes[T[keyof T]];
     easing: Easing | undefined;
 };
@@ -28,7 +26,7 @@ export type TimeLinePointConnectedStateProps<T extends Record<string, Unit>> = {
 export type TimeLinePointConnectedOwnProps<T extends Record<string, Unit>> = {
     isBlockFieldStep: boolean;
     stepLocation: StepLocation<T>;
-    containerWidth: UnitTypes[Unit.pixel];
+    containerWidth: UnitTypes['pixel'];
 };
 
 const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointConnectedStateProps<any>,
@@ -38,10 +36,9 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointConnectedStatePro
     const getStepPositionSelector = makeGetStepPositionSelector(initialOwnProps);
     const getStepMovableSelector = makeGetStepMovableSelector(initialOwnProps);
     const getStepUnitSelector = makeGetStepUnitSelector(initialOwnProps);
-    const getStepTitleSelector = makeGetStepTitleSelector(initialOwnProps);
     const getStepSelector = makeGetStepSelector(initialOwnProps);
 
-    return (state, ownProps): TimeLinePointParams<Record<string, Unit>, string> => {
+    return (state, ownProps): TimeLinePointParams<Unit> => {
         const {
             containerWidth,
         } = ownProps;
@@ -57,16 +54,15 @@ const makeMapStoreToProps: MapStateToPropsFactory<TimeLinePointConnectedStatePro
             movable: getStepMovableSelector(state),
             changingPosition: stepChangingPositionSelector(state),
             unit: getStepUnitSelector(state),
-            title: getStepTitleSelector(state),
             value,
             easing,
         };
     };
 };
 
-const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointCallbacks<Record<string, Unit>, string>,
+const mapDispatchToProps: MapDispatchToPropsFunction<TimeLinePointCallbacks<Unit>,
     TimeLinePointConnectedOwnProps<Record<string, Unit>>> =
-    (dispatch, ownProps): TimeLinePointCallbacks<Record<string, Unit>, string> => {
+    (dispatch, ownProps): TimeLinePointCallbacks<Unit> => {
         const {
             isBlockFieldStep,
             stepLocation,

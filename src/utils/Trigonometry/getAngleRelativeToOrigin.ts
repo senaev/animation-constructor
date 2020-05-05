@@ -1,9 +1,8 @@
 import { PointCoordinates } from '../../types/PointCoordinates';
-import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 import { radiansToDegres } from './radiansToDegrees';
 
-export function getAngleRelativeToOrigin({ x, y }: PointCoordinates): UnitTypes[Unit.degree] {
+export function getAngleRelativeToOrigin({ x, y }: PointCoordinates): UnitTypes['degree'] {
     const tan = y / x;
     const relativeRotation = radiansToDegres(Math.atan(tan));
 

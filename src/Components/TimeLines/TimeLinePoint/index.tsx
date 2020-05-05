@@ -14,37 +14,36 @@ export type TimeLinePointMovableParams = {
     max: number;
 };
 
-export type TimeLinePointParams<T extends Record<string, Unit>, K extends keyof T> = {
+export type TimeLinePointParams<T extends Unit> = {
     position: number;
     changingPosition: boolean;
-    containerWidth: UnitTypes[Unit.pixel];
+    containerWidth: UnitTypes['pixel'];
     movable: TimeLinePointMovableParams | undefined;
-    unit: T[K];
-    title: string;
-    value: UnitTypes[T[keyof T]];
+    unit: T;
+    value: UnitTypes[T];
     easing: Easing | undefined;
 };
 
-export type TimeLinePointCallbacks<T extends Record<string, Unit>, K extends keyof T> = {
+export type TimeLinePointCallbacks<T extends Unit> = {
     onPositionChangeStart: (position: number) => void;
     onPositionChange: (position: number) => void;
     onPositionChangeEnd: (position: number) => void;
     onRemove: (() => void) | undefined;
-    onChangeValue: ((nextValue: UnitTypes[T[K]]) => void) | undefined;
+    onChangeValue: ((nextValue: UnitTypes[T]) => void) | undefined;
     onChangeEasing: (easing: Easing | undefined) => void;
 };
 
-export type TimeLinePointProps<T extends Record<string, Unit>, K extends keyof T> =
-    & TimeLinePointParams<T, K>
-    & TimeLinePointCallbacks<T, K>;
+export type TimeLinePointProps<T extends Unit> =
+    & TimeLinePointParams<T>
+    & TimeLinePointCallbacks<T>;
 
 export type TimeLinePointState = {
     isHovered: boolean;
     isChangeableDialogOpened: boolean;
 };
 
-export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
-    extends React.Component<TimeLinePointProps<T, K>, TimeLinePointState> {
+export class TimeLinePoint<T extends Unit>
+    extends React.Component<TimeLinePointProps<T>, TimeLinePointState> {
     private containerElement?: HTMLDivElement | null;
     private dragElement?: HTMLDivElement | null;
 
@@ -54,7 +53,7 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
     private draggingStartPosition: number | undefined;
 
 
-    constructor(props: TimeLinePointProps<T, K>) {
+    constructor(props: TimeLinePointProps<T>) {
         super(props);
 
         this.state = {
@@ -75,7 +74,6 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
             onRemove,
             movable,
             unit,
-            title,
             value,
             onChangeValue,
             onPositionChange,
@@ -104,13 +102,11 @@ export class TimeLinePoint<T extends Record<string, Unit>, K extends keyof T>
                     ? <TimeLinePointTooltip
                         position={ position }
                         unit={ unit }
-                        title={ title }
                         value={ value }
                         onChangeValue={ onChangeValue }
                         onChangePosition={ onPositionChange }
                         onRemove={ onRemove }
                         movable={ movable }
-                        isChangeableDialogOpen={ isChangeableDialogOpened }
                         requestChangeableDialogOpened={ this.requestChangeableDialogOpened }
                         easing={ easing }
                         onChangeEasing={ onChangeEasing }

@@ -22,7 +22,7 @@ export function setFieldsScriptsStepValue<T extends Record<string, Unit>>(fields
                     steps: setStepValue(steps, stepIndex, value),
                 };
             } else {
-                return unitScript;
+                return unitScript as any;
             }
         },
     );

@@ -24,14 +24,14 @@ export function makeStepChangingPositionSelector<T extends Record<string, Unit>>
             elementFieldChangingPositionStepLocation,
         } = editParams;
 
-        const changingPositoinStepLocation = isBlockFieldStep
+        const changingPositionStepLocation = isBlockFieldStep
             ? blockChangingPositionStepLocation
             : elementFieldChangingPositionStepLocation;
 
-        if (changingPositoinStepLocation === undefined) {
+        if (changingPositionStepLocation === undefined) {
             return false;
         }
 
-        return areObjectPropertiesEqual(changingPositoinStepLocation, stepLocation);
+        return areObjectPropertiesEqual(changingPositionStepLocation, stepLocation as any);
     });
 }

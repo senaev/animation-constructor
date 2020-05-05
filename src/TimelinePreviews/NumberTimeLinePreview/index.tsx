@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { getValueByPosition } from '../../Animation/util/getValueByPosition';
 import { UnitScript } from '../../AnimationScript';
-import { Unit } from '../../Unit/Unit';
+import { NumberUnit } from '../../Unit/NumberUnit';
 import { UnitShortTitles } from '../../Unit/UnitShortTitles';
 import { UnitTypes } from '../../Unit/UnitTypes';
 import { TimeLinePreviewProps } from '../UnitTimeLinePreviews';
@@ -10,9 +10,7 @@ import { NUMBER_TIMELINE_FONT_SIZE } from './NUMBER_TIMELINE_FONT_SIZE';
 import { NUMBER_TIMELINE_HEIGHT } from './NUMBER_TIMELINE_HEIGHT';
 import { NUMBER_TIMELINE_PADDING } from './NUMBER_TIMELINE_PADDING';
 
-type UNIT = Unit.percent | Unit.pixel | Unit.degree;
-
-export class NumberTimeLinePreview extends React.Component<TimeLinePreviewProps<UNIT>> {
+export class NumberTimeLinePreview <T extends NumberUnit> extends React.Component<TimeLinePreviewProps<T>> {
     private canvas?: HTMLCanvasElement | null;
 
     public render() {
@@ -40,11 +38,11 @@ export class NumberTimeLinePreview extends React.Component<TimeLinePreviewProps<
     public componentWillReceiveProps({
                                          size,
                                          unitScript,
-                                     }: TimeLinePreviewProps<UNIT>) {
+                                     }: TimeLinePreviewProps<T>) {
         this.redrawCanvas(size, unitScript);
     }
 
-    private redrawCanvas(size: UnitTypes[Unit.pixel], unitScript: UnitScript<UNIT>) {
+    private redrawCanvas(size: UnitTypes['pixel'], unitScript: UnitScript<T>) {
         const { canvas } = this;
 
         if (!canvas) {

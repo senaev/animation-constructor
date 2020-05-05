@@ -1,10 +1,9 @@
-import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 
-export function getDifferenceBetweenAngles(firstAngle: UnitTypes[Unit.degree],
-                                           secondAngle: UnitTypes[Unit.degree]): UnitTypes[Unit.degree] {
-    let firstDifference: UnitTypes[Unit.degree];
-    let secondDifference: UnitTypes[Unit.degree];
+export function getDifferenceBetweenAngles(firstAngle: UnitTypes['degree'],
+                                           secondAngle: UnitTypes['degree']): UnitTypes['degree'] {
+    let firstDifference: UnitTypes['degree'];
+    let secondDifference: UnitTypes['degree'];
 
     if (firstAngle > secondAngle) {
         firstDifference = firstAngle - secondAngle;

@@ -12,7 +12,6 @@ import { actions, } from '../../Store/actions';
 import { ConstructorState } from '../../Store/ConstructorState';
 import { AdditionalStep } from '../../Store/types/AdditionalStep';
 import { getEditedAnimationElementScript } from '../../Store/utils/getEditedAnimationElementScript';
-import { Unit } from '../../Unit/Unit';
 import { UnitTypes } from '../../Unit/UnitTypes';
 import { noop } from '../../utils/noop';
 import { ResizeSensor } from '../../utils/ResizeSensor';
@@ -21,7 +20,7 @@ import * as c from './index.pcss';
 import { TimeLinePoint } from './TimeLinePoint';
 
 export type TimeLinesState = {
-    containerWidth: UnitTypes[Unit.pixel];
+    containerWidth: UnitTypes['pixel'];
 };
 
 export type TimeLinesStateProps = {
@@ -86,8 +85,7 @@ class TimeLinesComponent extends React.Component<TimeLinesProps, TimeLinesState>
                             min: 0,
                             max: 1,
                         } }
-                        unit={ Unit.percent }
-                        title={ AMIMATION_POSITION_TITLE }
+                        unit={ 'percent'}
                         value={ 0 }
                         onPositionChangeStart={ noop }
                         onPositionChangeEnd={ noop }

@@ -11,6 +11,7 @@ import * as c from './index.pcss';
 export type ScaleViewOwnProps = {
     width: number;
     height: number;
+    children: React.ReactNode;
 };
 
 export type ScaleViewProps =
@@ -63,12 +64,14 @@ const mapStateToProps = ({
                          {
                              width,
                              height,
+                             children,
                          }: ScaleViewOwnProps): ScaleViewProps => ({
     scaleCoordinates,
     zoom,
     relation,
     width,
     height,
+    children,
 });
 
 export const ScaleView = connect(mapStateToProps)(ScaleViewComponent);

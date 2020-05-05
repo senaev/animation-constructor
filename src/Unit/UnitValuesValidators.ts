@@ -1,21 +1,20 @@
 import { ALL_COLOR_PROPERTIES } from '../Color/ALL_COLOR_PROPERTIES';
 import { isObject } from '../utils/isObject';
-import { Unit } from './Unit';
 import { UnitTypes } from './UnitTypes';
 
-const validateNumber = (value: UnitTypes[Unit.percent]) => {
+const validateNumber = (value: UnitTypes['percent']) => {
     if (typeof value !== 'number') {
         throw new Error(`value is not a number, but [${value}][${typeof value}]`);
     }
 };
 
-const validateBoolean = (value: UnitTypes[Unit.boolean]) => {
+const validateBoolean = (value: UnitTypes['boolean']) => {
     if (typeof value !== 'boolean') {
         throw new Error(`value is not a boolean, but [${value}][${typeof value}]`);
     }
 };
 
-const validateColor = (value: UnitTypes[Unit.color]) => {
+const validateColor = (value: UnitTypes['color']) => {
     if (!isObject(value)) {
         throw new Error(`value is not an object, but [${value}][${typeof value}]`);
     }
