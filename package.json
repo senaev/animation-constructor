@@ -1,6 +1,8 @@
 {
   "name": "animation-constructor",
   "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
   "description": "Web-animations constructor",
   "scripts": {
     "build": "webpack",
