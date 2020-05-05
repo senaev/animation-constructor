@@ -27,5 +27,5 @@ export class ColorField extends Field<'color'> {
             ...rgb,
             a: rgb.a || 1,
         });
-    };
+    }
 }
